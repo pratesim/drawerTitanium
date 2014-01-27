@@ -1,0 +1,26 @@
+"#mainView":{
+	layout: 'vertical',
+	backgroundColor: '#cacaca'
+},
+"#mainTopBar":{
+	width: Ti.UI.FILL,
+	height: "48dp",
+	backgroundColor: '#333333',
+	opacity: "0.8",
+	layout: 'horizontal'
+},
+"#menuButton":{
+	width: "48dp",
+	height: "48dp",
+	backgroundColor: '#333333',
+}
+"#titleApp":{
+	color: "white",
+	font: {fontSize: "20dp"},
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
+}
+"#littleBar":{
+	backgroundColor: "#3793B5",
+	height: "3dp",
+	width: Ti.UI.FILL
+}
