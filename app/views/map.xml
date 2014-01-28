@@ -1,0 +1,5 @@
+<Alloy>
+    <View id="map" backgroundColor="black">
+        <Label>La Mappa!.</Label>
+    </View>
+</Alloy>

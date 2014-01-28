@@ -1,0 +1,5 @@
+<Alloy>
+    <View id="last" backgroundColor="black">
+        <Label>Lista Ultime Segnalazioni.</Label>
+    </View>
+</Alloy>

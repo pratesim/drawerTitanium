@@ -6,7 +6,5 @@
 		</View>
 		<View id="littleBar">
 		</View>
-		<TableView>
-		</TableView>
 	</View>
 </Alloy>
