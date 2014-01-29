@@ -1,0 +1,8 @@
+# ignora le cartelle
+.idea/
+Resources/
+
+# ignora i files
+build.log
+*~
+*.db
