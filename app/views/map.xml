@@ -1,4 +1,4 @@
 <Alloy>
     <!-- Use the Alloy.Globals.Map namespace to create a map module view -->
-    <View id="map" ns="Alloy.Globals.Map" onClick="report" onRegionchanged="moved"/>
+    <View id="map" ns="Alloy.Globals.Map" regionFit="true" onClick="markerClick" onRegionchanged="moved"/>
 </Alloy>

@@ -39,7 +39,7 @@ function getBox(region){
  * Data la regione visualizzata sulla mappa, ritorna un array contenente le aree visualizzate nella regione
  * rappresentate dalle coordinate dei loro angoli in basso a sinistra e in alto a destra.
  *
- * Possono essere ritornate più aree se la regione è a cavallo della linea del campio di data.
+ * Possono essere ritornate più aree se la regione è a cavallo della linea del cambio di data.
  *
  * @param {MapRegionType} region regione della mappa raffigurata.
  * @returns {[{BLCorner: {x: number, y: number}, TRCorner: {x: number, y: number}},...]} array di aree dove le
@@ -111,10 +111,41 @@ function getBoxes(region){
     return boxes;
 }
 
-function report(evt) {
-    Ti.API.info("Annotation " + evt.title + " clicked, id: " + evt.annotation.myid);
+function chechGpsService(){
+    if (Ti.Geolocation.locationServicesEnabled) {
+        // perform other operations with Ti.Geolocation
+        Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_LOW);
+        return true;
+    } else {
+        alert('Please enable location services');
+        return false;
+    }
 }
 
+/**
+ * Handler del click su un segnaposto della mappa.
+ * @param evt evento passato allo handler al momento della chiamata.
+ */
+function markerClick(evt) {
+    Ti.API.info("Annotation " + evt.title + " clicked, id: " + evt.annotation.annotation_id);
+    for (var p in evt){
+        Ti.API.debug("  " + p + ": " + JSON.stringify(evt[p]));
+    }
+
+    // se si clicca sul titolo del segnaposto apriamo la segnalazione
+    // sempre che il segnaposto non sia la posizione corrente.
+    if (evt.clicksource == "title"){
+        if (evt.annotation.annotation_id != "myloc"){
+            // aprire la view del dettaglio di questa segnalazione:
+            // evt.annotation.annotation_id
+        }
+    }
+}
+
+/**
+ * handler dell'evento associato allo spostamento e ridimensionamento della mappa.
+ * @param evt evento passato allo handler al momento della chiamata.
+ */
 function moved(evt) {
     var region = {
         latitude: evt.latitude,
@@ -145,20 +176,72 @@ function moved(evt) {
 
 }
 
-// API calls to the map module need to use the Alloy.Globals.Map reference
-var mountainView = Alloy.Globals.Map.createAnnotation({
-    latitude:37.390749,
-    longitude:-122.081651,
-    title:"Appcelerator Headquarters",
-    subtitle:'Mountain View, CA',
-    pincolor:Alloy.Globals.Map.ANNOTATION_RED,
-    myid:1 // Custom property to uniquely identify this annotation.
-});
+/**
+ * Funzione di callback per la Ti.Geolocation.getCurrentPosition.
+ * Inizializza la mappa ad impostazioni di default o con quelle ottenute dalla richiesta della
+ * posizione corrente.
+ * @param getCurrPosResult oggetto passato dalla suddetta funzione al momento della chiamata
+ */
+function initMap(getCurrPosResult){
+    // regione mappa di default
+    var region = {
+        latitude:       43.720653,
+        longitude:      10.408407,
+        latitudeDelta:  0.01,
+        longitudeDelta: 0.01
+    };
+    // relativo segnaposto di default
+    var myLocOptions = {
+        latitude:      region.latitude,
+        longitude:     region.longitude,
+        title:         "Sei qui!",
+        annotation_id: "myloc",
+        image:         Alloy.Globals.PlacemarkImgs.MY_LOCATION
+    };
 
-$.map.region = {
-    latitude:33.74511,
-    longitude:-84.38993,
-    latitudeDelta:0.01,
-    longitudeDelta:0.01
-};
-$.map.addAnnotation(mountainView);
+    if(!getCurrPosResult.success){
+        Ti.API.info("Impostata regione DEFAULT per la mappa.");
+        Ti.API.info("Impostato segnaposto DEFAULT per la mappa.");
+
+        Ti.API.debug("Ti.Geolocation.getCurrentPosition()");
+        Ti.API.debug("  code:  " + getCurrPosResult.code);
+        Ti.API.debug("  error: " + getCurrPosResult.error);
+        // mappa inizializzata con la regione e segnaposto di default
+    }else{
+        Ti.API.info("Posizione attuale recuperata");
+        for (var p in getCurrPosResult){
+            Ti.API.debug("  " + p + ": " + JSON.stringify(getCurrPosResult[p]));
+        }
+
+        region.latitude       = getCurrPosResult.coords.latitude;
+        region.longitude      = getCurrPosResult.coords.longitude;
+        region.latitudeDelta  = 0.06;
+        region.longitudeDelta = 0.06;
+
+        myLocOptions.latitude      = getCurrPosResult.coords.latitude;
+        myLocOptions.longitude     = getCurrPosResult.coords.longitude;
+        myLocOptions.title         = "Sei qui!";
+        myLocOptions.annotation_id = "myloc";
+        myLocOptions.image         = Alloy.Globals.PlacemarkImgs.MY_LOCATION;
+
+        Ti.API.info("Impostata regione ATTUALE per la mappa.");
+        Ti.API.info("Impostato segnaposto ATTUALE per la mappa.");
+    }
+
+    var myLoc = Alloy.Globals.Map.createAnnotation(myLocOptions);
+
+    $.map.setRegion(region);
+    $.map.addAnnotation(myLoc);
+}
+
+// Recupera la posizione corrente e una volta ottenuta inizializza
+// la mappa con quella posizione a piazza un segnaposto per la posizione
+// corrente.
+if (Ti.Geolocation.locationServicesEnabled) {
+    // perform other operations with Ti.Geolocation
+    Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_LOW);
+    Ti.Geolocation.getCurrentPosition(initMap);
+} else {
+    alert('Abilitare il servizio di localizzazione');
+    initMap({success: false, error: "Servizio di localizzazione NON disponibile"});
+}

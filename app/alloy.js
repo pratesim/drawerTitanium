@@ -12,3 +12,9 @@
 
 // Loads the map module, which can be referenced by Alloy.Globals.Map
 Alloy.Globals.Map = require('ti.map');
+
+Alloy.Globals.PlacemarkImgs = {
+    MY_LOCATION: "/male-2.png",
+    MY_REPORT: "/radiation.png",
+    REPORT: "/radiation-white.png"
+};
