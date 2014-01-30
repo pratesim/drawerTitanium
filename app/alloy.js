@@ -18,3 +18,30 @@ Alloy.Globals.PlacemarkImgs = {
     MY_REPORT: "/radiation.png",
     REPORT: "/radiation-white.png"
 };
+
+var Georep = require('georep');
+
+Ti.API.info("Creazione utente...");
+var user = new Georep.User({
+    name: 'MiBe',
+    password: '1234',
+    nick: 'MiBe',
+    mail: 'mibe@mail.com'
+});
+Ti.API.info("Utente creato.");
+Ti.API.debug("  user: " + JSON.stringify(user));
+
+Ti.API.info("Creazione database...");
+var db = new Georep.DB({
+    proto: 'http',
+    host: 'pram.homepc.it',
+    port: 5984,
+    name: 'testdb'
+});
+Ti.API.info("Database creato.");
+Ti.API.debug("  db: " + JSON.stringify(db));
+
+Alloy.Globals.Georep = new Georep.Georep({
+    db: db,
+    user: user
+});
