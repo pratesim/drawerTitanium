@@ -1,6 +1,7 @@
 <Alloy>
 	<View id="menuView">
-		<View id="menuTopBar"/>
+		<View id="menuTopBar"><Label id="menuLabel">Menù</Label></View>
+        <View id="menuLittleTopBar"/>
 		<TableView class="menuTable" id="menuTable">
 			<TableViewRow class="tableRow" id="row1">
 				<View id="rowContainer">

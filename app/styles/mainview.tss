@@ -6,7 +6,7 @@
 	width: Ti.UI.FILL,
 	height: "48dp",
 	backgroundColor: '#333333',
-	opacity: "0.8",
+	opacity: "1",
 	layout: 'horizontal'
 },
 "#menuButton":{
@@ -16,7 +16,7 @@
 }
 "#titleApp":{
 	color: "white",
-	font: {fontSize: "20dp"},
+	font: {fontSize: "22dp"},
 	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 }
 "#littleBar":{
