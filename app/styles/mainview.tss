@@ -9,12 +9,20 @@
 	opacity: "1",
 	layout: 'horizontal'
 },
+"#appIcon":{
+	width: "34dp",
+	height: "34dp",
+	left: "-24dp",
+	backgroundImage: "/images/icon.png",
+},
 "#menuButton":{
+	left: "0dp",
 	width: "48dp",
 	height: "48dp",
 	backgroundColor: '#333333',
 }
 "#titleApp":{
+	left: "10dp",
 	color: "white",
 	font: {fontSize: "22dp"},
 	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
