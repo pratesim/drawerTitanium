@@ -1,0 +1,8 @@
+"#title" : {
+    color: 'black',
+    font: { fontFamily:'Roboto-Bold', fontSize: '20dp'},
+},
+
+".template" : {
+	height: '72dp'
+}

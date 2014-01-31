@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
+    <deployment-targets>
+        <target device="tizen">false</target>
+        <target device="mobileweb">true</target>
+        <target device="iphone">true</target>
+        <target device="ipad">true</target>
+        <target device="android">true</target>
+        <target device="blackberry">false</target>
+    </deployment-targets>
+    <sdk-version>3.1.1.GA</sdk-version>
+    <id>ti.drawerdemo</id>
+    <name>DrawerDemo</name>
+    <version>1.0</version>
+    <publisher>ralcocer</publisher>
+    <url>http://</url>
+    <description>not specified</description>
+    <copyright>2013 by ralcocer</copyright>
+    <icon>appicon.png</icon>
+    <persistent-wifi>false</persistent-wifi>
+    <prerendered-icon>false</prerendered-icon>
+    <statusbar-style>default</statusbar-style>
+    <statusbar-hidden>false</statusbar-hidden>
+    <fullscreen>false</fullscreen>
+    <navbar-hidden>false</navbar-hidden>
+    <analytics>true</analytics>
+    <guid>7c42b821-600a-4212-98b9-bc5775968dde</guid>
+    <property name="ti.ui.defaultunit">system</property>
+    <iphone>
+        <orientations device="iphone">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+        </orientations>
+        <orientations device="ipad">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+            <orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>
+            <orientation>Ti.UI.LANDSCAPE_LEFT</orientation>
+            <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
+        </orientations>
+    </iphone>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+        <tool-api-level>18</tool-api-level>
+        <manifest android:installLocation="preferExternal" android:versionCode="3" android:versionName="1.0.2">
+            <uses-sdk android:minSdkVersion="18" android:targetSdkVersion="18"/>
+            <application android:theme="@android:style/Theme.Holo">
+                <activity android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Holo"/>
+            </application>
+        </manifest>
+    </android>
+    <mobileweb>
+        <precache/>
+        <splash>
+            <enabled>true</enabled>
+            <inline-css-images>true</inline-css-images>
+        </splash>
+        <theme>default</theme>
+    </mobileweb>
+    <modules/>
+    <plugins>
+        <plugin version="1.0">ti.alloy</plugin>
+    </plugins>
+<property name="ti.deploytype">test</property></ti:app>

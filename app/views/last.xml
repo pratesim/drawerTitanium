@@ -1,0 +1,34 @@
+<Alloy>
+	<ProgressIndicator ns="Ti.UI.Android" platform="android" id="progressIndicatorDeterminant"
+         message="Loading..." min="0"
+         location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
+         type="Ti.UI.Android.PROGRESS_INDICATOR_DETERMINANT" />
+    <ProgressIndicator ns="Ti.UI.Android" platform="android" id="progressIndicatorIndeterminant"
+         message="Loading..."
+         location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
+         type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
+         
+    <ListView id="last" defaultItemTemplate="template" allowsSelection="true" onItemclick="dataClick">
+
+            <!-- The Templates tag sets the ListView's templates property -->
+
+            <Templates>
+
+                <!-- Define your item templates within the Templates tags or use the
+                     Require tag to include a view that only contains an ItemTemplate -->
+
+                <ItemTemplate name="template" class="template">
+                    <Label bindId="titolo" id="title" />
+                    <Label bindId="data" id="date" />
+                </ItemTemplate>
+
+            </Templates>
+
+            <ListSection id="mylistsection">
+                <!-- You can specify any ListItem or ListDataItem properties in ListItem -->
+				
+                <!-- Specify data to bind to the item template with inline attributes
+                     defined as <bindId>:<Ti.UI.Component.property> -->
+            </ListSection>
+    </ListView>
+</Alloy>

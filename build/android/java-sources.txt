@@ -1,0 +1,6 @@
+"C:/Users/Maurizio/Documents/Titanium_Studio_Workspace/drawerTitanium/build/android/gen/it/drawerdemo/ApplicationStylesheet.java"
+"C:/Users/Maurizio/Documents/Titanium_Studio_Workspace/drawerTitanium/build/android/gen/it/drawerdemo/AssetCryptImpl.java"
+"C:/Users/Maurizio/Documents/Titanium_Studio_Workspace/drawerTitanium/build/android/gen/it/drawerdemo/DrawertitaniumActivity.java"
+"C:/Users/Maurizio/Documents/Titanium_Studio_Workspace/drawerTitanium/build/android/gen/it/drawerdemo/DrawertitaniumAppInfo.java"
+"C:/Users/Maurizio/Documents/Titanium_Studio_Workspace/drawerTitanium/build/android/gen/it/drawerdemo/DrawertitaniumApplication.java"
+"C:/Users/Maurizio/Documents/Titanium_Studio_Workspace/drawerTitanium/build/android/gen/it/drawerdemo/R.java"

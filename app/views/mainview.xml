@@ -1,0 +1,10 @@
+<Alloy>
+	<View id="mainView">
+		<View id="mainTopBar">
+			<View id="menuButton"/>
+			<Label id="titleApp">Degrado Ambientale</Label>
+		</View>
+		<View id="littleBar">
+		</View>
+	</View>
+</Alloy>

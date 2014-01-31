@@ -1,0 +1,15 @@
+"#title" : {
+    color: 'black',
+    font: { fontFamily:'Roboto-Bold', fontSize: '20dp'},
+},
+
+"#date" : {
+	color: 'black',
+	font: { fontFamily: 'Roboto-Thin', fontSize: '15dp'},
+	top: '15dp'
+},
+
+".template" : {
+	layout: "vertical",
+	height: '72dp'
+}

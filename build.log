@@ -1,0 +1,188 @@
+Logfile initialized
+[INFO] logfile = C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build.log
+[DEBUG] C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\builder.py install DrawerDemo C:\android-sdk C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium ti.drawerdemo 1
+[INFO] plugin=C:\ProgramData\Application Data\Titanium\plugins\ti.alloy\1.0\plugin.py
+[INFO] Detected compiler plugin: ti.alloy/1.0
+[INFO] Titanium SDK version: 3.1.1 (06/15/13 16:09 f7592c1)
+[DEBUG] Waiting for device to be ready ...
+[TRACE] adb devices returned 1 devices/emulators
+[DEBUG] Device connected... (waited 0 seconds)
+[DEBUG] waited 0.026000 seconds on emulator to get ready
+[DEBUG] ti.drawerdemo installed? False
+[INFO] Copying CommonJS modules...
+[INFO] Copying project resources..
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\backbone.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\backbone.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\constants.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\constants.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\controllers\BaseController.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\controllers\BaseController.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\controllers\index.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\controllers\index.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\controllers\last.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\controllers\last.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\controllers\mainview.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\controllers\mainview.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\controllers\map.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\controllers\map.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\controllers\menuview.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\controllers\menuview.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\controllers\my.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\controllers\my.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\styles\index.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\styles\index.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\styles\last.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\styles\last.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\styles\mainview.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\styles\mainview.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\styles\map.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\styles\map.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\styles\menuview.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\styles\menuview.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\styles\my.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\styles\my.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\sync\localStorage.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\sync\localStorage.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\sync\properties.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\sync\properties.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\sync\sql.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\sync\sql.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\sync\util.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\sync\util.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\underscore.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\underscore.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\widget.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\widget.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\widgets\com.drawermenu.widget\controllers\widget.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\widgets\com.drawermenu.widget\controllers\widget.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy\widgets\com.drawermenu.widget\styles\widget.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\widgets\com.drawermenu.widget\styles\widget.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\alloy.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\alloy\CFG.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\alloy\CFG.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\app.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\app.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\controls.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\controls.js
+[TRACE] COPYING MODIFIED FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\georep.js => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\georep.js
+[DEBUG] LiveView not enabled
+[TRACE] Generating Java Classes
+[DEBUG] Processing Android resource drawables
+[TRACE] COPYING FILE: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-land-hdpi\Thumbs.db => C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-long-land-hdpi\thumbs_2c5499c213.db
+[DEBUG] copying app icon: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\appicon.png
+[DEBUG] generating theme.xml
+[DEBUG] found drawable-long-land-hdpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-land-hdpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-land-hdpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-long-land-hdpi\background.png
+[DEBUG] found drawable-long-land-ldpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-land-ldpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-land-ldpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-long-land-ldpi\background.png
+[DEBUG] found drawable-long-port-hdpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-port-hdpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-port-hdpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-long-port-hdpi\background.png
+[DEBUG] found drawable-long-port-ldpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-port-ldpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-long-port-ldpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-long-port-ldpi\background.png
+[DEBUG] found drawable-notlong-land-hdpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-land-hdpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-land-hdpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-notlong-land-hdpi\background.png
+[DEBUG] found drawable-notlong-land-ldpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-land-ldpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-land-ldpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-notlong-land-ldpi\background.png
+[DEBUG] found drawable-notlong-land-mdpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-land-mdpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-land-mdpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-notlong-land-mdpi\background.png
+[DEBUG] found drawable-notlong-port-hdpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-port-hdpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-port-hdpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-notlong-port-hdpi\background.png
+[DEBUG] found drawable-notlong-port-ldpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-port-ldpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-port-ldpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-notlong-port-ldpi\background.png
+[DEBUG] found drawable-notlong-port-mdpi splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-port-mdpi\default.png
+[DEBUG] copying C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\Resources\android\images\res-notlong-port-mdpi\default.png splash screen to C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\res\drawable-notlong-port-mdpi\background.png
+[DEBUG] found splash screen at C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\assets\Resources\default.png
+[DEBUG] Added 'screenSize' to <activity android:configChanges> because targeted api level 18 is >= 13
+[TRACE] Writing out AndroidManifest.xml
+[DEBUG] adding C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\gen\ti\drawerdemo\DrawerdemoActivity.java to javac build list
+[DEBUG] adding C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\gen\ti\drawerdemo\DrawerdemoAppInfo.java to javac build list
+[DEBUG] adding C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\gen\ti\drawerdemo\DrawerdemoApplication.java to javac build list
+[DEBUG] adding C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\gen\ti\drawerdemo\R.java to javac build list
+[DEBUG] Building Java Sources: "C:\\Users\\Maurizio\\Documents\\Titanium_Studio_Workspace\\drawerTitanium\\build\\android\\gen\\ti\\drawerdemo\\DrawerdemoActivity.java" "C:\\Users\\Maurizio\\Documents\\Titanium_Studio_Workspace\\drawerTitanium\\build\\android\\gen\\ti\\drawerdemo\\DrawerdemoAppInfo.java" "C:\\Users\\Maurizio\\Documents\\Titanium_Studio_Workspace\\drawerTitanium\\build\\android\\gen\\ti\\drawerdemo\\DrawerdemoApplication.java" "C:\\Users\\Maurizio\\Documents\\Titanium_Studio_Workspace\\drawerTitanium\\build\\android\\gen\\ti\\drawerdemo\\R.java"
+[INFO] Compiling Android Resources... This could take some time
+[DEBUG] Android classes.dex built
+[DEBUG] creating unsigned apk: C:\Users\Maurizio\Documents\Titanium_Studio_Workspace\drawerTitanium\build\android\bin\app-unsigned.apk
+[DEBUG] from resource zip => assets/Resources/alloy/controllers/BaseController.js
+[DEBUG] from resource zip => assets/Resources/alloy/controllers/index.js
+[DEBUG] from resource zip => assets/Resources/alloy/controllers/last.js
+[DEBUG] from resource zip => assets/Resources/alloy/controllers/mainview.js
+[DEBUG] from resource zip => assets/Resources/alloy/controllers/map.js
+[DEBUG] from resource zip => assets/Resources/alloy/controllers/menuview.js
+[DEBUG] from resource zip => assets/Resources/alloy/controllers/my.js
+[DEBUG] from resource zip => assets/Resources/alloy/styles/index.js
+[DEBUG] from resource zip => assets/Resources/alloy/styles/last.js
+[DEBUG] from resource zip => assets/Resources/alloy/styles/mainview.js
+[DEBUG] from resource zip => assets/Resources/alloy/styles/map.js
+[DEBUG] from resource zip => assets/Resources/alloy/styles/menuview.js
+[DEBUG] from resource zip => assets/Resources/alloy/styles/my.js
+[DEBUG] from resource zip => assets/Resources/alloy/sync/localStorage.js
+[DEBUG] from resource zip => assets/Resources/alloy/sync/properties.js
+[DEBUG] from resource zip => assets/Resources/alloy/sync/sql.js
+[DEBUG] from resource zip => assets/Resources/alloy/sync/util.js
+[DEBUG] from resource zip => assets/Resources/alloy/widgets/com.drawermenu.widget/controllers/widget.js
+[DEBUG] from resource zip => assets/Resources/alloy/widgets/com.drawermenu.widget/styles/widget.js
+[DEBUG] from resource zip => assets/Resources/alloy/CFG.js
+[DEBUG] from resource zip => assets/Resources/alloy/backbone.js
+[DEBUG] from resource zip => assets/Resources/alloy/constants.js
+[DEBUG] from resource zip => assets/Resources/alloy/underscore.js
+[DEBUG] from resource zip => assets/Resources/alloy/widget.js
+[DEBUG] from resource zip => assets/Resources/iphone/Default-568h@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/Default-Landscape.png
+[DEBUG] from resource zip => assets/Resources/iphone/Default-Landscape@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/Default-Portrait.png
+[DEBUG] from resource zip => assets/Resources/iphone/Default-Portrait@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/Default.png
+[DEBUG] from resource zip => assets/Resources/iphone/Default@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/Icon-Small-50.png
+[DEBUG] from resource zip => assets/Resources/iphone/Icon-Small.png
+[DEBUG] from resource zip => assets/Resources/iphone/Icon-Small@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/appicon-72.png
+[DEBUG] from resource zip => assets/Resources/iphone/appicon-72@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/appicon-Small-50.png
+[DEBUG] from resource zip => assets/Resources/iphone/appicon-Small.png
+[DEBUG] from resource zip => assets/Resources/iphone/appicon-Small@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/appicon.png
+[DEBUG] from resource zip => assets/Resources/iphone/appicon@2x.png
+[DEBUG] from resource zip => assets/Resources/iphone/iTunesArtwork
+[DEBUG] from resource zip => assets/Resources/tizen/appicon.png
+[DEBUG] from resource zip => assets/Resources/106-sliders.png
+[DEBUG] from resource zip => assets/Resources/19-gear.png
+[DEBUG] from resource zip => assets/Resources/21-skull.png
+[DEBUG] from resource zip => assets/Resources/41-picture-frame.png
+[DEBUG] from resource zip => assets/Resources/MarketplaceArtwork.png
+[DEBUG] from resource zip => assets/Resources/alloy.js
+[DEBUG] from resource zip => assets/Resources/app.js
+[DEBUG] from resource zip => assets/Resources/appicon.png
+[DEBUG] from resource zip => assets/Resources/controls.js
+[DEBUG] from resource zip => assets/Resources/default.png
+[DEBUG] from resource zip => assets/Resources/georep.js
+[DEBUG] from resource zip => assets/Resources/ic_drawer.png
+[DEBUG] from resource zip => assets/Resources/menubutton.png
+[DEBUG] from resource zip => assets/app.json
+[DEBUG] from resource zip => assets/index.json
+[DEBUG] from resource zip => assets/tiapp.xml
+[DEBUG] from resource zip => res/drawable/appicon.png
+[DEBUG] from resource zip => res/drawable/background.png
+[DEBUG] from resource zip => res/drawable/btn_check_buttonless_on_64.png
+[DEBUG] from resource zip => res/drawable/btn_more_64.png
+[DEBUG] from resource zip => res/drawable/disclosure_64.png
+[DEBUG] from resource zip => res/layout/titanium_tabgroup.xml
+[DEBUG] from resource zip => res/layout/titanium_ui_list_header_or_footer.xml
+[DEBUG] from resource zip => res/layout/titanium_ui_list_item.xml
+[DEBUG] from resource zip => AndroidManifest.xml
+[DEBUG] from resource zip => resources.arsc
+[DEBUG] from resource zip => res/drawable-long-land-hdpi/background.png
+[DEBUG] from resource zip => res/drawable-long-land-hdpi/thumbs_2c5499c213.db
+[DEBUG] from resource zip => res/drawable-long-land-ldpi/background.png
+[DEBUG] from resource zip => res/drawable-long-port-hdpi/background.png
+[DEBUG] from resource zip => res/drawable-long-port-ldpi/background.png
+[DEBUG] from resource zip => res/drawable-notlong-land-hdpi/background.png
+[DEBUG] from resource zip => res/drawable-notlong-land-ldpi/background.png
+[DEBUG] from resource zip => res/drawable-notlong-land-mdpi/background.png
+[DEBUG] from resource zip => res/drawable-notlong-port-hdpi/background.png
+[DEBUG] from resource zip => res/drawable-notlong-port-ldpi/background.png
+[DEBUG] from resource zip => res/drawable-notlong-port-mdpi/background.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\modules\titanium-ui.jar => ti/modules/titanium/ui/widget/webview/binding.js
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\modules\titanium-ui.jar => ti/modules/titanium/ui/widget/webview/binding.min.js
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\modules\titanium-ui.jar => ti/modules/titanium/ui/widget/webview/json2.js
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\modules\titanium-ui.jar => ti/modules/titanium/ui/widget/webview/polling.js
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\modules\titanium-ui.jar => ti/modules/titanium/ui/widget/webview/polling.min.js
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\thirdparty.jar => org/apache/Commons-NOTICE.txt
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\thirdparty.jar => org/apache/HttpComponents-NOTICE.txt
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\thirdparty.jar => org/apache/mime4j-NOTICE.txt
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/build.properties
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/background.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on_18.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on_48.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on_64.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_more.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_more_18.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_more_48.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_more_64.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_picker_normal.9.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_picker_pressed.9.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/btn_picker_selected.9.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/default_icon.png
+[DEBUG] from JAR C:\ProgramData\Application Data\Titanium\mobilesdk\win32\3.1.1.GA\android\titanium.jar => org/appcelerator/titanium/res/drawable/photoDefault.png
+[DEBUG] installing native SDK libs
+[DEBUG] Waiting for device to be ready ...
+[TRACE] adb devices returned 1 devices/emulators
+[DEBUG] Device connected... (waited 0 seconds)
+[DEBUG] waited 0.022000 seconds on emulator to get ready
+[INFO] Installing application on device
+[INFO] Application installed. Launch from drawer on Home Screen
