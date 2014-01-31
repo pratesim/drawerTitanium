@@ -2,6 +2,7 @@
 	<View id="mainView">
 		<View id="mainTopBar">
 			<View id="menuButton"/>
+            <View id="appIcon"/>
 			<Label id="titleApp">Degrado Ambientale</Label>
 		</View>
 		<View id="littleBar">

@@ -729,12 +729,11 @@ Georep.prototype.getUserDocs = function(userId, callback){
 			onerror: function(e){
 				if(callback)
 					callback(JSON.parse(this.responseText),undefined);
-			},
+			}
 		});
 		client.open("GET", url);
 		client.setRequestHeader("Authorization", 'Basic ' + this.getUser().getBase64());
 		client.setRequestHeader("Accept", 'application/json');
-		
 		client.send();
 	}
 };

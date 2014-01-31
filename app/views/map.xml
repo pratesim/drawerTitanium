@@ -1,5 +1,4 @@
 <Alloy>
-    <View id="map" backgroundColor="black">
-        <Label>La Mappa!.</Label>
-    </View>
+    <!-- Use the Alloy.Globals.Map namespace to create a map module view -->
+    <View id="map" ns="Alloy.Globals.Map" regionFit="true" onClick="markerClick" onRegionchanged="moved" onComplete="mapCompleted"/>
 </Alloy>

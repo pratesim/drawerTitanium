@@ -1,6 +1,12 @@
-.DS_Store
+# ignora le cartelle
+.idea/
+Resources/
+
+# ignora i files
 build.log
-build
+.DS_Store
+*~
+*.db
 npm-debug.log
 tmp
 .map

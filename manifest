@@ -1,9 +1,8 @@
-#appname: drawerTitanium
-#appid: it.drawerdemo
-#type: mobile
-#guid: a354ef5e-0ff9-4288-a7f7-1859eeb60519
-#version: 1.0
-#publisher: not specified
-#url: not specified
+#appname: DrawerDemo
+#publisher: ralcocer
+#url: http://
 #image: appicon.png
-#desc: not specified
+#appid: ti.drawerdemo
+#desc: undefined
+#type: ipad
+#guid: 7c42b821-600a-4212-98b9-bc5775968dde

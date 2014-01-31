@@ -5,44 +5,59 @@
 "#menuTopBar":{
 	width: Ti.UI.FILL,
 	height: "48dp",
-	backgroundColor: '#3D3D3D',
-	opacity: '0.8',
+	backgroundColor: '#DDDDDD',
+	opacity: '1',
 	layout: 'horizontal'
+},
+"#menuLabel":{
+	top: 4,
+	left: 10,
+	height: "40dp",
+	font:{
+		fontSize: "22dp"
+	},
+	color: "#000000"
+	
+},
+"#menuLittleTopBar":{
+	width: Ti.UI.FILL,
+	height: "3dp",
+	backgroundColor: '#DCDCDC'
 },
 ".tableRow":{
 	height: '50dp'
 },
 "#rowContainer":{
-	height: '30dp',
+	height: '40dp',
 	layout:'horizontal'
 },
 ".rowIcon":{
 	left: 5,
-	top: 7,
-	width: "20dp",
-	height: "20dp"
+	top: 0,
+	width: "40dp",
+	height: "40dp"
 },
 "#rowSkull":{
-	backgroundImage: '/menubutton.png'
+	backgroundImage: '/images/ic_action_view_as_list.png'
 },
 "#rowGear":{
-	backgroundImage: '/19-gear.png'
+	backgroundImage: '/images/ic_action_map.png'
 },
 "#rowPicFrame":{
-	backgroundImage: '/41-picture-frame.png'
+	backgroundImage: '/images/ic_action_time.png'
 },
 ".rowLabel":{
-	top: 7,
+	top: 0,
 	left: 10,
-	height: "20dp",
+	height: "40dp",
 	font:{
-		fontSize: "15dp"
+		fontSize: "18dp"
 	},
-	color: "#000"
+	color: "#59595C"
 	
 },
 ".menuTable":{
-	separatorStyle:'NONE',
-	separatorColor: 'transparent',
-	backgroundColor:'#F2F2F2'
+	separatorStyle:'SINGLE_LINE',
+	separatorColor: '#E5E5E5',
+	backgroundColor:'#EEEEEE'
 }
