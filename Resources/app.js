@@ -1,33 +1,45 @@
 var Alloy = require("alloy"), _ = Alloy._, Backbone = Alloy.Backbone;
 
-var georep = require("georep");
+Alloy.Globals.Map = require("ti.map");
 
-var userConf = {
+Alloy.Globals.PlacemarkImgs = {
+    MY_LOCATION: "/male-2.png",
+    MY_REPORT: "/radiation.png",
+    REPORT: "/radiation-white.png"
+};
+
+var Georep = require("georep");
+
+Ti.API.info("Creazione utente...");
+
+var user = new Georep.User({
     name: Ti.Platform.getId(),
     password: Ti.Platform.getId(),
     nick: "pratesim",
     mail: "pratesi.maurizio@gmail.com"
-};
+});
 
-var dbConf = {
+Ti.API.info("Utente creato.");
+
+Ti.API.debug("  user: " + JSON.stringify(user));
+
+Ti.API.info("Creazione database...");
+
+var db = new Georep.DB({
     proto: "http",
     host: "pram.homepc.it",
     port: 5984,
     name: "testdb"
-};
+});
 
-var georepConf = {
-    user: new georep.User(userConf),
-    db: new georep.DB(dbConf)
-};
+Ti.API.info("Database creato.");
 
-Alloy.Globals.service = new georep.Georep(georepConf);
+Ti.API.debug("  db: " + JSON.stringify(db));
 
-Alloy.Globals.query = {};
-
-Alloy.Globals.query.userId = "";
-
-Alloy.Globals.query.repoId = "";
+Alloy.Globals.Georep = new Georep.Georep({
+    db: db,
+    user: user
+});
 
 Alloy.Globals.dataToString = function(milsToEPOC) {
     var d = new Date(milsToEPOC);

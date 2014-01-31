@@ -16,23 +16,32 @@ function Controller() {
         width: Ti.UI.FILL,
         height: "48dp",
         backgroundColor: "#333333",
-        opacity: "0.8",
+        opacity: "1",
         layout: "horizontal",
         id: "mainTopBar"
     });
     $.__views.mainView.add($.__views.mainTopBar);
     $.__views.menuButton = Ti.UI.createView({
+        left: "0dp",
         width: "48dp",
         height: "48dp",
         backgroundColor: "#333333",
         id: "menuButton"
     });
     $.__views.mainTopBar.add($.__views.menuButton);
+    $.__views.appIcon = Ti.UI.createView({
+        width: "34dp",
+        height: "34dp",
+        left: "-24dp",
+        backgroundImage: "/images/icon.png",
+        id: "appIcon"
+    });
+    $.__views.mainTopBar.add($.__views.appIcon);
     $.__views.titleApp = Ti.UI.createLabel({
+        left: "10dp",
         color: "white",
         font: {
-            fontSize: "20dp",
-            fontFamily: "Roboto-Medium"
+            fontSize: "22dp"
         },
         textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
         text: "Degrado Ambientale",

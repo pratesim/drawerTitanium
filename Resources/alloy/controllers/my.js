@@ -45,9 +45,9 @@ function Controller() {
         type: Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
     });
     $.__views.progressIndicatorIndeterminant && $.addTopLevelView($.__views.progressIndicatorIndeterminant);
-    var __alloyId11 = {};
-    var __alloyId14 = [];
-    var __alloyId15 = {
+    var __alloyId10 = {};
+    var __alloyId13 = [];
+    var __alloyId14 = {
         type: "Ti.UI.Label",
         bindId: "titolo",
         properties: {
@@ -59,23 +59,23 @@ function Controller() {
             bindId: "titolo"
         }
     };
-    __alloyId14.push(__alloyId15);
-    var __alloyId13 = {
+    __alloyId13.push(__alloyId14);
+    var __alloyId12 = {
         properties: {
             height: "72dp",
             name: "template"
         },
-        childTemplates: __alloyId14
+        childTemplates: __alloyId13
     };
-    __alloyId11["template"] = __alloyId13;
-    var __alloyId16 = [];
+    __alloyId10["template"] = __alloyId12;
+    var __alloyId15 = [];
     $.__views.mylistsection = Ti.UI.createListSection({
         id: "mylistsection"
     });
-    __alloyId16.push($.__views.mylistsection);
+    __alloyId15.push($.__views.mylistsection);
     $.__views.my = Ti.UI.createListView({
-        sections: __alloyId16,
-        templates: __alloyId11,
+        sections: __alloyId15,
+        templates: __alloyId10,
         id: "my",
         defaultItemTemplate: "template",
         allowsSelection: "true"

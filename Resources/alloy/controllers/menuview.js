@@ -15,41 +15,60 @@ function Controller() {
     $.__views.menuTopBar = Ti.UI.createView({
         width: Ti.UI.FILL,
         height: "48dp",
-        backgroundColor: "#3D3D3D",
-        opacity: "0.8",
+        backgroundColor: "#DDDDDD",
+        opacity: "1",
         layout: "horizontal",
         id: "menuTopBar"
     });
     $.__views.menuView.add($.__views.menuTopBar);
+    $.__views.menuLabel = Ti.UI.createLabel({
+        top: 4,
+        left: 10,
+        height: "40dp",
+        font: {
+            fontSize: "22dp"
+        },
+        color: "#000000",
+        text: "Menù",
+        id: "menuLabel"
+    });
+    $.__views.menuTopBar.add($.__views.menuLabel);
+    $.__views.menuLittleTopBar = Ti.UI.createView({
+        width: Ti.UI.FILL,
+        height: "3dp",
+        backgroundColor: "#DCDCDC",
+        id: "menuLittleTopBar"
+    });
+    $.__views.menuView.add($.__views.menuLittleTopBar);
     $.__views.row1 = Ti.UI.createTableViewRow({
         height: "50dp",
         id: "row1"
     });
-    var __alloyId10 = [];
-    __alloyId10.push($.__views.row1);
+    var __alloyId9 = [];
+    __alloyId9.push($.__views.row1);
     $.__views.rowContainer = Ti.UI.createView({
-        height: "30dp",
+        height: "40dp",
         layout: "horizontal",
         id: "rowContainer"
     });
     $.__views.row1.add($.__views.rowContainer);
     $.__views.rowGear = Ti.UI.createView({
         left: 5,
-        top: 7,
-        width: "20dp",
-        height: "20dp",
-        backgroundImage: "/19-gear.png",
+        top: 0,
+        width: "40dp",
+        height: "40dp",
+        backgroundImage: "/images/ic_action_map.png",
         id: "rowGear"
     });
     $.__views.rowContainer.add($.__views.rowGear);
     $.__views.rowLabel = Ti.UI.createLabel({
-        top: 7,
+        top: 0,
         left: 10,
-        height: "20dp",
+        height: "40dp",
         font: {
-            fontSize: "15dp"
+            fontSize: "18dp"
         },
-        color: "#000",
+        color: "#59595C",
         text: "Mappa",
         id: "rowLabel"
     });
@@ -58,30 +77,30 @@ function Controller() {
         height: "50dp",
         id: "row2"
     });
-    __alloyId10.push($.__views.row2);
+    __alloyId9.push($.__views.row2);
     $.__views.rowContainer = Ti.UI.createView({
-        height: "30dp",
+        height: "40dp",
         layout: "horizontal",
         id: "rowContainer"
     });
     $.__views.row2.add($.__views.rowContainer);
     $.__views.rowSkull = Ti.UI.createView({
         left: 5,
-        top: 7,
-        width: "20dp",
-        height: "20dp",
-        backgroundImage: "/menubutton.png",
+        top: 0,
+        width: "40dp",
+        height: "40dp",
+        backgroundImage: "/images/ic_action_view_as_list.png",
         id: "rowSkull"
     });
     $.__views.rowContainer.add($.__views.rowSkull);
     $.__views.rowLabel = Ti.UI.createLabel({
-        top: 7,
+        top: 0,
         left: 10,
-        height: "20dp",
+        height: "40dp",
         font: {
-            fontSize: "15dp"
+            fontSize: "18dp"
         },
-        color: "#000",
+        color: "#59595C",
         text: "Ultime Segnalazioni",
         id: "rowLabel"
     });
@@ -90,39 +109,39 @@ function Controller() {
         height: "50dp",
         id: "row3"
     });
-    __alloyId10.push($.__views.row3);
+    __alloyId9.push($.__views.row3);
     $.__views.rowContainer = Ti.UI.createView({
-        height: "30dp",
+        height: "40dp",
         layout: "horizontal",
         id: "rowContainer"
     });
     $.__views.row3.add($.__views.rowContainer);
     $.__views.rowPicFrame = Ti.UI.createView({
         left: 5,
-        top: 7,
-        width: "20dp",
-        height: "20dp",
-        backgroundImage: "/41-picture-frame.png",
+        top: 0,
+        width: "40dp",
+        height: "40dp",
+        backgroundImage: "/images/ic_action_time.png",
         id: "rowPicFrame"
     });
     $.__views.rowContainer.add($.__views.rowPicFrame);
     $.__views.rowLabel = Ti.UI.createLabel({
-        top: 7,
+        top: 0,
         left: 10,
-        height: "20dp",
+        height: "40dp",
         font: {
-            fontSize: "15dp"
+            fontSize: "18dp"
         },
-        color: "#000",
+        color: "#59595C",
         text: "Le Mie Segnalazioni",
         id: "rowLabel"
     });
     $.__views.rowContainer.add($.__views.rowLabel);
     $.__views.menuTable = Ti.UI.createTableView({
-        separatorStyle: "NONE",
-        separatorColor: "transparent",
-        backgroundColor: "#F2F2F2",
-        data: __alloyId10,
+        separatorStyle: "SINGLE_LINE",
+        separatorColor: "#E5E5E5",
+        backgroundColor: "#EEEEEE",
+        data: __alloyId9,
         id: "menuTable"
     });
     $.__views.menuView.add($.__views.menuTable);

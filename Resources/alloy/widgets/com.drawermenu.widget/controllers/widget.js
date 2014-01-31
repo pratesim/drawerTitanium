@@ -37,7 +37,7 @@ function Controller() {
         $.drawermainview.animate({
             left: moveTo,
             curve: Ti.UI.ANIMATION_CURVE_EASE_OUT,
-            duration: 400
+            duration: 200
         });
     };
     Ti.Gesture.addEventListener("orientationchange", function() {
