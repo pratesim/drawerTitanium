@@ -1,5 +1,5 @@
 Ti.API.info("lastsection: ");
-var service = Alloy.Globals.service;
+var service = Alloy.Globals.Georep;
 var listSection = $.last.getSections()[0];
 var LASTLISTKEY = "lastlistrepo";
 var ndoc = 10; // numero delle segnalazioni scaricate  (in ordine di tempo)

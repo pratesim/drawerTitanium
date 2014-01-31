@@ -105,7 +105,7 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Ti.API.info("lastsection: ");
-    var service = Alloy.Globals.service;
+    var service = Alloy.Globals.Georep;
     var listSection = $.last.getSections()[0];
     var LASTLISTKEY = "lastlistrepo";
     var ndoc = 10;

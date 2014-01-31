@@ -46,6 +46,11 @@ Alloy.Globals.Georep = new Georep.Georep({
     user: user
 });
 
+/* variabile globale contenente l'userId del segnalatore della segnalazione scelta di cui si vuole vedere il dettaglio */
+Alloy.Globals.query = {};
+Alloy.Globals.query.userId = "";
+Alloy.Globals.query.repoId = "";
+
 /* funzioni globali */
 Alloy.Globals.dataToString = function(milsToEPOC){
          var d = new Date(milsToEPOC);

@@ -85,15 +85,17 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Ti.API.info("Mysection: ");
-    var service = Alloy.Globals.service;
+    var service = Alloy.Globals.Georep;
     var listSection = $.my.getSections()[0];
     var MYLISTKEY = "mylistrepo";
     if (Ti.Network.getNetworkType() == Ti.Network.NETWORK_NONE) {
         var items = Ti.App.Properties.getString(MYLISTKEY, "null");
         "null" == items ? alert("Necessaria connessione alla rete...") : listSection.setItems(JSON.parse(items));
     } else try {
+        Ti.API.info("Avviata animazione indeterminata!");
         $.progressIndicatorIndeterminant.show();
         service.getUserDocs(service.getUserId(), function(err, data) {
+            Ti.API.info("funzione di callback getUserDocs chiamata");
             if (err) {
                 $.progressIndicatorIndeterminant.hide();
                 var items = Ti.App.Properties.getString(MYLISTKEY, "null");

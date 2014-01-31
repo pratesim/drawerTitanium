@@ -1,5 +1,5 @@
 Ti.API.info("Mysection: ");
-var service = Alloy.Globals.service;
+var service = Alloy.Globals.Georep;
 var listSection = $.my.getSections()[0];
 var MYLISTKEY = "mylistrepo";
 
@@ -17,8 +17,10 @@ var MYLISTKEY = "mylistrepo";
 	}
 	else{
 		try{
+			Ti.API.info("Avviata animazione indeterminata!");
 			$.progressIndicatorIndeterminant.show();
 			service.getUserDocs(service.getUserId(), function (err, data){
+				Ti.API.info("funzione di callback getUserDocs chiamata");
 				if (!err){ // ricevuta risposta corretta
 					
 					$.progressIndicatorIndeterminant.hide();

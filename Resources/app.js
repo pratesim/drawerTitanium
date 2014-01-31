@@ -41,6 +41,12 @@ Alloy.Globals.Georep = new Georep.Georep({
     user: user
 });
 
+Alloy.Globals.query = {};
+
+Alloy.Globals.query.userId = "";
+
+Alloy.Globals.query.repoId = "";
+
 Alloy.Globals.dataToString = function(milsToEPOC) {
     var d = new Date(milsToEPOC);
     return numberPadding(d.getDate(), 2) + "/" + numberPadding(d.getMonth() + 1, 2) + "/" + numberPadding(d.getFullYear(), 4) + " - " + numberPadding(d.getHours(), 2) + ":" + numberPadding(d.getMinutes(), 2) + ":" + numberPadding(d.getSeconds(), 2);
