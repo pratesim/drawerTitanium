@@ -110,3 +110,6 @@ mainView.menuButton.addEventListener('click',$.drawermenu.showhidemenu); // meth
 $.drawermenu.drawermainview.add(mainView.getView());
 
 $.index.open();
+
+// dopo l'avvio entra automaticamente nella view delle ultime segnalazioni.
+switchTo('last');

@@ -83,6 +83,7 @@ function Controller() {
     mainView.menuButton.addEventListener("click", $.drawermenu.showhidemenu);
     $.drawermenu.drawermainview.add(mainView.getView());
     $.index.open();
+    switchTo("last");
     _.extend($, exports);
 }
 
