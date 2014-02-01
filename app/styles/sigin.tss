@@ -1,0 +1,46 @@
+".container": {
+	orientationModes: [Ti.UI.PORTRAIT,Ti.UI.LANDSCAPE_LEFT,Ti.UI.LANDSCAPE_RIGHT,Ti.UI.UPSIDE_PORTRAIT],
+	navBarHidden: true,
+	exitOnClose: true,
+	layout: 'vertical',
+	backgroundColor: '#cacaca',
+	width: Ti.UI.FILL
+},
+"#mainTopBar":{
+	width: Ti.UI.FILL,
+	height: "48dp",
+	backgroundColor: '#333333',
+	opacity: "1",
+	layout: 'horizontal'
+},
+"#appIcon":{
+	width: "34dp",
+	height: "34dp",
+	left: "0dp",
+	backgroundImage: "/images/icon.png",
+},
+"#titleApp":{
+	left: "10dp",
+	color: "white",
+	font: {
+	    fontSize: "22dp"
+	},
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
+},
+"#littleBar":{
+	backgroundColor: "#3793B5",
+	height: "3dp",
+	width: Ti.UI.FILL
+},
+"#scrollView":{
+	top: "0dp",
+	layout: "vertical",
+	width: Ti.UI.FILL,
+	backgroundColor:'#EEEEEE'
+},
+".siginSection":{
+    layout: "vertical",
+    width: Ti.UI.FILL,
+    left: "0dp",
+    top: "0dp"
+}

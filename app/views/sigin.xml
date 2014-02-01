@@ -1,0 +1,28 @@
+<Alloy>
+    <Window id="sigin" class="container">
+        <View id="mainTopBar">
+            <View id="appIcon"/>
+            <Label id="titleApp">Degrado Ambientale</Label>
+        </View>
+        <View id="littleBar"/>
+        <ScrollView id="scrollView">
+            <View id="nickSection" class="siginSection">
+                <Label>Nick Name</Label>
+                <TextField id="nickInput"></TextField>
+                <Label>
+                    Un <b>nickname</b> serve per differenziarsi dagli altri utenti e comparir&agrave come
+                    nome dell'autore di tutte le tue segnalazioni.
+                </Label>
+            </View>
+            <View id="mailSection" class="siginSection">
+                <Label>E-Mail</Label>
+                <TextField id="mailInput"></TextField>
+                <Label>
+                    Un indirizzo <b>e-mail</b> &egrave utile per ricevere segnalazioni e informazioni sia
+                    dall'amministratore che dagli altri utenti. L'indirizzo di posta elettronica &egrave
+                    visibile nei dettagli di una segnalazione. Puoi combiarlo in qualsiasi momento.
+                </Label>
+            </View>
+        </ScrollView>
+    </Window>
+</Alloy>

@@ -13,20 +13,34 @@
 // Loads the map module, which can be referenced by Alloy.Globals.Map
 Alloy.Globals.Map = require('ti.map');
 
+// Definisce le costanti da usare per le immagini dei segnaposti
 Alloy.Globals.PlacemarkImgs = {
-    MY_LOCATION: "/male-2.png",
-    MY_REPORT: "/radiation.png",
-    REPORT: "/radiation-white.png"
+    MY_LOCATION: "/male-2.png",    // segnaposto per la posizione attuale
+    MY_REPORT: "/radiation.png",   // segnaposto per le mie segnalazioni
+    REPORT: "/radiation-white.png" // segnaposto per le segnalazioni altrui
+};
+
+// Dofinisce un dizionario di nomi di eventi personalizzati
+Alloy.Globals.CustomEvents = {
+    USER_REGISTERED: "userRegistered" // segnala che l'utene locale è registrato sul server.
+};
+
+// Definisce un dizionario di nomi di uso generico usati nella app
+Alloy.Globals.Constants = {
+    LOCAL_USER_DATA: "localUserData", // nome dell'oggetto che contiene i dati locali dell'utente persistenti.
+    FAKE_NICK: "ZmFrZU5pY2s=",
+    FAKE_MAIL: "ZmFrZU1haWw="
 };
 
 var Georep = require('georep');
 
 Ti.API.info("Creazione utente...");
 var user = new Georep.User({
-	name: Ti.Platform.getId(),
+	//name: Ti.Platform.getId(),
+    name: "provaNuovaView",
 	password: Ti.Platform.getId(),
-	nick: "pratesim",
-	mail: "pratesi.maurizio@gmail.com"
+	nick: Alloy.Globals.Constants.FAKE_NICK,
+	mail: Alloy.Globals.Constants.FAKE_MAIL
 });
 Ti.API.info("Utente creato.");
 Ti.API.debug("  user: " + JSON.stringify(user));

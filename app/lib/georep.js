@@ -832,7 +832,7 @@ Georep.prototype.checkRemoteUser = function(callback){
 				callback(undefined, {isRegistered: true});
 			},
 			onerror: function(e){
-				if (e.error == '401') {
+				if (e.error == "Unauthorized") {
 					callback(undefined, {isRegistered: false});
 				} else {
 					callback(JSON.parse(this.responseText), undefined);

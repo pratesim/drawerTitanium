@@ -1,4 +1,19 @@
 function Controller() {
+    function updateGeorepUser() {
+        var georepUser = Alloy.Globals.Georep.getUser();
+        try {
+            georepUser.update({
+                name: georepUser.getName(),
+                password: georepUser.getPassword(),
+                nick: Ti.App.Properties.getObject(Alloy.Globals.Constants.LOCAL_USER_DATA).nick,
+                mail: Ti.App.Properties.getObject(Alloy.Globals.Constants.LOCAL_USER_DATA).mail
+            });
+        } catch (e) {
+            Ti.API.debug("Errore aggiornamento utente georep\n" + JSON.stringify(e));
+        }
+        Ti.API.info("updateGeorepUser(): Utente Georep aggiornato dai dati locali");
+        Ti.API.debug("  Georep.getUser(): " + JSON.stringify(Alloy.Globals.Georep.getUser()));
+    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
     arguments[0] ? arguments[0]["__parentSymbol"] : null;
@@ -82,8 +97,57 @@ function Controller() {
     }));
     mainView.menuButton.addEventListener("click", $.drawermenu.showhidemenu);
     $.drawermenu.drawermainview.add(mainView.getView());
-    $.index.open();
-    switchTo("last");
+    Ti.App.addEventListener(Alloy.Globals.CustomEvents.USER_REGISTERED, function() {
+        $.index.open();
+        switchTo("last");
+    });
+    var userLocalData = Ti.App.Properties.getObject(Alloy.Globals.Constants.LOCAL_USER_DATA, void 0);
+    if (void 0 == userLocalData) {
+        Ti.API.info("Controllo dati utente locali: FAIL");
+        Ti.API.debug("  userLocalData: " + JSON.stringify(userLocalData));
+        Alloy.Globals.Georep.checkRemoteUser(function(err, data) {
+            if (err) {
+                alert("Errore comunicazione con il server");
+                Ti.API.info("checkRemoteUser(): FAIL");
+                Ti.API.debug("  err: " + JSON.stringify(err));
+            } else {
+                Ti.API.info("checkRemoteUser(): SUCCESS");
+                Ti.API.debug("  data: " + JSON.stringify(data));
+                if (data.isRegistered) {
+                    Ti.API.info("checkRemoteUser(): Utente GIA' registrato.");
+                    Alloy.Globals.Georep.getRemoteUser(function(err, data) {
+                        if (err) {
+                            alert("Errore comunicazione con il server");
+                            Ti.API.info("getRemoteUser(): FAIL");
+                            Ti.API.debug("  err: " + JSON.stringify(err));
+                        } else {
+                            Ti.API.info("getRemoteUser(): SUCCESS");
+                            Ti.API.debug("  data: " + JSON.stringify(data));
+                            var uld = {
+                                nick: data.nick,
+                                mail: data.mail
+                            };
+                            Ti.App.Properties.setObject(Alloy.Globals.Constants.LOCAL_USER_DATA, uld);
+                            Ti.API.info("getRemoteUser(): dati utente scaricati e salvati");
+                            Ti.API.debug("  userLocalData: " + JSON.stringify(uld));
+                            updateGeorepUser();
+                            Ti.App.fireEvent(Alloy.Globals.CustomEvents.USER_REGISTERED, uld);
+                        }
+                    });
+                } else {
+                    Ti.API.info("checkRemoteUser(): Utente NUOVO");
+                    var siginController = Alloy.createController("sigin");
+                    Ti.API.debug("siginController: " + JSON.stringify(siginController));
+                    siginController.open();
+                }
+            }
+        });
+    } else {
+        Ti.API.info("Controllo dati utente locali: SUCCESS");
+        Ti.API.debug("  userLocalData: " + JSON.stringify(userLocalData));
+        updateGeorepUser();
+        Ti.App.fireEvent(Alloy.Globals.CustomEvents.USER_REGISTERED, userLocalData);
+    }
     _.extend($, exports);
 }
 

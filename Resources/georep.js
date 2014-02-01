@@ -309,7 +309,7 @@ Georep.prototype.checkRemoteUser = function(callback) {
             });
         },
         onerror: function(e) {
-            "401" == e.error ? callback(void 0, {
+            "Unauthorized" == e.error ? callback(void 0, {
                 isRegistered: false
             }) : callback(JSON.parse(this.responseText), void 0);
         }
