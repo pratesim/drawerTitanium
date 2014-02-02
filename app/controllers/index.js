@@ -189,9 +189,7 @@ if (userLocalData == undefined){
 
                 Ti.API.info("checkRemoteUser(): Utente NUOVO");
                 // apro la view che su occupa di prendere i dati del nuovo utente.
-                var siginController = Alloy.createController('sigin');
-                Ti.API.debug("siginController: " + JSON.stringify(siginController));
-                siginController.open();
+                Alloy.createController('newUser').newUser.open();
             }
         }else{
             alert("Errore comunicazione con il server");

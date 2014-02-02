@@ -1,6 +1,7 @@
 # ignora le cartelle
 .idea/
 build/
+Resources/
 
 # ignora i files
 build.log

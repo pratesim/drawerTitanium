@@ -15,9 +15,9 @@ Alloy.Globals.Map = require('ti.map');
 
 // Definisce le costanti da usare per le immagini dei segnaposti
 Alloy.Globals.PlacemarkImgs = {
-    MY_LOCATION: "/images/male-2.png",    // segnaposto per la posizione attuale
-    MY_REPORT: "/images/radiation.png",   // segnaposto per le mie segnalazioni
-    REPORT: "/images/radiation-white.png" // segnaposto per le segnalazioni altrui
+    MY_LOCATION: "/male-2.png",    // segnaposto per la posizione attuale
+    MY_REPORT: "/radiation.png",   // segnaposto per le mie segnalazioni
+    REPORT: "/radiation-white.png" // segnaposto per le segnalazioni altrui
 };
 
 // Dofinisce un dizionario di nomi di eventi personalizzati
