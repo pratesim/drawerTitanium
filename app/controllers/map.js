@@ -220,7 +220,7 @@ function clearMap(annotationId){
                 });
 
                 $.map.addAnnotation(myLoc);
-                Ti.API.info("clearMap(): Aggiunto il segnaposto della posizione locale aggiornato.")
+                Ti.API.info("clearMap(): Aggiunto il segnaposto della posizione locale aggiornato.");
             }
         });
     } else {

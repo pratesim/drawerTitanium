@@ -36,8 +36,8 @@ var Georep = require('georep');
 
 Ti.API.info("Creazione utente...");
 var user = new Georep.User({
-	//name: Ti.Platform.getId(),
-    name: "provaNuovaView",
+	name: Ti.Platform.getId(),
+    //name: "provaNuovaView",
 	password: Ti.Platform.getId(),
 	nick: Alloy.Globals.Constants.FAKE_NICK,
 	mail: Alloy.Globals.Constants.FAKE_MAIL

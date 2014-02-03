@@ -927,7 +927,7 @@ Georep.prototype.updateRemoteUser = function(userConf, callback){
 		var tmpService = this; // serve perché dentro la funzione di callback this è window anziché Georep
 		this.getRemoteUser(function(err,data){					
 			if(!err){
-				var rev = JSON.parse(data)._rev;
+				var rev = data._rev;
 				var url = tmpService.getDb().getURLServer() + '/_users/' + tmpService.getUserId() +
 					  '?rev=' + rev;
 					  
@@ -957,7 +957,7 @@ Georep.prototype.updateRemoteUser = function(userConf, callback){
 				});
 				client.open("PUT", url);
 		
-				client.setRequestHeader("Authorization", 'Basic ' + tmpService.getDb().getAdmin().getBase64());
+				client.setRequestHeader("Authorization", 'Basic ' + tmpService.getUser().getBase64());
 				client.setRequestHeader("Content-Type", "application/json");
 				
 				client.send(JSON.stringify(newRemoteUser));
@@ -988,6 +988,47 @@ Georep.prototype.getRemoteUser = function(callback){
 		};
 	} else {
 		var url = this.getDb().getURLServer() + '/_users/' + this.getUserId();
+		var client = Ti.Network.createHTTPClient({
+			onload: function(data){
+				callback(undefined, JSON.parse(this.responseText));
+			},
+			onerror: function(e){
+				callback(JSON.parse(this.responseText), undefined);
+			}
+		});
+		client.open("GET", url);
+		
+		client.setRequestHeader("Authorization", 'Basic ' + this.getUser().getBase64());
+		client.setRequestHeader("Accept", 'application/json');
+		
+		client.send();
+	}
+};
+
+/**
+ * Chiede al server le informazioni dell'utente con un certo id
+ * @method getRemoteUser
+ * @param {string} id identificatore univoco che identifica un utente sul server
+ * @param {function} callback funzione che viene eseguita al termine dell'interazione con il server.
+ */
+Georep.prototype.getUserById = function(id, callback){
+	// callback è obbligatorio perché getRemote usa una funzione asincrona
+	if( arguments.length != 2){
+		throw {
+			error: 'getRemote() richiede due argomenti: id, callback (function(err, data)).'
+		};	
+	} else if (typeof callback != 'function'){
+		throw {
+			error: 'Parametro non valido: callback deve essere \'function\'.',
+			args: arguments
+		};
+	} else if (typeof id != 'string'){
+		throw {
+			error: 'Parametro non valido: id deve essere \'string\'.',
+			args: arguments
+		};
+	} else {
+		var url = this.getDb().getURLServer() + '/_users/' + id;
 		var client = Ti.Network.createHTTPClient({
 			onload: function(data){
 				callback(undefined, JSON.parse(this.responseText));

@@ -1,7 +1,7 @@
 ".container": {
 	orientationModes: [Ti.UI.PORTRAIT,Ti.UI.LANDSCAPE_LEFT,Ti.UI.LANDSCAPE_RIGHT,Ti.UI.UPSIDE_PORTRAIT],
 	navBarHidden: true,
-	exitOnClose: true,
+	exitOnClose: false,
 	layout: 'vertical',
 	backgroundColor: '#cacaca',
 	width: Ti.UI.FILL
@@ -97,7 +97,7 @@
 },
 "#mailInput":{
     hintText: "my@address.mail",
-    keyboardType: Titanium.UI.KEYBOARD_DEFAULT
+    keyboardType: Titanium.UI.KEYBOARD_EMAIL
 },
 ".buttonGroup":{
     layout: 'horizontal',

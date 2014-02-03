@@ -46,6 +46,9 @@
 "#rowPicFrame":{
 	backgroundImage: '/images/ic_action_time.png'
 },
+"#rowNewUser":{
+    backgroundImage: '/images/ic_action_settings.png'
+}
 ".rowLabel":{
 	top: 0,
 	left: 10,

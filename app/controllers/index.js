@@ -107,6 +107,7 @@ initSwitcher(['map','last','my']);
 menuView.menuTable.addEventListener('click',function(e){
 	$.drawermenu.showhidemenu();
     var rowId = e.rowData.id;
+    Ti.API.debug("Drawer: cliccato su \'" + rowId + "\'");
 
     if(rowId == 'row1'){
         switchTo('map');
@@ -114,6 +115,8 @@ menuView.menuTable.addEventListener('click',function(e){
         switchTo('last');
     }else if(rowId == 'row3'){
         switchTo('my');
+    }else if(rowId == 'row4'){
+        Alloy.createController('newUser').newUser.open();
     }
 });
 
