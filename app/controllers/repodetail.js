@@ -1,8 +1,9 @@
 var win = $.winrepodetail;
 var actionBar; 
+var service = Alloy.Globals.Georep;
 
 win.addEventListener("open", function() {
-	Ti.API.info('Window "segnala" aperta');
+	Ti.API.info('Window "dettagli segnalazione" aperta');
     if (Ti.Platform.osname === "android") {
         if (! $.winrepodetail.activity) {
             Ti.API.error("Can't access action bar on a lightweight window.");
@@ -22,3 +23,122 @@ win.addEventListener("open", function() {
     }
 });
 
+
+(function (){
+	var segnalazioneLocale = {
+		indirizzo: "",
+        _id: "",
+        title: "",
+        msg: "",
+        img: "",
+        data: "",
+        loc: {
+        	latitude: "",
+        	longitude: ""
+        }
+	};
+	// cerco segnalazione in locale
+	$.progressIndicatorIndeterminant.show();
+	var localRepo = Ti.App.Properties.getString(Alloy.Globals.query.repoId, "null");
+	
+	if (localRepo == "null"){
+		Ti.API.info("Segnalazione con id: " + Alloy.Globals.query.repoId + " non presente in locale");
+		//se non c'è provo a scaricarla dal server
+		service.getDoc(Alloy.Globals.query.repoId, false, function(err, data){
+			if(err){
+				//se non la scarico con successo alert di errore
+				$.progressIndicatorIndeterminant.hide();
+				Ti.API.debug("Errore Server: " + JSON.stringify(err));
+				alert("Errore Server... Prova più tardi");
+				$.winrepodetail.close();
+			}
+			else{
+				//se la scarico con successo provo a scaricare l'immagine
+				// scarico l'immagine della segnalazione e la salvo in un file
+				var xhr = Titanium.Network.createHTTPClient({
+					onload: function() {
+						// first, grab a "handle" to the file where you'll store the downloaded data
+						var d = new Date();
+			            var n = d.getTime();
+			            //new file name
+			            var newFileName = n + ".jpeg";
+						var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,newFileName);
+						var writeOk = f.write(this.responseData); // write to the file
+						
+						writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
+						Ti.App.fireEvent('graphic_downloaded', {filepath:f.nativePath});
+						Ti.API.info("Immagine scaricata");
+						// tutta la segnalazione è stata scaricata correttamente allora la salvo in locale
+						Ti.API.info("Segnalazione scaricata con successo: " + JSON.stringify(data));
+						$.repoimage.image = f.nativePath;
+						
+						$.descriptionlabel.setText(data.msg);
+						$.coordlatlabel.setText(data.loc.latitude);
+						$.coordlonlabel.setText(data.loc.longitude);
+						$.titlelabel.setText(data.title);
+						$.datalabel.setText(Alloy.Globals.dataToString(data.date));
+						Ti.Geolocation.reverseGeocoder(data.loc.latitude, data.loc.longitude, function (address){
+							Ti.API.debug("traduzione coordinate: " + JSON.stringify(address));
+							var indirizzo = address.success == true ? address.places[0].displayAddress : "Non disponibile";
+							$.addresslabel.setText(indirizzo);
+							
+							// salvo in locale la segnalazione
+							segnalazioneLocale._id = data._id;
+							segnalazioneLocale.indirizzo = indirizzo;
+							segnalazioneLocale.title = data.title;
+							segnalazioneLocale.msg = data.msg;
+							segnalazioneLocale.data = data.date;
+							segnalazioneLocale.loc.latitude = data.loc.latitude;
+							segnalazioneLocale.loc.longitude = data.loc.longitude;
+							segnalazioneLocale.img = f.nativePath;
+							Ti.App.Properties.setString(data._id, JSON.stringify(segnalazioneLocale));
+							
+							var localeOk = Ti.App.Properties.getString(data._id, "null");
+							localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
+							$.progressIndicatorIndeterminant.hide();
+						});	
+					},
+					onerror: function(e){
+						Ti.API.info("impossibile scaricare l'immagine dal server");
+						Ti.API.debug(JSON.stringify(e));
+						$.progressIndicatorIndeterminant.hide();
+						alert("Immagine segnalazione non disponibile");
+					},
+				});
+				
+				var db = service.getDb();
+				var uri = db.getProto() + "://" + db.getHost() + ":" + db.getPort() + "/" + db.getName() + "/" + Alloy.Globals.query.repoId + "/" + "img";
+				Ti.API.debug("URI allegato: " + uri);
+				xhr.setRequestHeader("Authorization", "Basic " + service.getUser().getBase64());
+				xhr.open('GET', uri);
+				xhr.send();
+			}
+		});
+	}
+	else {
+		//se c'è la carico da locale
+		Ti.API.info("Segnalazione con id: " + Alloy.Globals.query.repoId + " presente in locale");
+		Ti.API.debug(localRepo);
+		
+		var jsonRepo = JSON.parse(localRepo);
+		
+		$.repoimage.image = jsonRepo.img;
+		$.titlelabel.setText(jsonRepo.title);		
+		$.descriptionlabel.setText(jsonRepo.msg);
+		$.coordlatlabel.setText(jsonRepo.loc.latitude);
+		$.coordlonlabel.setText(jsonRepo.loc.longitude);
+		$.datalabel.setText(Alloy.Globals.dataToString(jsonRepo.data));
+		$.addresslabel.setText(jsonRepo.indirizzo);
+		$.progressIndicatorIndeterminant.hide();
+	}
+	
+	// provo a scaricare dati del segnalatore
+	
+	// se gli scarico gli salvo in locale
+	
+	// se non gli scarico provo a caricarli da locale
+		
+		// se ci sono in locale li mostro
+		
+		//  se non ci sono in locale errore
+})();		

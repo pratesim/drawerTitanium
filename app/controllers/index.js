@@ -94,8 +94,6 @@ menuView.menuTable.addEventListener('click',function(e){
         switchTo('last');
     }else if(rowId == 'row3'){
         switchTo('my');
-    }else if(rowId == 'row4'){
-    	rpcontrol.winrepodetail.open();
     }
 });
 

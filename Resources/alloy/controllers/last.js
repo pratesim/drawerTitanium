@@ -7,6 +7,7 @@ function Controller() {
         Alloy.Globals.query.repoId = e.itemId;
         Alloy.Globals.query.userId = itemClicked.userId;
         Ti.API.debug("RepoId: " + Alloy.Globals.query.repoId + "\n UserId: " + Alloy.Globals.query.userId);
+        Alloy.createController("repodetail").winrepodetail.open();
     }
     function createOneItem(obj) {
         Ti.API.info("CreateOneItem chiamata");

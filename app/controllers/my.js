@@ -73,6 +73,8 @@ function dataClick(e){
 	Alloy.Globals.query.repoId = e.itemId;
 	Alloy.Globals.query.userId = itemClicked.userId;
 	Ti.API.debug("RepoId: " + Alloy.Globals.query.repoId + "\n UserId: " + Alloy.Globals.query.userId);
+	// apro la window per mostrare i dettagli della segnalazione
+	Alloy.createController('repodetail').winrepodetail.open();
 	
 };
 
