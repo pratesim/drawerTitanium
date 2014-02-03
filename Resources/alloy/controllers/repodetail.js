@@ -351,11 +351,20 @@ function Controller() {
         id: "__alloyId36"
     });
     $.__views.__alloyId35.add($.__views.__alloyId36);
-    $.__views.image = Ti.UI.createImageView({
-        id: "image",
-        image: "/radiation.png"
+    $.__views.__alloyId37 = Ti.UI.createView({
+        backgroundColor: "#494C4F",
+        height: "3dp",
+        width: Ti.UI.FILL,
+        top: "0dp",
+        id: "__alloyId37"
     });
-    $.__views.__alloyId35.add($.__views.image);
+    $.__views.__alloyId35.add($.__views.__alloyId37);
+    $.__views.repoimage = Ti.UI.createImageView({
+        top: "5dp",
+        id: "repoimage",
+        image: "/placeholder.png"
+    });
+    $.__views.__alloyId35.add($.__views.repoimage);
     exports.destroy = function() {};
     _.extend($, $.__views);
     var win = $.winrepodetail;

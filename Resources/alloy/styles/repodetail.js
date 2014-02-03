@@ -91,4 +91,11 @@ module.exports = [ {
             } ]
         }
     }
+}, {
+    isId: true,
+    priority: 100000.0042,
+    key: "repoimage",
+    style: {
+        top: "5dp"
+    }
 } ];

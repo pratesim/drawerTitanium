@@ -55,4 +55,7 @@
 	height: "3dp",
 	width: Ti.UI.FILL,
 	top: "0dp"
+},
+"#repoimage":{
+	top: "5dp",	
 }
