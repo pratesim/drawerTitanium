@@ -1,4 +1,5 @@
 var controls=require('controls');
+var rpcontrol = Alloy.Globals.repodetail; //controller per repodetail
 
 // get main and menu view as objects
 var menuView=controls.getMenuView();
@@ -93,6 +94,8 @@ menuView.menuTable.addEventListener('click',function(e){
         switchTo('last');
     }else if(rowId == 'row3'){
         switchTo('my');
+    }else if(rowId == 'row4'){
+    	rpcontrol.winrepodetail.open();
     }
 });
 

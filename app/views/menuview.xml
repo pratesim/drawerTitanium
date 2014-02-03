@@ -18,6 +18,11 @@
 					<View id="rowPicFrame" class="rowIcon"/><Label id="rowLabel" class="rowLabel">Le Mie Segnalazioni</Label>
 				</View>
 			</TableViewRow>
+			<TableViewRow class="tableRow" id="row4">
+				<View id="rowContainer">
+					<View id="rowPicFrame" class="rowIcon"/><Label id="rowLabel" class="rowLabel">Dettagli Segnalazione</Label>
+				</View>
+			</TableViewRow>
 		</TableView>
 	</View>
 </Alloy>

@@ -12,6 +12,7 @@
 
 // Loads the map module, which can be referenced by Alloy.Globals.Map
 Alloy.Globals.Map = require('ti.map');
+Alloy.Globals.repodetail = Alloy.createController('repodetail');
 
 Alloy.Globals.PlacemarkImgs = {
     MY_LOCATION: "/male-2.png",

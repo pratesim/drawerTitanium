@@ -22,6 +22,7 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     var controls = require("controls");
+    var rpcontrol = Alloy.Globals.repodetail;
     var menuView = controls.getMenuView();
     var mainView = controls.getMainView();
     var viewIds = [];
@@ -73,7 +74,7 @@ function Controller() {
     menuView.menuTable.addEventListener("click", function(e) {
         $.drawermenu.showhidemenu();
         var rowId = e.rowData.id;
-        "row1" == rowId ? switchTo("map") : "row2" == rowId ? switchTo("last") : "row3" == rowId && switchTo("my");
+        "row1" == rowId ? switchTo("map") : "row2" == rowId ? switchTo("last") : "row3" == rowId ? switchTo("my") : "row4" == rowId && rpcontrol.winrepodetail.open();
     });
     $.drawermenu.drawermenuview.add(menuView.getView());
     mainView.menuButton.add(controls.getMenuButton({

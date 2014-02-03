@@ -238,15 +238,15 @@ function Controller() {
         regionFit: "true"
     });
     $.__views.map && $.addTopLevelView($.__views.map);
-    markerClick ? $.__views.map.addEventListener("click", markerClick) : __defers["$.__views.map!click!markerClick"] = true;
-    moved ? $.__views.map.addEventListener("regionchanged", moved) : __defers["$.__views.map!regionchanged!moved"] = true;
-    mapCompleted ? $.__views.map.addEventListener("complete", mapCompleted) : __defers["$.__views.map!complete!mapCompleted"] = true;
+    markerClick ? $.__views.map.on("click", markerClick) : __defers["$.__views.map!click!markerClick"] = true;
+    moved ? $.__views.map.on("regionchanged", moved) : __defers["$.__views.map!regionchanged!moved"] = true;
+    mapCompleted ? $.__views.map.on("complete", mapCompleted) : __defers["$.__views.map!complete!mapCompleted"] = true;
     exports.destroy = function() {};
     _.extend($, $.__views);
     var annotationToKeep = void 0;
-    __defers["$.__views.map!click!markerClick"] && $.__views.map.addEventListener("click", markerClick);
-    __defers["$.__views.map!regionchanged!moved"] && $.__views.map.addEventListener("regionchanged", moved);
-    __defers["$.__views.map!complete!mapCompleted"] && $.__views.map.addEventListener("complete", mapCompleted);
+    __defers["$.__views.map!click!markerClick"] && $.__views.map.on("click", markerClick);
+    __defers["$.__views.map!regionchanged!moved"] && $.__views.map.on("regionchanged", moved);
+    __defers["$.__views.map!complete!mapCompleted"] && $.__views.map.on("complete", mapCompleted);
     _.extend($, exports);
 }
 
