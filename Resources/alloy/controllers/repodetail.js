@@ -441,6 +441,10 @@ function Controller() {
         } else Ti.API.error("Can't access action bar on a lightweight window.");
     });
     (function() {
+        var segnalatoreLocale = {
+            nick: "",
+            mail: ""
+        };
         var segnalazioneLocale = {
             indirizzo: "",
             _id: "",
@@ -529,6 +533,33 @@ function Controller() {
             $.addresslabel.setText(jsonRepo.indirizzo);
             $.progressIndicatorIndeterminant.hide();
         }
+        $.progressIndicatorIndeterminant.show();
+        service.getUserById(Alloy.Globals.query.userId, function(err, data) {
+            if (err) {
+                Ti.API.info("Impossibile scaricare dati segnalatore dal server");
+                Ti.API.debug(JSON.stringify(err));
+                var localReporter = Ti.App.Properties.getString(Alloy.Globals.query.userId, "null");
+                if ("null" == localReporter) {
+                    $.nicklabel.setText("Non disponibile");
+                    $.maillabel.setText("Non disponibile");
+                    $.progressIndicatorIndeterminant.hide();
+                } else {
+                    $.nicklabel.setText(JSON.parse(localReporter).nick);
+                    $.maillabel.setText(JSON.parse(localReporter).nick);
+                    $.progressIndicatorIndeterminant.hide();
+                }
+            } else {
+                Ti.API.info("Dati segnalatore scaricati correttamente");
+                Ti.API.debug(JSON.stringify(data));
+                segnalatoreLocale.nick = data.nick;
+                segnalatoreLocale.mail = data.mail;
+                $.nicklabel.setText(data.nick);
+                $.maillabel.setText(data.mail);
+                Ti.App.Properties.setString(Alloy.Globals.query.userId, JSON.stringify(segnalatoreLocale));
+                Ti.API.info("Dati segnalatore salvati localmente");
+                $.progressIndicatorIndeterminant.hide();
+            }
+        });
     })();
     _.extend($, exports);
 }

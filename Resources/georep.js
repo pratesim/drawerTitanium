@@ -309,7 +309,7 @@ Georep.prototype.checkRemoteUser = function(callback) {
             });
         },
         onerror: function(e) {
-            "401" == e.error ? callback(void 0, {
+            "Unauthorized" == e.error ? callback(void 0, {
                 isRegistered: false
             }) : callback(JSON.parse(this.responseText), void 0);
         }
@@ -406,6 +406,33 @@ Georep.prototype.getRemoteUser = function(callback) {
         args: arguments
     };
     var url = this.getDb().getURLServer() + "/_users/" + this.getUserId();
+    var client = Ti.Network.createHTTPClient({
+        onload: function() {
+            callback(void 0, JSON.parse(this.responseText));
+        },
+        onerror: function() {
+            callback(JSON.parse(this.responseText), void 0);
+        }
+    });
+    client.open("GET", url);
+    client.setRequestHeader("Authorization", "Basic " + this.getUser().getBase64());
+    client.setRequestHeader("Accept", "application/json");
+    client.send();
+};
+
+Georep.prototype.getUserById = function(id, callback) {
+    if (2 != arguments.length) throw {
+        error: "getRemote() richiede due argomenti: id, callback (function(err, data))."
+    };
+    if ("function" != typeof callback) throw {
+        error: "Parametro non valido: callback deve essere 'function'.",
+        args: arguments
+    };
+    if ("string" != typeof id) throw {
+        error: "Parametro non valido: id deve essere 'string'.",
+        args: arguments
+    };
+    var url = this.getDb().getURLServer() + "/_users/" + id;
     var client = Ti.Network.createHTTPClient({
         onload: function() {
             callback(void 0, JSON.parse(this.responseText));
