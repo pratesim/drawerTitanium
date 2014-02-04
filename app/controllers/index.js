@@ -4,8 +4,9 @@ var controls=require('controls');
 var menuView=controls.getMenuView();
 var mainView=controls.getMainView();
 
-var viewIds = [];  // vettore degli ID delle view switchabili
+var viewIds  = []; // vettore degli ID delle view switchabili
 var switches = {}; // stati delle view switchabili.
+var buttons  = {}; // riferimenti ai bottoni nel menù per le view switchabili
 
 // ritorna lo ID della view attualmente visualizzata
 var getOn = function(){
@@ -26,19 +27,33 @@ var checkId = function(id){
 // inizializza il sistema di switch inserendo gli ID delle view switchabili
 // nell'apposito vettore e crea l'insieme delle variabili booleane per tracciare
 // gli stati delle views.
-var initSwitcher = function(IDs){
-    var views = controls.getMainView().mainView.getChildren();
+// Inizializza anche il vettore con i riferimeti hai bottoni.
+var initSwitcher = function(IDs, rowIDs){
+    var views = controls.getMainView().mainView.getChildren(); // vettore di view in mainview
+    var rows = menuView.menuView.getChildren()[2].getSections()[0].getRows(); // vettore delle righe del drawer
     var nViews = views.length;
 
+    // inizializzo il vettore degli ID delle view
     for (var i in IDs)
         viewIds[i] = IDs[i];
 
+    // inizializzo lo stato di ogni view segnano con TRUE la
+    // view che è attualmente caricata nel drawer.
     for (var j in viewIds){
         var isThere = false;
         for (var i= 0; i<nViews; i++){
             isThere = isThere || viewIds[j] == views[i];
         }
         switches[viewIds[j]] = isThere;
+    }
+
+    // associo ogni ID di view con il riferimento al suo bottone nel menù del drawer
+    // i riferimenti sono messi nell'oggetto 'buttons'.
+    for (var k in viewIds){
+        for (var r in rows){
+            if (rows[r].id == rowIDs[k])
+                buttons[viewIds[k]] = rows[r];
+        }
     }
 };
 
@@ -50,12 +65,16 @@ var switchTo = function(id){
     if (!checkId(id))
         throw id + " non è un ID valido per il modulo switcher.";
 
+    // l'ID della view attualmente visualizzata
     currentViewId = getOn();
 
     Ti.API.info("    currentViewId: " + currentViewId);
     Ti.API.info("    nextViewId   : " + id);
     if (currentViewId != id){
+    // la view visualizzata è diversa da quella che si vuole aprire
         if (currentViewId){
+        // effettivamente c'era una view già aperta, quindi bisogna rimuoverla e il
+        // suo bottone va "scolorito".
             var childViews = mainView.mainView.getChildren();
             var currentView;
 
@@ -66,17 +85,30 @@ var switchTo = function(id){
 
             switches[currentViewId] = false;
             Ti.API.info("    switches." + currentViewId + " = " + switches[currentViewId]);
+
+            // scolorisco il bottone della view che prima era visualizzata.
+            buttons[currentViewId].setBackgroundColor("trasparent");
+
+            // rimuovo la view per fare posto a quella nuova.
             mainView.mainView.remove(currentView);
             Ti.API.info("    controls.getMainView().mainView.remove(" + currentView + ")");
         }
+
+        // che sia presente una view nel drawer o meno, a questo punto il drawer è
+        // vuoto e quindi bisogna caricare la view selezioneta dall'utente.
+
         var nextView = (Alloy.createController(id))[id];
 
         switches[id] = true;
         Ti.API.info("    switches." + id + " = " + switches[id]);
+
+        // coloro il bottone della view selezionata.
+        buttons[id].setBackgroundColor("#33B5E5");
+
+        // carco la view selezionata nel drawer.
         mainView.mainView.add(nextView);
         Ti.API.info("    controls.getMainView().mainView.add(" + nextView + ")");
     }
-
 };
 
 /**
@@ -101,7 +133,7 @@ function updateGeorepUser(){
 }
 
 // inizializzo il sistema di switching con i seguenti ID delle view da inter-switchare.
-initSwitcher(['map','last','my']);
+initSwitcher(['map','last','my'],['row1','row2','row3']);
 
 // add event listener in this context
 menuView.menuTable.addEventListener('click',function(e){
