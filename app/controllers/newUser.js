@@ -16,6 +16,13 @@ $.ok.addEventListener('click',function(evt){
         title: 'Errore'
     });
 
+    var progress = Ti.UI.Android.createProgressIndicator({
+        message: 'Loading...',
+        location: Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+        type: Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT,
+        cancelable: false
+    });
+
     if (!inputNick.getValue() || !inputMail.getValue()){
     // errore dati immessi dall'utente.
         Ti.API.info("newUser Window: valori di input NON validi.");
@@ -44,7 +51,10 @@ $.ok.addEventListener('click',function(evt){
             Alloy.Globals.Georep.getUser().mail = inputMail.getValue();
 
             // si tenta la registrazione dell'utente.
+            progress.setMessage("Registrazione...");
+            progress.show();
             Alloy.Globals.Georep.signupRemoteUser(function(err,data){
+                progress.hide();
                 if(!err){
                 // utente registrato con successo, bisogna creare i dati locali.
                     Ti.API.info("newUser Window: utente registrato");
@@ -110,8 +120,10 @@ $.ok.addEventListener('click',function(evt){
                 Ti.API.debug("newUser Window:   oldEmail = " + JSON.stringify(localUserData.mail));
                 Ti.API.debug("newUser Window:   newEmail = " + JSON.stringify(newDataUser.mail));
 
-                try{
+                progress.setMessage("Aggiornamento...");
+                progress.show();
                 Alloy.Globals.Georep.updateRemoteUser(newDataUser,function(err,data){
+                    progress.hide();
                     if(!err){
                     // email aggiornata!
 
@@ -144,9 +156,6 @@ $.ok.addEventListener('click',function(evt){
                         $.newUser.close();
                     }
                 });
-                }catch (e){
-                    alert("errore updateRemoteUser(): e = " + JSON.stringify(e));
-                }
             }else{
             // nessuna modifica nella mail, inutile aggiornare.
                 Ti.API.info("newUser Window: nessuna modifica da salvare");
