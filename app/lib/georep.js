@@ -927,7 +927,7 @@ Georep.prototype.updateRemoteUser = function(userConf, callback){
 		var tmpService = this; // serve perché dentro la funzione di callback this è window anziché Georep
 		this.getRemoteUser(function(err,data){					
 			if(!err){
-				var rev = JSON.parse(data)._rev;
+				var rev = data._rev;
 				var url = tmpService.getDb().getURLServer() + '/_users/' + tmpService.getUserId() +
 					  '?rev=' + rev;
 					  
@@ -957,7 +957,7 @@ Georep.prototype.updateRemoteUser = function(userConf, callback){
 				});
 				client.open("PUT", url);
 		
-				client.setRequestHeader("Authorization", 'Basic ' + tmpService.getDb().getAdmin().getBase64());
+				client.setRequestHeader("Authorization", 'Basic ' + tmpService.getUser().getBase64());
 				client.setRequestHeader("Content-Type", "application/json");
 				
 				client.send(JSON.stringify(newRemoteUser));

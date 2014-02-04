@@ -137,6 +137,38 @@ function Controller() {
         id: "rowLabel"
     });
     $.__views.rowContainer.add($.__views.rowLabel);
+    $.__views.rowReporting = Ti.UI.createTableViewRow({
+        height: "50dp",
+        id: "rowReporting"
+    });
+    __alloyId9.push($.__views.rowReporting);
+    $.__views.rowContainer = Ti.UI.createView({
+        height: "40dp",
+        layout: "horizontal",
+        id: "rowContainer"
+    });
+    $.__views.rowReporting.add($.__views.rowContainer);
+    $.__views.rowPicFrame = Ti.UI.createView({
+        left: 5,
+        top: 0,
+        width: "40dp",
+        height: "40dp",
+        backgroundImage: "/images/ic_action_time.png",
+        id: "rowPicFrame"
+    });
+    $.__views.rowContainer.add($.__views.rowPicFrame);
+    $.__views.rowLabel = Ti.UI.createLabel({
+        top: 0,
+        left: 10,
+        height: "40dp",
+        font: {
+            fontSize: "18dp"
+        },
+        color: "#59595C",
+        text: "Segnala",
+        id: "rowLabel"
+    });
+    $.__views.rowContainer.add($.__views.rowLabel);
     $.__views.menuTable = Ti.UI.createTableView({
         separatorStyle: "SINGLE_LINE",
         separatorColor: "#E5E5E5",

@@ -1,0 +1,32 @@
+<Alloy>
+	<Window id="winreporting" fullscreen="false">
+		<ProgressIndicator ns="Ti.UI.Android" platform="android" id="progressIndicatorIndeterminant"
+         message="Loading..."
+         location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
+         type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
+         
+         <ScrollView id="scrollView">
+            <View class="scrollContainer">
+                <Label class="inputLabel" >Titolo:</Label>
+                <View class="separationLine"/>
+                <TextArea id="titleinput"></TextArea>
+            </View>
+            <View class="scrollContainer">
+                <Label class="inputLabel">Descrizione: </Label>
+                <View class="separationLine"/>
+                <TextArea id="mailInput"></TextArea>
+            </View>
+            <View class="scrollContainer">
+            	<Label class="inputLabel">FOTO</Label>
+            	<View class="separationLine"/>
+            	<ImageView id="repoimage" image="/placeholder.png" />
+            </View>
+            <View class="scrollContainer">
+                <View class="buttonGroup">
+                    <Button id="takephoto">Scatta Foto</Button>
+                    <Button id="send">Invia Segnalazione</Button>
+                </View>
+            </View>
+        </ScrollView>
+	</Window>
+</Alloy>
