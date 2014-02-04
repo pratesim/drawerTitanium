@@ -136,10 +136,25 @@ $.drawermenu.drawermainview.add(mainView.getView());
 // appena scopro che l'utente è registrato sul server
 // apro il drawer.
 Ti.App.addEventListener(Alloy.Globals.CustomEvents.USER_REGISTERED, function(evt){
+
+    // mostro un messaggio di benvenuto
+    Ti.UI.createNotification({
+        message: "Benvenuto!\n" + evt.nick + " (" + evt.mail + ")",
+        duration: Ti.UI.NOTIFICATION_DURATION_LONG
+    }).show();
+
     // apro la view del drower
     $.index.open();
     // dopo l'avvio entra automaticamente nella view delle ultime segnalazioni.
     switchTo('last');
+});
+
+// inizializzo una animazione di caricamento
+var progress = Ti.UI.Android.createProgressIndicator({
+    message: 'Loading...',
+    location: Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type: Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT,
+    cancelable: false
 });
 
 // Controllo la presenza dei dati locali dell'utente.
@@ -153,6 +168,8 @@ if (userLocalData == undefined){
     Ti.API.debug("  userLocalData: " + JSON.stringify(userLocalData));
 
     // controllo se l'utente locale è già registrato in remoto
+    progress.setMessage("Login...");
+    progress.show();
     Alloy.Globals.Georep.checkRemoteUser(function(err, data){
         if(!err){
             Ti.API.info("checkRemoteUser(): SUCCESS");
@@ -164,6 +181,7 @@ if (userLocalData == undefined){
                 // vedo di recuperare i dati dell'utente dal server per salvarli
                 // in locale.
                 Alloy.Globals.Georep.getRemoteUser(function(err,data){
+                    progress.hide();
                     if(!err){
                         Ti.API.info("getRemoteUser(): SUCCESS");
                         Ti.API.debug("  data: " + JSON.stringify(data));
@@ -190,11 +208,13 @@ if (userLocalData == undefined){
             }else{
             // siamo nel caso 1. (primo avvio)
 
+                progress.hide();
                 Ti.API.info("checkRemoteUser(): Utente NUOVO");
                 // apro la view che su occupa di prendere i dati del nuovo utente.
                 Alloy.createController('newUser').newUser.open();
             }
         }else{
+            progress.hide();
             alert("Errore comunicazione con il server");
             Ti.API.info("checkRemoteUser(): FAIL");
             Ti.API.debug("  err: " + JSON.stringify(err));
