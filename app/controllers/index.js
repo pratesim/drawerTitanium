@@ -167,60 +167,96 @@ if (userLocalData == undefined){
     Ti.API.info("Controllo dati utente locali: FAIL");
     Ti.API.debug("  userLocalData: " + JSON.stringify(userLocalData));
 
-    // controllo se l'utente locale è già registrato in remoto
-    progress.setMessage("Login...");
-    progress.show();
-    Alloy.Globals.Georep.checkRemoteUser(function(err, data){
-        if(!err){
-            Ti.API.info("checkRemoteUser(): SUCCESS");
-            Ti.API.debug("  data: " + JSON.stringify(data));
-            if (data.isRegistered){
-            // siamo nel caso 2. (nessuno dato locale)
+    if (Ti.Network.getOnline()){
+    // se c'è connessione internet allora possiamo procedere regolarmente
+        Ti.API.info("getOnline(): TRUE");
 
-                Ti.API.info("checkRemoteUser(): Utente GIA\' registrato.");
-                // vedo di recuperare i dati dell'utente dal server per salvarli
-                // in locale.
-                Alloy.Globals.Georep.getRemoteUser(function(err,data){
+        // controllo se l'utente locale è già registrato in remoto
+        progress.setMessage("Login...");
+        progress.show();
+        Alloy.Globals.Georep.checkRemoteUser(function(err, data){
+            if(!err){
+                Ti.API.info("checkRemoteUser(): SUCCESS");
+                Ti.API.debug("  data: " + JSON.stringify(data));
+                if (data.isRegistered){
+                // siamo nel caso 2. (nessuno dato locale)
+
+                    Ti.API.info("checkRemoteUser(): Utente GIA\' registrato.");
+                    // vedo di recuperare i dati dell'utente dal server per salvarli
+                    // in locale.
+                    Alloy.Globals.Georep.getRemoteUser(function(err,data){
+                        progress.hide();
+                        if(!err){
+                            Ti.API.info("getRemoteUser(): SUCCESS");
+                            Ti.API.debug("  data: " + JSON.stringify(data));
+                            var uld = {
+                                nick: data.nick,
+                                mail: data.mail
+                            };
+                            Ti.App.Properties.setObject(Alloy.Globals.Constants.LOCAL_USER_DATA,uld);
+                            Ti.API.info("getRemoteUser(): dati utente scaricati e salvati");
+                            Ti.API.debug("  userLocalData: " + JSON.stringify(uld));
+
+                            // aggiorno la configurazione di georep
+                            updateGeorepUser();
+
+                            // segnalo che l'utente è registrato.
+                            Ti.App.fireEvent(Alloy.Globals.CustomEvents.USER_REGISTERED, uld);
+                        }else{
+                            var dialog = Ti.UI.createAlertDialog({
+                                message: 'Errore comunicazione con il server',
+                                ok: 'OK',
+                                title: 'Errore Di Rete'
+                            });
+                            dialog.addEventListener('click',function(evt){
+                                Ti.Android.currentActivity.finish();
+                            });
+                            Ti.API.info("getRemoteUser(): FAIL");
+                            Ti.API.debug("  err: " + JSON.stringify(err));
+                            // al click sulla dialog la app viene chiusa.
+                            dialog.show();
+                        }
+                    });
+                }else{
+                // siamo nel caso 1. (primo avvio)
+
                     progress.hide();
-                    if(!err){
-                        Ti.API.info("getRemoteUser(): SUCCESS");
-                        Ti.API.debug("  data: " + JSON.stringify(data));
-                        var uld = {
-                            nick: data.nick,
-                            mail: data.mail
-                        };
-                        Ti.App.Properties.setObject(Alloy.Globals.Constants.LOCAL_USER_DATA,uld);
-                        Ti.API.info("getRemoteUser(): dati utente scaricati e salvati");
-                        Ti.API.debug("  userLocalData: " + JSON.stringify(uld));
-
-                        // aggiorno la configurazione di georep
-                        updateGeorepUser();
-
-                        // segnalo che l'utente è registrato.
-                        Ti.App.fireEvent(Alloy.Globals.CustomEvents.USER_REGISTERED, uld);
-                    }else{
-                        alert("Errore comunicazione con il server");
-                        Ti.API.info("getRemoteUser(): FAIL");
-                        Ti.API.debug("  err: " + JSON.stringify(err));
-                        // qui si potrebbe chiudere la app
-                    }
-                });
+                    Ti.API.info("checkRemoteUser(): Utente NUOVO");
+                    // apro la view che su occupa di prendere i dati del nuovo utente.
+                    Alloy.createController('newUser').newUser.open();
+                }
             }else{
-            // siamo nel caso 1. (primo avvio)
-
+            // errore della checkRemoteUser()
                 progress.hide();
-                Ti.API.info("checkRemoteUser(): Utente NUOVO");
-                // apro la view che su occupa di prendere i dati del nuovo utente.
-                Alloy.createController('newUser').newUser.open();
+                var dialog = Ti.UI.createAlertDialog({
+                    message: 'Errore comunicazione con il server',
+                    ok: 'OK',
+                    title: 'Errore Di Rete'
+                });
+                dialog.addEventListener('click',function(evt){
+                    Ti.Android.currentActivity.finish();
+                });
+
+                Ti.API.info("checkRemoteUser(): FAIL");
+                Ti.API.debug("  err: " + JSON.stringify(err));
+                // al click sulla dialog la app viene chiusa.
+                dialog.show();
             }
-        }else{
-            progress.hide();
-            alert("Errore comunicazione con il server");
-            Ti.API.info("checkRemoteUser(): FAIL");
-            Ti.API.debug("  err: " + JSON.stringify(err));
-            // qui si potrebbe chiudere la app
-        }
-    });
+        });
+    }else{
+        // senza connessione apriamo ugualmente il drawer per consultare i dati in cache.
+        var dialog = Ti.UI.createAlertDialog({
+            message: 'Nessuna connessione a Internet',
+            ok: 'OK',
+            title: 'Errore Di Rete'
+        });
+        dialog.addEventListener('click',function(evt){
+            Ti.Android.currentActivity.finish();
+        });
+
+        dialog.show();
+        Ti.API.info("getOnline(): FALSE");
+    }
 }else{
 // in locale sono presenti i dati dell'utente, quindi l'utente è
 // già registrato e questo non è il primo avvio della app.
