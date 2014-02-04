@@ -52,6 +52,15 @@ Alloy.Globals.dataToString = function(milsToEPOC) {
     return numberPadding(d.getDate(), 2) + "/" + numberPadding(d.getMonth() + 1, 2) + "/" + numberPadding(d.getFullYear(), 4) + " - " + numberPadding(d.getHours(), 2) + ":" + numberPadding(d.getMinutes(), 2) + ":" + numberPadding(d.getSeconds(), 2);
 };
 
+Alloy.Globals.decToSes = function(dec) {
+    var n = Math.abs(dec);
+    var sgn = dec >= 0 ? "" : "-";
+    var g = Math.floor(n);
+    var p = Math.floor(60 * (n - g));
+    var s = (60 * (60 * (n - g) - p)).toFixed(3);
+    return sgn + g + "° " + p + "' " + s + '"';
+};
+
 var numberPadding = function(n, width, padder) {
     padder = padder || "0";
     n += "";

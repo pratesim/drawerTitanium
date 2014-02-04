@@ -458,6 +458,29 @@ function Controller() {
             }
         };
         $.progressIndicatorIndeterminant.show();
+        service.getUserById(Alloy.Globals.query.userId, function(err, data) {
+            if (err) {
+                Ti.API.info("Impossibile scaricare dati segnalatore dal server");
+                Ti.API.debug(JSON.stringify(err));
+                var localReporter = Ti.App.Properties.getString(Alloy.Globals.query.userId, "null");
+                if ("null" == localReporter) {
+                    $.nicklabel.setText("Non disponibile");
+                    $.maillabel.setText("Non disponibile");
+                } else {
+                    $.nicklabel.setText(JSON.parse(localReporter).nick);
+                    $.maillabel.setText(JSON.parse(localReporter).nick);
+                }
+            } else {
+                Ti.API.info("Dati segnalatore scaricati correttamente");
+                Ti.API.debug(JSON.stringify(data));
+                segnalatoreLocale.nick = data.nick;
+                segnalatoreLocale.mail = data.mail;
+                $.nicklabel.setText(data.nick);
+                $.maillabel.setText(data.mail);
+                Ti.App.Properties.setString(Alloy.Globals.query.userId, JSON.stringify(segnalatoreLocale));
+                Ti.API.info("Dati segnalatore salvati localmente");
+            }
+        });
         var localRepo = Ti.App.Properties.getString(Alloy.Globals.query.repoId, "null");
         if ("null" == localRepo) {
             Ti.API.info("Segnalazione con id: " + Alloy.Globals.query.repoId + " non presente in locale");
@@ -483,8 +506,8 @@ function Controller() {
                             Ti.API.info("Segnalazione scaricata con successo: " + JSON.stringify(data));
                             $.repoimage.image = f.nativePath;
                             $.descriptionlabel.setText(data.msg);
-                            $.coordlatlabel.setText(data.loc.latitude);
-                            $.coordlonlabel.setText(data.loc.longitude);
+                            $.coordlatlabel.setText(Alloy.Globals.decToSes(data.loc.latitude) + " °N");
+                            $.coordlonlabel.setText(Alloy.Globals.decToSes(data.loc.longitude) + " °E");
                             $.titlelabel.setText(data.title);
                             $.datalabel.setText(Alloy.Globals.dataToString(data.date));
                             Ti.Geolocation.reverseGeocoder(data.loc.latitude, data.loc.longitude, function(address) {
@@ -527,39 +550,12 @@ function Controller() {
             $.repoimage.image = jsonRepo.img;
             $.titlelabel.setText(jsonRepo.title);
             $.descriptionlabel.setText(jsonRepo.msg);
-            $.coordlatlabel.setText(jsonRepo.loc.latitude);
-            $.coordlonlabel.setText(jsonRepo.loc.longitude);
+            $.coordlatlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.latitude) + " °N");
+            $.coordlonlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.longitude) + " °E");
             $.datalabel.setText(Alloy.Globals.dataToString(jsonRepo.data));
             $.addresslabel.setText(jsonRepo.indirizzo);
             $.progressIndicatorIndeterminant.hide();
         }
-        $.progressIndicatorIndeterminant.show();
-        service.getUserById(Alloy.Globals.query.userId, function(err, data) {
-            if (err) {
-                Ti.API.info("Impossibile scaricare dati segnalatore dal server");
-                Ti.API.debug(JSON.stringify(err));
-                var localReporter = Ti.App.Properties.getString(Alloy.Globals.query.userId, "null");
-                if ("null" == localReporter) {
-                    $.nicklabel.setText("Non disponibile");
-                    $.maillabel.setText("Non disponibile");
-                    $.progressIndicatorIndeterminant.hide();
-                } else {
-                    $.nicklabel.setText(JSON.parse(localReporter).nick);
-                    $.maillabel.setText(JSON.parse(localReporter).nick);
-                    $.progressIndicatorIndeterminant.hide();
-                }
-            } else {
-                Ti.API.info("Dati segnalatore scaricati correttamente");
-                Ti.API.debug(JSON.stringify(data));
-                segnalatoreLocale.nick = data.nick;
-                segnalatoreLocale.mail = data.mail;
-                $.nicklabel.setText(data.nick);
-                $.maillabel.setText(data.mail);
-                Ti.App.Properties.setString(Alloy.Globals.query.userId, JSON.stringify(segnalatoreLocale));
-                Ti.API.info("Dati segnalatore salvati localmente");
-                $.progressIndicatorIndeterminant.hide();
-            }
-        });
     })();
     _.extend($, exports);
 }

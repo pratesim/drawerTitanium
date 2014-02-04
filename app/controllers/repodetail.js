@@ -41,8 +41,40 @@ win.addEventListener("open", function() {
         	longitude: ""
         }
 	};
-	// cerco segnalazione in locale
+	
 	$.progressIndicatorIndeterminant.show();
+	// provo a scaricare dati del segnalatore
+	service.getUserById(Alloy.Globals.query.userId, function (err, data){
+		if (err){
+			Ti.API.info("Impossibile scaricare dati segnalatore dal server");
+			Ti.API.debug(JSON.stringify(err));
+			// se non gli scarico provo a caricarli da locale
+			var localReporter = Ti.App.Properties.getString(Alloy.Globals.query.userId, "null");
+			if (localReporter == "null"){
+				//  se non ci sono in locale errore
+				$.nicklabel.setText("Non disponibile");
+				$.maillabel.setText("Non disponibile");
+			}
+			else{
+				// se ci sono in locale li mostro
+				$.nicklabel.setText(JSON.parse(localReporter).nick);
+				$.maillabel.setText(JSON.parse(localReporter).nick);
+			}	
+		}
+		else{
+			// se gli scarico gli salvo in locale
+			Ti.API.info("Dati segnalatore scaricati correttamente");
+			Ti.API.debug(JSON.stringify(data));
+			segnalatoreLocale.nick = data.nick;
+			segnalatoreLocale.mail = data.mail;
+			$.nicklabel.setText(data.nick);
+			$.maillabel.setText(data.mail);
+			Ti.App.Properties.setString(Alloy.Globals.query.userId, JSON.stringify(segnalatoreLocale));
+			Ti.API.info("Dati segnalatore salvati localmente");
+		}
+	});
+	
+	// cerco segnalazione in locale
 	var localRepo = Ti.App.Properties.getString(Alloy.Globals.query.repoId, "null");
 	
 	if (localRepo == "null"){
@@ -77,8 +109,8 @@ win.addEventListener("open", function() {
 						$.repoimage.image = f.nativePath;
 						
 						$.descriptionlabel.setText(data.msg);
-						$.coordlatlabel.setText(data.loc.latitude);
-						$.coordlonlabel.setText(data.loc.longitude);
+						$.coordlatlabel.setText(Alloy.Globals.decToSes(data.loc.latitude) + " °N");
+						$.coordlonlabel.setText(Alloy.Globals.decToSes(data.loc.longitude) + " °E");
 						$.titlelabel.setText(data.title);
 						$.datalabel.setText(Alloy.Globals.dataToString(data.date));
 						Ti.Geolocation.reverseGeocoder(data.loc.latitude, data.loc.longitude, function (address){
@@ -129,45 +161,10 @@ win.addEventListener("open", function() {
 		$.repoimage.image = jsonRepo.img;
 		$.titlelabel.setText(jsonRepo.title);		
 		$.descriptionlabel.setText(jsonRepo.msg);
-		$.coordlatlabel.setText(jsonRepo.loc.latitude);
-		$.coordlonlabel.setText(jsonRepo.loc.longitude);
+		$.coordlatlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.latitude) + " °N");
+		$.coordlonlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.longitude) + " °E");
 		$.datalabel.setText(Alloy.Globals.dataToString(jsonRepo.data));
 		$.addresslabel.setText(jsonRepo.indirizzo);
 		$.progressIndicatorIndeterminant.hide();
 	}
-	$.progressIndicatorIndeterminant.show();
-	// provo a scaricare dati del segnalatore
-	service.getUserById(Alloy.Globals.query.userId, function (err, data){
-		if (err){
-			Ti.API.info("Impossibile scaricare dati segnalatore dal server");
-			Ti.API.debug(JSON.stringify(err));
-			// se non gli scarico provo a caricarli da locale
-			var localReporter = Ti.App.Properties.getString(Alloy.Globals.query.userId, "null");
-			if (localReporter == "null"){
-				//  se non ci sono in locale errore
-				$.nicklabel.setText("Non disponibile");
-				$.maillabel.setText("Non disponibile");
-				$.progressIndicatorIndeterminant.hide();
-			}
-			else{
-				// se ci sono in locale li mostro
-				$.nicklabel.setText(JSON.parse(localReporter).nick);
-				$.maillabel.setText(JSON.parse(localReporter).nick);
-				$.progressIndicatorIndeterminant.hide();
-			}	
-		}
-		else{
-			// se gli scarico gli salvo in locale
-			Ti.API.info("Dati segnalatore scaricati correttamente");
-			Ti.API.debug(JSON.stringify(data));
-			segnalatoreLocale.nick = data.nick;
-			segnalatoreLocale.mail = data.mail;
-			$.nicklabel.setText(data.nick);
-			$.maillabel.setText(data.mail);
-			Ti.App.Properties.setString(Alloy.Globals.query.userId, JSON.stringify(segnalatoreLocale));
-			Ti.API.info("Dati segnalatore salvati localmente");
-			$.progressIndicatorIndeterminant.hide();
-			
-		}
-	});		
 })();		
