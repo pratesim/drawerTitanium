@@ -407,3 +407,13 @@ function mapCompleted(evt){
         initMap({success: false, error: "Servizio di localizzazione NON disponibile"});
     }
 }
+
+if(!Ti.Network.getOnline()){
+    Ti.API.info("map.js: getOnline() = FALSE");
+    var dialog = Ti.UI.createAlertDialog({
+        message: 'Connessione Internet assente.\nLa mappa potrebbe non funzionare correttamente.',
+        ok: 'OK',
+        title: 'Errore Di Rete'
+    });
+    dialog.show();
+}
