@@ -14,7 +14,7 @@
             <View class="scrollContainer">
                 <Label class="inputLabel">Descrizione: </Label>
                 <View class="separationLine"/>
-                <TextArea id="mailInput"></TextArea>
+                <TextArea id="descriptioninput"></TextArea>
             </View>
             <View class="scrollContainer">
             	<Label class="inputLabel">FOTO</Label>
@@ -23,8 +23,8 @@
             </View>
             <View class="scrollContainer">
                 <View class="buttonGroup">
-                    <Button id="takephoto">Scatta Foto</Button>
-                    <Button id="send">Invia Segnalazione</Button>
+                    <Button id="takephoto" onClick="getPhoto">Scatta Foto</Button>
+                    <Button id="send" onClick="sendRepo">Invia Segnalazione</Button>
                 </View>
             </View>
         </ScrollView>

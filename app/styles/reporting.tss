@@ -12,12 +12,12 @@
 	width: Ti.UI.FILL,
 	height: Ti.UI.FILL,
 	//backgroundColor:'white'
-	backgroundGradient: {
+	/*backgroundGradient: {
         type: 'linear',
         startPoint: { x: '0%', y: '0%' },
         endPoint: { x: '0%', y: '100%' },
         colors: [ { color: '#050607', offset: 0.0}, { color: '#272D33', offset: 1.0 } ],
-    }
+  }*/
 },
 ".scrollContainer":{
     top: "20dp",
@@ -68,7 +68,8 @@
     width: "50%"
 },
 "#repoimage":{
-	top: "5dp"
+	top: "5dp", 
+	width: Ti.UI.FILL
 },
 "#takephoto":{
     left: "0%",

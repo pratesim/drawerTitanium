@@ -89,32 +89,15 @@ module.exports = [ {
         top: "0dp",
         layout: "vertical",
         width: Ti.UI.FILL,
-        height: Ti.UI.FILL,
-        backgroundGradient: {
-            type: "linear",
-            startPoint: {
-                x: "0%",
-                y: "0%"
-            },
-            endPoint: {
-                x: "0%",
-                y: "100%"
-            },
-            colors: [ {
-                color: "#050607",
-                offset: 0
-            }, {
-                color: "#272D33",
-                offset: 1
-            } ]
-        }
+        height: Ti.UI.FILL
     }
 }, {
     isId: true,
     priority: 100000.0052,
     key: "repoimage",
     style: {
-        top: "5dp"
+        top: "5dp",
+        width: Ti.UI.FILL
     }
 }, {
     isId: true,

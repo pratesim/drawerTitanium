@@ -113,6 +113,7 @@ win.addEventListener("open", function() {
 						$.coordlonlabel.setText(Alloy.Globals.decToSes(data.loc.longitude) + " °E");
 						$.titlelabel.setText(data.title);
 						$.datalabel.setText(Alloy.Globals.dataToString(data.date));
+						
 						Ti.Geolocation.reverseGeocoder(data.loc.latitude, data.loc.longitude, function (address){
 							Ti.API.debug("traduzione coordinate: " + JSON.stringify(address));
 							var indirizzo = address.success == true ? address.places[0].displayAddress : "Non disponibile";
