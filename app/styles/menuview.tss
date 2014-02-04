@@ -38,13 +38,13 @@
 	height: "40dp"
 },
 "#rowSkull":{
-	backgroundImage: '/images/ic_action_view_as_list.png'
+	backgroundImage: '/images/ic_action_time.png'
 },
 "#rowGear":{
 	backgroundImage: '/images/ic_action_map.png'
 },
 "#rowPicFrame":{
-	backgroundImage: '/images/ic_action_time.png'
+	backgroundImage: '/images/ic_action_view_as_list.png'
 },
 "#rowNewUser":{
     backgroundImage: '/images/ic_action_settings.png'

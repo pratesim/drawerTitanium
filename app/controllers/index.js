@@ -7,6 +7,7 @@ var mainView=controls.getMainView();
 var viewIds  = []; // vettore degli ID delle view switchabili
 var switches = {}; // stati delle view switchabili.
 var buttons  = {}; // riferimenti ai bottoni nel menù per le view switchabili
+var icons    = {}; // per ogni view ci saranno i riferimenti all'icona scura e chiara.
 
 // ritorna lo ID della view attualmente visualizzata
 var getOn = function(){
@@ -27,8 +28,9 @@ var checkId = function(id){
 // inizializza il sistema di switch inserendo gli ID delle view switchabili
 // nell'apposito vettore e crea l'insieme delle variabili booleane per tracciare
 // gli stati delle views.
-// Inizializza anche il vettore con i riferimeti hai bottoni.
-var initSwitcher = function(IDs, rowIDs){
+// Inizializza anche il vettore con i riferimenti hai bottoni.
+// inizializza anche l'oggetto con i riferimenti alle varie icone per i bottoni nel menù.
+var initSwitcher = function(IDs, rowIDs, iconObjs){
     var views = controls.getMainView().mainView.getChildren(); // vettore di view in mainview
     var rows = menuView.menuView.getChildren()[2].getSections()[0].getRows(); // vettore delle righe del drawer
     var nViews = views.length;
@@ -54,6 +56,13 @@ var initSwitcher = function(IDs, rowIDs){
             if (rows[r].id == rowIDs[k])
                 buttons[viewIds[k]] = rows[r];
         }
+    }
+
+    // associo a ogni ID delle view un oggetto che contiene il path all'icona
+    // chiara e scura da usare quando il tasto è selezionato o meno.
+    // le associazioni finiscono nell'oggetto 'icons'.
+    for (var k in viewIds){
+        icons[viewIds[k]] = iconObjs[k];
     }
 };
 
@@ -88,6 +97,10 @@ var switchTo = function(id){
 
             // scolorisco il bottone della view che prima era visualizzata.
             buttons[currentViewId].setBackgroundColor("trasparent");
+            // cambio il colore del testo del label relativo
+            buttons[currentViewId].getChildren()[0].getChildren()[1].setColor("#59595C");
+            // cambio l'icona mettendo quella scura
+            buttons[currentViewId].getChildren()[0].getChildren()[0].setBackgroundImage(icons[currentViewId].dark);
 
             // rimuovo la view per fare posto a quella nuova.
             mainView.mainView.remove(currentView);
@@ -104,6 +117,10 @@ var switchTo = function(id){
 
         // coloro il bottone della view selezionata.
         buttons[id].setBackgroundColor("#33B5E5");
+        // cambio il colore del testo del label relativo
+        buttons[id].getChildren()[0].getChildren()[1].setColor("white");
+        // cambio l'icona mettendo quella chiara
+        buttons[id].getChildren()[0].getChildren()[0].setBackgroundImage(icons[id].light);
 
         // carco la view selezionata nel drawer.
         mainView.mainView.add(nextView);
@@ -132,8 +149,25 @@ function updateGeorepUser(){
     Ti.API.debug("  Georep.getUser(): " + JSON.stringify(Alloy.Globals.Georep.getUser()));
 }
 
-// inizializzo il sistema di switching con i seguenti ID delle view da inter-switchare.
-initSwitcher(['map','last','my'],['row1','row2','row3']);
+// inizializzo il sistema di switching.
+
+// vettore con gli ID delle view che verrano gestite dal sistema di switching
+var switchableViewIDs = ['map','last','my'];
+// vettore con gli ID delle righe del menù relative alle finestre gestite dal sistema di switching
+var switchableRowIDs  = ['row1','row2','row3'];
+// vettore delle icone da usare nel menù per ogni riga.
+var switchableIconIDs = [
+    {   // icone per map
+        light: "/images/ic_action_map_white.png",
+        dark: "/images/ic_action_map.png"
+    },{ // icone per last
+        light: "/images/ic_action_time_white.png",
+        dark: "/images/ic_action_time.png"
+    },{ // icone per my
+        light: "/images/ic_action_view_as_list_white.png",
+        dark: "/images/ic_action_view_as_list.png"
+    }];
+initSwitcher(switchableViewIDs,switchableRowIDs,switchableIconIDs);
 
 // add event listener in this context
 menuView.menuTable.addEventListener('click',function(e){
