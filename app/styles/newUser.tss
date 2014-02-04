@@ -89,8 +89,7 @@
     left: "0dp",
     color: "white",
     textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
-    width: Ti.UI.FILL,
-    backgroundColor: "transparent"
+    width: Ti.UI.FILL
 },
 "#nickInput":{
     hintText: "NickName",
