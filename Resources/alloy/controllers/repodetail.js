@@ -468,7 +468,7 @@ function Controller() {
                     $.maillabel.setText("Non disponibile");
                 } else {
                     $.nicklabel.setText(JSON.parse(localReporter).nick);
-                    $.maillabel.setText(JSON.parse(localReporter).nick);
+                    $.maillabel.setText(JSON.parse(localReporter).mail);
                 }
             } else {
                 Ti.API.info("Dati segnalatore scaricati correttamente");

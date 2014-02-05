@@ -97,7 +97,7 @@ var switchTo = function(id){
             Ti.API.info("    switches." + currentViewId + " = " + switches[currentViewId]);
 
             // scolorisco il bottone della view che prima era visualizzata.
-            buttons[currentViewId].setBackgroundColor("trasparent");
+            buttons[currentViewId].setBackgroundColor("transparent");
             // cambio il colore del testo del label relativo
             buttons[currentViewId].getChildren()[0].getChildren()[1].setColor("#59595C");
             // cambio l'icona mettendo quella scura

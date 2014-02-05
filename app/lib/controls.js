@@ -14,7 +14,7 @@ exports.getMenuButton=function(args){
 	var v=Ti.UI.createView({
 		height: args.h,
 		width: args.w,
-		backgroundColor: '#333333'
+		backgroundColor: 'transparent'
 	});
 	
 	var b=Ti.UI.createView({

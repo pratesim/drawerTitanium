@@ -84,7 +84,7 @@ function Controller() {
                                 Ti.Geolocation.reverseGeocoder(location.coords.latitude, location.coords.longitude, function(address) {
                                     Ti.API.debug("traduzione coordinate: " + JSON.stringify(address));
                                     var indirizzo = true == address.success ? address.places[0].displayAddress : "Non disponibile";
-                                    segnalazioneLocale._id = data._id;
+                                    segnalazioneLocale._id = data.id;
                                     segnalazioneLocale.title = title;
                                     segnalazioneLocale.msg = descr;
                                     segnalazioneLocale.data = new Date().getTime();
@@ -92,8 +92,9 @@ function Controller() {
                                     segnalazioneLocale.indirizzo = indirizzo;
                                     segnalazioneLocale.loc.latitude = location.coords.latitude;
                                     segnalazioneLocale.loc.longitude = location.coords.longitude;
-                                    Ti.App.Properties.setString(data._id, JSON.stringify(segnalazioneLocale));
-                                    var localeOk = Ti.App.Properties.getString(data._id, "null");
+                                    Ti.App.Properties.setString(data.id, JSON.stringify(segnalazioneLocale));
+                                    Ti.API.debug("data._id = " + data._id + "\ndata.id = " + data.id);
+                                    var localeOk = Ti.App.Properties.getString(data.id, "null");
                                     "null" != localeOk ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
                                     $.progressIndicatorIndeterminant.hide();
                                     $.dialog.show();
@@ -145,6 +146,24 @@ function Controller() {
         layout: "vertical",
         width: Ti.UI.FILL,
         height: Ti.UI.FILL,
+        backgroundGradient: {
+            type: "linear",
+            startPoint: {
+                x: "0%",
+                y: "0%"
+            },
+            endPoint: {
+                x: "0%",
+                y: "100%"
+            },
+            colors: [ {
+                color: "#050607",
+                offset: 0
+            }, {
+                color: "#272D33",
+                offset: 1
+            } ]
+        },
         id: "scrollView"
     });
     $.__views.winreporting.add($.__views.scrollView);

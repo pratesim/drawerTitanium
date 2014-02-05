@@ -5,7 +5,7 @@
 "#mainTopBar":{
 	width: Ti.UI.FILL,
 	height: "48dp",
-	backgroundColor: '#333333',
+	backgroundColor: '#222222',
 	opacity: "1",
 	layout: 'horizontal'
 },
@@ -28,7 +28,7 @@
 	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 }
 "#littleBar":{
-	backgroundColor: "#3793B5",
+	backgroundColor: "#1B1B1B",
 	height: "3dp",
 	width: Ti.UI.FILL
 }

@@ -140,7 +140,7 @@ function sendRepo(){
 								Ti.API.debug("traduzione coordinate: " + JSON.stringify(address));
 								var indirizzo = address.success == true ? address.places[0].displayAddress : "Non disponibile";
 								
-								segnalazioneLocale._id = data._id; //id assegnato dal server couchdb alla segnalazione (disponibile nella risposta inviata dal server)
+								segnalazioneLocale._id = data.id; //id assegnato dal server couchdb alla segnalazione (disponibile nella risposta inviata dal server)
 								segnalazioneLocale.title = title;
 								segnalazioneLocale.msg = descr;
 								segnalazioneLocale.data = new Date().getTime();
@@ -149,9 +149,10 @@ function sendRepo(){
 								segnalazioneLocale.loc.latitude = location.coords.latitude;
 								segnalazioneLocale.loc.longitude = location.coords.longitude;
 								
-								Ti.App.Properties.setString(data._id, JSON.stringify(segnalazioneLocale));
-								
-								var localeOk = Ti.App.Properties.getString(data._id, "null");
+								Ti.App.Properties.setString(data.id, JSON.stringify(segnalazioneLocale));
+								Ti.API.debug("data._id = " + data._id + "\ndata.id = " + data.id);
+
+								var localeOk = Ti.App.Properties.getString(data.id, "null");
 								localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
 								$.progressIndicatorIndeterminant.hide();
 								$.dialog.show();

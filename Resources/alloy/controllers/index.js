@@ -80,7 +80,7 @@ function Controller() {
                 for (var i in childViews) childViews[i].id == currentViewId && (currentView = childViews[i]);
                 switches[currentViewId] = false;
                 Ti.API.info("    switches." + currentViewId + " = " + switches[currentViewId]);
-                buttons[currentViewId].setBackgroundColor("trasparent");
+                buttons[currentViewId].setBackgroundColor("transparent");
                 buttons[currentViewId].getChildren()[0].getChildren()[1].setColor("#59595C");
                 buttons[currentViewId].getChildren()[0].getChildren()[0].setBackgroundImage(icons[currentViewId].dark);
                 mainView.mainView.remove(currentView);

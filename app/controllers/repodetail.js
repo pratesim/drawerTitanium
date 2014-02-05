@@ -58,11 +58,11 @@ win.addEventListener("open", function() {
 			else{
 				// se ci sono in locale li mostro
 				$.nicklabel.setText(JSON.parse(localReporter).nick);
-				$.maillabel.setText(JSON.parse(localReporter).nick);
+				$.maillabel.setText(JSON.parse(localReporter).mail);
 			}	
 		}
 		else{
-			// se gli scarico gli salvo in locale
+			// se li scarico li salvo in locale
 			Ti.API.info("Dati segnalatore scaricati correttamente");
 			Ti.API.debug(JSON.stringify(data));
 			segnalatoreLocale.nick = data.nick;
@@ -140,7 +140,7 @@ win.addEventListener("open", function() {
 						Ti.API.debug(JSON.stringify(e));
 						$.progressIndicatorIndeterminant.hide();
 						alert("Immagine segnalazione non disponibile");
-					},
+					}
 				});
 				
 				var db = service.getDb();
