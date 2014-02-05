@@ -8,6 +8,16 @@ Alloy.Globals.PlacemarkImgs = {
     REPORT: "/radiation-white.png"
 };
 
+Alloy.Globals.CustomEvents = {
+    USER_REGISTERED: "userRegistered"
+};
+
+Alloy.Globals.Constants = {
+    LOCAL_USER_DATA: "localUserData",
+    FAKE_NICK: "ZmFrZU5pY2s=",
+    FAKE_MAIL: "ZmFrZU1haWw="
+};
+
 var Georep = require("georep");
 
 Ti.API.info("Creazione utente...");
@@ -15,8 +25,8 @@ Ti.API.info("Creazione utente...");
 var user = new Georep.User({
     name: Ti.Platform.getId(),
     password: Ti.Platform.getId(),
-    nick: "pratesim",
-    mail: "pratesi.maurizio@gmail.com"
+    nick: Alloy.Globals.Constants.FAKE_NICK,
+    mail: Alloy.Globals.Constants.FAKE_MAIL
 });
 
 Ti.API.info("Utente creato.");

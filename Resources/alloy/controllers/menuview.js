@@ -89,7 +89,7 @@ function Controller() {
         top: 0,
         width: "40dp",
         height: "40dp",
-        backgroundImage: "/images/ic_action_view_as_list.png",
+        backgroundImage: "/images/ic_action_time.png",
         id: "rowSkull"
     });
     $.__views.rowContainer.add($.__views.rowSkull);
@@ -121,7 +121,7 @@ function Controller() {
         top: 0,
         width: "40dp",
         height: "40dp",
-        backgroundImage: "/images/ic_action_time.png",
+        backgroundImage: "/images/ic_action_view_as_list.png",
         id: "rowPicFrame"
     });
     $.__views.rowContainer.add($.__views.rowPicFrame);
@@ -153,7 +153,7 @@ function Controller() {
         top: 0,
         width: "40dp",
         height: "40dp",
-        backgroundImage: "/images/ic_action_time.png",
+        backgroundImage: "/images/ic_action_view_as_list.png",
         id: "rowPicFrame"
     });
     $.__views.rowContainer.add($.__views.rowPicFrame);
@@ -166,6 +166,38 @@ function Controller() {
         },
         color: "#59595C",
         text: "Segnala",
+        id: "rowLabel"
+    });
+    $.__views.rowContainer.add($.__views.rowLabel);
+    $.__views.row4 = Ti.UI.createTableViewRow({
+        height: "50dp",
+        id: "row4"
+    });
+    __alloyId9.push($.__views.row4);
+    $.__views.rowContainer = Ti.UI.createView({
+        height: "40dp",
+        layout: "horizontal",
+        id: "rowContainer"
+    });
+    $.__views.row4.add($.__views.rowContainer);
+    $.__views.rowNewUser = Ti.UI.createView({
+        left: 5,
+        top: 0,
+        width: "40dp",
+        height: "40dp",
+        backgroundImage: "/images/ic_action_settings.png",
+        id: "rowNewUser"
+    });
+    $.__views.rowContainer.add($.__views.rowNewUser);
+    $.__views.rowLabel = Ti.UI.createLabel({
+        top: 0,
+        left: 10,
+        height: "40dp",
+        font: {
+            fontSize: "18dp"
+        },
+        color: "#59595C",
+        text: "Opzioni",
         id: "rowLabel"
     });
     $.__views.rowContainer.add($.__views.rowLabel);
