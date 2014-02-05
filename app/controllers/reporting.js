@@ -31,10 +31,10 @@ function getPhoto(){
 			// called when media returned from the camera
 			Ti.API.debug('Foto scattata con successo');
 			// pictureBlob verrà usata dentro sendRepo per salvare localmente la foto in caso di invio con successo della segnalazione
-			pictureBlob = event.media;
+			pictureBlob = Alloy.Globals.resizePhoto(event.media);
 			// pictureBase64 verrà usata come attachments della segnalazione da inviare al server couchdb
-			pictureBase64 = Ti.Utils.base64encode(event.media);
-			$.repoimage.setImage(event.media);
+			pictureBase64 = Ti.Utils.base64encode(pictureBlob);
+			$.repoimage.setImage(pictureBlob);
 		},
 		cancel:function() {
 			// called when user cancels taking a picture

@@ -48,7 +48,7 @@ win.addEventListener("open", function() {
 		if (err){
 			Ti.API.info("Impossibile scaricare dati segnalatore dal server");
 			Ti.API.debug(JSON.stringify(err));
-			// se non gli scarico provo a caricarli da locale
+			// se non li scarico provo a caricarli da locale
 			var localReporter = Ti.App.Properties.getString(Alloy.Globals.query.userId, "null");
 			if (localReporter == "null"){
 				//  se non ci sono in locale errore
@@ -99,7 +99,9 @@ win.addEventListener("open", function() {
 			            //new file name
 			            var newFileName = n + ".jpeg";
 						var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,newFileName);
-						var writeOk = f.write(this.responseData); // write to the file
+                        var imgBlobTmp = this.responseData; // immagine scaricata che potrebbe essere troppo grande
+                        var imgBlob = Alloy.Globals.resizePhoto(imgBlobTmp); // immagine ridimensionata.
+						var writeOk = f.write(imgBlob); // write to the file
 						
 						writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
 						Ti.App.fireEvent('graphic_downloaded', {filepath:f.nativePath});

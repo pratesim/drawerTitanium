@@ -86,6 +86,44 @@ Alloy.Globals.decToSes = function(dec){
 
     return sgn + g + "° " + p + "\' " + s + "\"";
 };
+/**
+ * Ridimensiona un'immagine in modo che rientri sempre in un
+ * quadrato di 2048x2048 pixel.
+ *
+ * @param {Titanium.Blob} imgBlob immagine in formato blob
+ * @returns {Titanium.Blob} blob di un immagine con dimensioni minori o uguali di 2048px.
+ */
+Alloy.Globals.resizePhoto = function(imgBlob){
+    Ti.API.info("resizePhoto(): blob mimetype is \'" + imgBlob.getMimeType() + "\'");
+    var limit = 2048;
+    var aspectRatio = imgBlob.getWidth()/imgBlob.getHeight();
+    var orientation = (aspectRatio >= 1) ? "landscape" : "portrait";
+    var img;
+    var height, width;
+
+    if (imgBlob.getWidth() > limit || imgBlob.getHeight() > limit){
+        Ti.API.info("resizePhoto(): immagine da ridimensionare.");
+        Ti.API.debug("resizePhoto():   " + imgBlob.getWidth() + "x" + imgBlob.getHeight() + " (max " + limit + "x" + limit +")");
+
+        if (orientation == "portrait"){
+            height = limit;
+            width = Math.round(limit * aspectRatio);
+        }else{
+            height = Math.round(limit / aspectRatio);
+            width = limit;
+        }
+        Ti.API.debug("resizePhoto(): immagine ridimensionata.");
+        Ti.API.debug("resizePhoto():   " + width + "x" + height + " (rapporto " + aspectRatio + ")");
+
+        // ridimensiono l'immagine assicurandomi che sia larga/alta almeno 1px.
+        img = imgBlob.imageAsResized((width > 0)?width:1, (height > 0)?height:1);
+    }else{
+        Ti.API.debug("resizePhoto(): ridimensionamento non necessario");
+        Ti.API.debug("resizePhoto():   " + imgBlob.getWidth() + "x" + imgBlob.getHeight() + " (max " + limit + "x" + limit +")");
+        img = imgBlob;
+    }
+    return img;
+}
 
 /* funzioni locali */
 var numberPadding = function(n, width, padder){
