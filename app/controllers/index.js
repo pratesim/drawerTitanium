@@ -197,6 +197,8 @@ mainView.menuButton.add(controls.getMenuButton({
 	w: '60dp'
 }));
 mainView.menuButton.addEventListener('click',$.drawermenu.showhidemenu); // method is exposed by widget
+mainView.appIcon.addEventListener('click', $.drawermenu.showhidemenu);
+mainView.titleApp.addEventListener('click', $.drawermenu.showhidemenu);
 
 // add view to container exposed by widget
 $.drawermenu.drawermainview.add(mainView.getView());

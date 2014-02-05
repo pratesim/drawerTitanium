@@ -120,6 +120,8 @@ function Controller() {
         w: "60dp"
     }));
     mainView.menuButton.addEventListener("click", $.drawermenu.showhidemenu);
+    mainView.appIcon.addEventListener("click", $.drawermenu.showhidemenu);
+    mainView.titleApp.addEventListener("click", $.drawermenu.showhidemenu);
     $.drawermenu.drawermainview.add(mainView.getView());
     Ti.App.addEventListener(Alloy.Globals.CustomEvents.USER_REGISTERED, function(evt) {
         Ti.UI.createNotification({

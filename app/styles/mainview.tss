@@ -19,7 +19,7 @@
 	left: "0dp",
 	width: "48dp",
 	height: "48dp",
-	backgroundColor: '#333333',
+	backgroundColor: 'transparent',
 }
 "#titleApp":{
 	left: "10dp",
