@@ -53,9 +53,11 @@ function Controller() {
         Ti.API.info("Titolo: " + title + "\nDescrizione: " + descr);
         Ti.API.debug("Foto Base64: " + pictureBase64);
         if ("" == title || "" == descr || "" == pictureBase64) alert("Completare tutti i campi e scattare una foto prima di inviare la segnalazione!"); else {
+            $.progressIndicatorIndeterminant.show();
             Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_HIGH);
             Ti.Geolocation.getCurrentPosition(function(location) {
                 if (false == location.success) {
+                    $.progressIndicatorIndeterminant.hide();
                     alert("Impossibile ottenere la posizione: " + location.error);
                     Ti.API.debug("Impossibile ottenere la posizione. error code: " + location.code);
                 } else {
@@ -69,6 +71,7 @@ function Controller() {
                     try {
                         service.postDoc(segnalazione, true, function(err, data) {
                             if (err) {
+                                $.progressIndicatorIndeterminant.hide();
                                 Ti.API.debug("postDoc fallita: " + JSON.stringify(err));
                                 alert("Invio segnalazione fallito!...Prova di nuovo");
                             } else {
@@ -92,8 +95,8 @@ function Controller() {
                                     Ti.App.Properties.setString(data._id, JSON.stringify(segnalazioneLocale));
                                     var localeOk = Ti.App.Properties.getString(data._id, "null");
                                     "null" != localeOk ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
-                                    alert("Invio segnalazione riuscito!");
-                                    win.close();
+                                    $.progressIndicatorIndeterminant.hide();
+                                    $.dialog.show();
                                 });
                             }
                         });
@@ -103,6 +106,9 @@ function Controller() {
                 }
             });
         }
+    }
+    function alertconfsend() {
+        win.close();
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "reporting";
@@ -125,6 +131,15 @@ function Controller() {
         type: Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
     });
     $.__views.winreporting.add($.__views.progressIndicatorIndeterminant);
+    var __alloyId42 = [];
+    __alloyId42.push("OK");
+    $.__views.dialog = Ti.UI.createAlertDialog({
+        buttonNames: __alloyId42,
+        id: "dialog",
+        title: "Stato segnalazione",
+        message: "Invio segnalazione riuscito!"
+    });
+    alertconfsend ? $.__views.dialog.addEventListener("click", alertconfsend) : __defers["$.__views.dialog!click!alertconfsend"] = true;
     $.__views.scrollView = Ti.UI.createScrollView({
         top: "0dp",
         layout: "vertical",
@@ -133,48 +148,6 @@ function Controller() {
         id: "scrollView"
     });
     $.__views.winreporting.add($.__views.scrollView);
-    $.__views.__alloyId41 = Ti.UI.createView({
-        top: "20dp",
-        left: "10dp",
-        right: "10dp",
-        layout: "vertical",
-        backgroundColor: "transparent",
-        width: Ti.UI.FILL,
-        height: Ti.UI.SIZE,
-        id: "__alloyId41"
-    });
-    $.__views.scrollView.add($.__views.__alloyId41);
-    $.__views.__alloyId42 = Ti.UI.createLabel({
-        font: {
-            fontSize: "16dp",
-            fontWeight: "bold"
-        },
-        textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
-        color: "#BEBEBE",
-        left: "0dp",
-        width: Ti.UI.FILL,
-        height: Ti.UI.SIZE,
-        text: "Titolo:",
-        id: "__alloyId42"
-    });
-    $.__views.__alloyId41.add($.__views.__alloyId42);
-    $.__views.__alloyId43 = Ti.UI.createView({
-        backgroundColor: "#494C4F",
-        height: "3dp",
-        width: Ti.UI.FILL,
-        top: "0dp",
-        id: "__alloyId43"
-    });
-    $.__views.__alloyId41.add($.__views.__alloyId43);
-    $.__views.titleinput = Ti.UI.createTextArea({
-        top: "5dp",
-        left: "0dp",
-        color: "white",
-        textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
-        width: Ti.UI.FILL,
-        id: "titleinput"
-    });
-    $.__views.__alloyId41.add($.__views.titleinput);
     $.__views.__alloyId44 = Ti.UI.createView({
         top: "20dp",
         left: "10dp",
@@ -196,7 +169,7 @@ function Controller() {
         left: "0dp",
         width: Ti.UI.FILL,
         height: Ti.UI.SIZE,
-        text: "Descrizione:",
+        text: "Titolo:",
         id: "__alloyId45"
     });
     $.__views.__alloyId44.add($.__views.__alloyId45);
@@ -208,15 +181,15 @@ function Controller() {
         id: "__alloyId46"
     });
     $.__views.__alloyId44.add($.__views.__alloyId46);
-    $.__views.descriptioninput = Ti.UI.createTextArea({
+    $.__views.titleinput = Ti.UI.createTextArea({
         top: "5dp",
         left: "0dp",
         color: "white",
         textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
         width: Ti.UI.FILL,
-        id: "descriptioninput"
+        id: "titleinput"
     });
-    $.__views.__alloyId44.add($.__views.descriptioninput);
+    $.__views.__alloyId44.add($.__views.titleinput);
     $.__views.__alloyId47 = Ti.UI.createView({
         top: "20dp",
         left: "10dp",
@@ -238,7 +211,7 @@ function Controller() {
         left: "0dp",
         width: Ti.UI.FILL,
         height: Ti.UI.SIZE,
-        text: "FOTO",
+        text: "Descrizione:",
         id: "__alloyId48"
     });
     $.__views.__alloyId47.add($.__views.__alloyId48);
@@ -250,13 +223,15 @@ function Controller() {
         id: "__alloyId49"
     });
     $.__views.__alloyId47.add($.__views.__alloyId49);
-    $.__views.repoimage = Ti.UI.createImageView({
+    $.__views.descriptioninput = Ti.UI.createTextArea({
         top: "5dp",
+        left: "0dp",
+        color: "white",
+        textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
         width: Ti.UI.FILL,
-        id: "repoimage",
-        image: "/placeholder.png"
+        id: "descriptioninput"
     });
-    $.__views.__alloyId47.add($.__views.repoimage);
+    $.__views.__alloyId47.add($.__views.descriptioninput);
     $.__views.__alloyId50 = Ti.UI.createView({
         top: "20dp",
         left: "10dp",
@@ -268,14 +243,54 @@ function Controller() {
         id: "__alloyId50"
     });
     $.__views.scrollView.add($.__views.__alloyId50);
-    $.__views.__alloyId51 = Ti.UI.createView({
+    $.__views.__alloyId51 = Ti.UI.createLabel({
+        font: {
+            fontSize: "16dp",
+            fontWeight: "bold"
+        },
+        textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
+        color: "#BEBEBE",
+        left: "0dp",
+        width: Ti.UI.FILL,
+        height: Ti.UI.SIZE,
+        text: "FOTO",
+        id: "__alloyId51"
+    });
+    $.__views.__alloyId50.add($.__views.__alloyId51);
+    $.__views.__alloyId52 = Ti.UI.createView({
+        backgroundColor: "#494C4F",
+        height: "3dp",
+        width: Ti.UI.FILL,
+        top: "0dp",
+        id: "__alloyId52"
+    });
+    $.__views.__alloyId50.add($.__views.__alloyId52);
+    $.__views.repoimage = Ti.UI.createImageView({
+        top: "5dp",
+        width: Ti.UI.FILL,
+        id: "repoimage",
+        image: "/placeholder.png"
+    });
+    $.__views.__alloyId50.add($.__views.repoimage);
+    $.__views.__alloyId53 = Ti.UI.createView({
+        top: "20dp",
+        left: "10dp",
+        right: "10dp",
+        layout: "vertical",
+        backgroundColor: "transparent",
+        width: Ti.UI.FILL,
+        height: Ti.UI.SIZE,
+        id: "__alloyId53"
+    });
+    $.__views.scrollView.add($.__views.__alloyId53);
+    $.__views.__alloyId54 = Ti.UI.createView({
         layout: "horizontal",
         width: Ti.UI.FILL,
         height: Ti.UI.SIZE,
         backgroundColor: "transparent",
-        id: "__alloyId51"
+        id: "__alloyId54"
     });
-    $.__views.__alloyId50.add($.__views.__alloyId51);
+    $.__views.__alloyId53.add($.__views.__alloyId54);
     $.__views.takephoto = Ti.UI.createButton({
         font: {
             fontSize: "16dp"
@@ -287,7 +302,7 @@ function Controller() {
         title: "Scatta Foto",
         id: "takephoto"
     });
-    $.__views.__alloyId51.add($.__views.takephoto);
+    $.__views.__alloyId54.add($.__views.takephoto);
     getPhoto ? $.__views.takephoto.addEventListener("click", getPhoto) : __defers["$.__views.takephoto!click!getPhoto"] = true;
     $.__views.send = Ti.UI.createButton({
         font: {
@@ -300,7 +315,7 @@ function Controller() {
         title: "Invia Segnalazione",
         id: "send"
     });
-    $.__views.__alloyId51.add($.__views.send);
+    $.__views.__alloyId54.add($.__views.send);
     sendRepo ? $.__views.send.addEventListener("click", sendRepo) : __defers["$.__views.send!click!sendRepo"] = true;
     exports.destroy = function() {};
     _.extend($, $.__views);
@@ -325,6 +340,7 @@ function Controller() {
             }
         } else Ti.API.error("Can't access action bar on a lightweight window.");
     });
+    __defers["$.__views.dialog!click!alertconfsend"] && $.__views.dialog.addEventListener("click", alertconfsend);
     __defers["$.__views.takephoto!click!getPhoto"] && $.__views.takephoto.addEventListener("click", getPhoto);
     __defers["$.__views.send!click!sendRepo"] && $.__views.send.addEventListener("click", sendRepo);
     _.extend($, exports);

@@ -96,11 +96,13 @@ function sendRepo(){
 		alert("Completare tutti i campi e scattare una foto prima di inviare la segnalazione!");
 	}
 	else{
+		$.progressIndicatorIndeterminant.show();
 		// se sono completi provo a leggere la posizione
 		Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_HIGH); // imposto la precisione della posizione
 		Ti.Geolocation.getCurrentPosition(function (location){
 			if (location.success == false){
 				// se non è possibile ottenere la posizione avviso con un messaggio di errore
+				$.progressIndicatorIndeterminant.hide();
 				alert("Impossibile ottenere la posizione: " + location.error);
 				Ti.API.debug("Impossibile ottenere la posizione. error code: " + location.code);
 			}
@@ -119,6 +121,7 @@ function sendRepo(){
 					service.postDoc(segnalazione, true, function(err, data){
 						if (err){
 							// se la segnalazione non è stata inviata avviso con un messaggio di errore
+							$.progressIndicatorIndeterminant.hide();
 							Ti.API.debug("postDoc fallita: " + JSON.stringify(err));
 							alert("Invio segnalazione fallito!...Prova di nuovo");
 						}
@@ -150,9 +153,8 @@ function sendRepo(){
 								
 								var localeOk = Ti.App.Properties.getString(data._id, "null");
 								localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
-								alert("Invio segnalazione riuscito!");
-								
-								win.close();
+								$.progressIndicatorIndeterminant.hide();
+								$.dialog.show();
 							});	
 						}
 						
@@ -161,4 +163,9 @@ function sendRepo(){
 			}
 		});
 	}	
+};
+
+/* funzione eseguita quando viene premuto il tasto ok sulla alert che conferma l'invio della segnalazione */
+function alertconfsend (ev) {
+  win.close();
 }

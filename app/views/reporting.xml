@@ -4,7 +4,15 @@
          message="Loading..."
          location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
          type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
-         
+         <AlertDialog id="dialog" onClick="alertconfsend" title="Stato segnalazione"
+            message="Invio segnalazione riuscito!">
+
+            <!-- The ButtonNames tag sets the buttonNames property. -->
+            <ButtonNames>
+                <ButtonName>OK</ButtonName>
+            </ButtonNames>
+        </AlertDialog>
+        
          <ScrollView id="scrollView">
             <View class="scrollContainer">
                 <Label class="inputLabel" >Titolo:</Label>
