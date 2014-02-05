@@ -182,7 +182,7 @@ menuView.menuTable.addEventListener('click',function(e){
     }else if(rowId == 'row3'){
         switchTo('my');
     }else if(rowId == 'row4'){
-        Alloy.createController('newUser').newUser.open();
+        Alloy.createController('newUser').newUserWin.open();
     }else if(rowId == 'rowReporting'){
     	Alloy.createController('reporting').winreporting.open();
     }
@@ -293,7 +293,7 @@ if (userLocalData == undefined){
                     progress.hide();
                     Ti.API.info("checkRemoteUser(): Utente NUOVO");
                     // apro la view che su occupa di prendere i dati del nuovo utente.
-                    Alloy.createController('newUser').newUser.open();
+                    Alloy.createController('newUser').newUserWin.open();
                 }
             }else{
             // errore della checkRemoteUser()

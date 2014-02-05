@@ -1,7 +1,7 @@
 var localUserData = Ti.App.Properties.getObject(Alloy.Globals.Constants.LOCAL_USER_DATA);
 
-var inputNick = $.newUser.getChildren()[2].getChildren()[0].getChildren()[2];
-var inputMail = $.newUser.getChildren()[2].getChildren()[1].getChildren()[2];
+var inputNick = $.nickInput;
+var inputMail = $.mailInput;
 
 if (localUserData){
     inputNick.setValue(localUserData.nick);
@@ -9,6 +9,28 @@ if (localUserData){
 
     inputMail.setValue(localUserData.mail);
 }
+
+var actionBar;
+$.newUserWin.addEventListener("open", function() {
+    Ti.API.info('Window "nuovo/opzioni utente" aperta');
+    if (Ti.Platform.osname === "android") {
+        if (! $.newUserWin.activity) {
+            Ti.API.error("Can't access action bar on a lightweight window.");
+        } else {
+            actionBar = $.newUserWin.activity.actionBar;
+            if (actionBar) {
+                actionBar.icon = "/images/icon.png";
+                actionBar.title = "Degrado Ambientale";
+                actionBar.navigationMode = Ti.Android.NAVIGATION_MODE_STANDARD;
+                actionBar.displayHomeAsUp = true;
+                actionBar.onHomeIconItemSelected = function() {
+                    Ti.API.info("Home icon clicked!");
+                    $.cancel.fireEvent('click');
+                };
+            }
+        }
+    }
+});
 
 $.ok.addEventListener('click',function(evt){
     Ti.API.debug("evento click su OK: " + JSON.stringify(evt));
@@ -91,7 +113,7 @@ $.ok.addEventListener('click',function(evt){
                         toast.show();
 
                         Ti.App.fireEvent(Alloy.Globals.CustomEvents.USER_REGISTERED);
-                        $.newUser.close();
+                        $.newUserWin.close();
 
                     }else{
                     // errore, bisogna però vedere se è per colpa del nick già utilizzato
@@ -112,7 +134,7 @@ $.ok.addEventListener('click',function(evt){
                             dialog.show();
 
                             // chiudo sa window
-                            $.newUser.close();
+                            $.newUserWin.close();
                         }
                     }
                 });
@@ -156,7 +178,7 @@ $.ok.addEventListener('click',function(evt){
                             toast.show();
 
                             // chiusto la window
-                            $.newUser.close();
+                            $.newUserWin.close();
                         }else{
                         // errore, impossibile aggiornare.
 
@@ -168,7 +190,7 @@ $.ok.addEventListener('click',function(evt){
                             dialog.show();
 
                             // chiudo sa window
-                            $.newUser.close();
+                            $.newUserWin.close();
                         }
                     });
                 }else{
@@ -178,7 +200,7 @@ $.ok.addEventListener('click',function(evt){
                     Ti.API.debug("newUser Window:   newEmail = " + JSON.stringify(newDataUser.mail));
 
                     // chiudo la window
-                    $.newUser.close();
+                    $.newUserWin.close();
                 }
             }
         }
@@ -189,11 +211,11 @@ $.ok.addEventListener('click',function(evt){
 $.cancel.addEventListener('click',function(evt){
     Ti.API.debug("evento click su ANNULLA: " + JSON.stringify(evt));
     if (localUserData){
-        $.newUser.close();
+        $.newUserWin.close();
     }else{
         var activity = Titanium.Android.currentActivity;
         activity.finish();
     }
 });
 
-$.newUser.open();
+$.newUserWin.open();

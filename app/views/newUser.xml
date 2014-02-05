@@ -1,10 +1,12 @@
 <Alloy>
-    <Window class="container">
+    <Window id="newUserWin" class="container" fullscreen="false">
+<!--
         <View id="mainTopBar">
             <View id="appIcon"/>
             <Label id="titleApp">Degrado Ambientale</Label>
         </View>
         <View id="littleBar"/>
+-->
         <ScrollView id="scrollView">
             <View class="scrollContainer">
                 <Label class="inputLabel" >NICK NAME</Label>
