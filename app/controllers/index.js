@@ -1,4 +1,5 @@
 var controls=require('controls');
+var rpcontrol = Alloy.Globals.repodetail; //controller per repodetail
 
 // get main and menu view as objects
 var menuView=controls.getMenuView();
@@ -173,7 +174,6 @@ initSwitcher(switchableViewIDs,switchableRowIDs,switchableIconIDs);
 menuView.menuTable.addEventListener('click',function(e){
 	$.drawermenu.showhidemenu();
     var rowId = e.rowData.id;
-    Ti.API.debug("Drawer: cliccato su \'" + rowId + "\'");
 
     if(rowId == 'row1'){
         switchTo('map');
@@ -183,6 +183,8 @@ menuView.menuTable.addEventListener('click',function(e){
         switchTo('my');
     }else if(rowId == 'row4'){
         Alloy.createController('newUser').newUser.open();
+    }else if(rowId == 'rowReporting'){
+    	Alloy.createController('reporting').winreporting.open();
     }
 });
 

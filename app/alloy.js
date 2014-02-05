@@ -67,13 +67,24 @@ Alloy.Globals.query.repoId = "";
 
 /* funzioni globali */
 Alloy.Globals.dataToString = function(milsToEPOC){
-         var d = new Date(milsToEPOC);
-         return numberPadding( d.getDate(), 2) + '/' +
-         numberPadding( d.getMonth() + 1, 2) + '/' +
-         numberPadding( d.getFullYear(), 4) + ' - ' +
-         numberPadding( d.getHours(), 2) + ':' +
-         numberPadding( d.getMinutes(), 2) + ':' +
-         numberPadding( d.getSeconds(), 2) ;
+	var d = new Date(milsToEPOC);
+	return numberPadding( d.getDate(), 2) + '/' +
+ 	numberPadding( d.getMonth() + 1, 2) + '/' +
+ 	numberPadding( d.getFullYear(), 4) + ' - ' +
+ 	numberPadding( d.getHours(), 2) + ':' +
+ 	numberPadding( d.getMinutes(), 2) + ':' +
+ 	numberPadding( d.getSeconds(), 2) ;
+};
+
+Alloy.Globals.decToSes = function(dec){
+    var n = Math.abs(dec);
+    var sgn = (dec >= 0) ? "" : "-";
+
+    var g = Math.floor(n);
+    var p = Math.floor((n-g)*60);
+    var s = (((n-g)*60-p)*60).toFixed(3);
+
+    return sgn + g + "° " + p + "\' " + s + "\"";
 };
 
 /* funzioni locali */
@@ -82,3 +93,4 @@ var numberPadding = function(n, width, padder){
         n = n + '';
         return n.length >= width ? n : new Array(width - n.length + 1).join(padder) + n;
 };
+

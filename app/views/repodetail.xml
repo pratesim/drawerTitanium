@@ -1,0 +1,52 @@
+<Alloy>
+	<Window id="winrepodetail" fullscreen="false">
+		<ProgressIndicator ns="Ti.UI.Android" platform="android" id="progressIndicatorIndeterminant"
+         message="Loading..."
+         location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
+         type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
+         
+		<ScrollView id="scrollView">
+            <View class="scrollContainer">
+                <Label class="sectionLabel" >NICKNAME</Label>
+                <View class="separationLine"/>
+                <Label id="nicklabel" class="valueLabel"/>     
+            </View>
+            <View class="scrollContainer">
+                <Label class="sectionLabel">E-MAIL</Label>
+                <View class="separationLine"/>
+                <Label id="maillabel" class="valueLabel"/>
+            </View>
+            <View class="scrollContainer">
+                <Label class="sectionLabel">TITOLO</Label>
+                <View class="separationLine"/>
+                <Label id="titlelabel" class="valueLabel"/>
+            </View>
+            <View class="scrollContainer">
+                <Label class="sectionLabel">DESCRIZIONE</Label>
+                <View class="separationLine"/>
+                <Label id="descriptionlabel" class="valueLabel"/>
+            </View>
+            <View class="scrollContainer">
+                <Label class="sectionLabel">COORDINATE</Label>
+                <View class="separationLine"/>
+                <Label id="coordlatlabel" class="valueLabel"/>
+                <Label id="coordlonlabel" class="valueLabel"/>
+            </View>
+            <View class="scrollContainer">
+                <Label class="sectionLabel">NEI PRESSI DI</Label>
+                <View class="separationLine"/>
+                <Label id="addresslabel" class="valueLabel"/>
+            </View>
+            <View class="scrollContainer">
+                <Label class="sectionLabel">SEGNALATO IL</Label>
+                <View class="separationLine"/>
+                <Label id="datalabel" class="valueLabel"/>
+            </View>
+            <View class="scrollContainer">
+            	<Label class="sectionLabel">FOTO</Label>
+            	<View class="separationLine"/>
+            	<ImageView id="repoimage" image="/placeholder.png" />
+            </View>
+     </ScrollView>
+	</Window>
+</Alloy>
