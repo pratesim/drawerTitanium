@@ -4,6 +4,61 @@
  */
 var annotationToKeep = undefined;
 
+var nQueryHit = 0;
+var nQuery = 0;
+var annotations = [];
+$.map.addEventListener('queryHit',function(evt){
+    nQueryHit++;
+    annotations = annotations.concat(evt.annotations);
+    Ti.API.info('MapView: arrivato evento \'queryHit\'');
+    Ti.API.debug('MapView:   queryHit ' + nQueryHit + '/' + nQuery);
+    Ti.API.debug('MapView:   annotations.length ' + annotations.length);
+
+    if (nQueryHit == nQuery){
+        Ti.API.info('MapView:   tutti le query hanno fatto ritorno.');
+        if ($.map.annotations != undefined){
+            Ti.API.debug('MapView:   $.map.annotations ' + JSON.stringify($.map.annotations));
+            // rimuovo dalla mappa tutte le annotazioni che non sarebbero più visibili.
+            Ti.API.debug('MapView: Pulizia mappa');
+            Ti.API.debug('MapView:   $.map.annotations.length' + $.map.annotations.length);
+            for(var i= 0, maxi = $.map.annotations.length; i<maxi; i++){
+                var trovata = false;
+                for(var j= 0, maxj = annotations.length; j<maxj; j++){
+                    trovata = trovata || ($.map.annotations[i].annotation_id == annotations[j].annotation_id);
+                }
+                if(!trovata){
+                    $.map.annotations.splice(0,1);
+                    i--;
+                }
+            }
+            Ti.API.debug('MapView:   $.map.annotations (ripulito)' + JSON.stringify($.map.annotations));
+            Ti.API.debug('\nMapView: Scelta');
+            Ti.API.debug('MapView:   annotations.length' + annotations.length);
+            // tra le nuove annotazioni tolgo quelle già mostrate
+            for(var j= 0, maxj = annotations.length; j<maxj; j++){
+                var trovata = false;
+                for(var i= 0, maxi = $.map.annotations.length; i<maxi; i++){
+                    trovata = trovata || (annotations[j].annotation_id == $.map.annotations[i].annotation_id);
+                }
+                if(trovata){
+                    annotations.splice(0,1);
+                    j--;
+                }
+            }
+            Ti.API.debug('MapView: annotations (scelta) ' + JSON.stringify(annotations));
+        }
+        // aggiungo le nuove annotazioni alla mappa.
+        $.map.addAnnotations(annotations);
+
+        Ti.API.debug('\nMapView:   $.map.annotations (aggiunto)' + JSON.stringify($.map.annotations));
+        nQueryHit = 0;
+        nQuery = 0;
+        annotations = [];
+    }else{
+        Ti.API.info('MapView:   in attesa del ritorno di ' + (nQuery - nQueryHit) + ' query.');
+    }
+})
+
 /**
  * Operatore modulo
  * @param {number} n
@@ -265,49 +320,38 @@ function updateMap(region) {
         debugBox(boxes[b]);
     }
 
-    var queryOK = true;
+    nQuery = boxes.length;
     for (var i in boxes) {
         Alloy.Globals.Georep.getDocsInBox(boxes[i].BLCorner, boxes[i].TRCorner, function (err, data) {
             if (err) {
                 Ti.API.info("getDocxInBox(): FAIL");
                 Ti.API.debug("  err: " + JSON.stringify(err));
-                queryOK = false;
             } else {
                 Ti.API.info("getDocxInBox(): SUCCESS");
-                queryOK = queryOK && true;
 
                 var segnalazioni = data.rows;
                 var localUserId = Alloy.Globals.Georep.getUserId();
 
-                // tolgo le segnalazioni dalla mappa e aggiorno il segnaposto
-                // per la posizione locale
-                Ti.API.debug("moved(): annotationToKeep = " + annotationToKeep);
-                var annDaNonAggiungere = clearMap(annotationToKeep);
-
-                // aggiungo tutti i segnaposto alla mappa.
+                // costruisco un vettore di annotazioni
+                var annotazioni = [];
                 for (var i in segnalazioni) {
                     var utenteSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.userId appena modificata la view sul server
                     var titoloSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.title  appena modificata la view sul server
                     var idSegnalazione = segnalazioni[i].id;
 
-                    if (idSegnalazione != annDaNonAggiungere) {
-                        var newAnnotationOpts = {
-                            annotation_id: idSegnalazione,
-                            latitude: segnalazioni[i].geometry.coordinates[1],
-                            longitude: segnalazioni[i].geometry.coordinates[0],
-                            title: titoloSegnalazione,
-                            image: (utenteSegnalazione == localUserId) ? Alloy.Globals.PlacemarkImgs.MY_REPORT : Alloy.Globals.PlacemarkImgs.REPORT
-                        };
-                        var newAnnotation = Alloy.Globals.Map.createAnnotation(newAnnotationOpts);
-                        $.map.addAnnotation(newAnnotation);
-                    }
+                    var newAnnotationOpts = {
+                        annotation_id: idSegnalazione,
+                        latitude: segnalazioni[i].geometry.coordinates[1],
+                        longitude: segnalazioni[i].geometry.coordinates[0],
+                        title: titoloSegnalazione,
+                        image: (utenteSegnalazione == localUserId) ? Alloy.Globals.PlacemarkImgs.MY_REPORT : Alloy.Globals.PlacemarkImgs.REPORT
+                    };
+                    annotazioni.push(Alloy.Globals.Map.createAnnotation(newAnnotationOpts));
                 }
+
+                $.map.fireEvent('queryHit',{annotations: annotazioni});
             }
         });
-    }
-    if (!queryOK) {
-        alert("Impossibile ottenere tutte le segnalazioni della zona");
-        queryOK = true;
     }
 }
 /**
