@@ -118,12 +118,12 @@ Alloy.Globals.resizePhoto = function(imgBlob){
         // ridimensiono l'immagine assicurandomi che sia larga/alta almeno 1px.
         img = imgBlob.imageAsResized((width > 0)?width:1, (height > 0)?height:1);
     }else{
-        Ti.API.debug("resizePhoto(): ridimensionamento non necessario");
+        Ti.API.info("resizePhoto(): ridimensionamento non necessario");
         Ti.API.debug("resizePhoto():   " + imgBlob.getWidth() + "x" + imgBlob.getHeight() + " (max " + limit + "x" + limit +")");
         img = imgBlob;
     }
     return img;
-}
+};
 
 /* funzioni locali */
 var numberPadding = function(n, width, padder){

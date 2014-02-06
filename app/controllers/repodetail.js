@@ -99,12 +99,11 @@ win.addEventListener("open", function() {
 			            //new file name
 			            var newFileName = n + ".jpeg";
 						var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,newFileName);
-                        var imgBlobTmp = this.responseData; // immagine scaricata che potrebbe essere troppo grande
+                        var imgBlobTmp = this.responseData.getFile().read(); // immagine scaricata che potrebbe essere troppo grande
                         var imgBlob = Alloy.Globals.resizePhoto(imgBlobTmp); // immagine ridimensionata.
 						var writeOk = f.write(imgBlob); // write to the file
 						
 						writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
-						Ti.App.fireEvent('graphic_downloaded', {filepath:f.nativePath});
 						Ti.API.info("Immagine scaricata");
 						// tutta la segnalazione è stata scaricata correttamente allora la salvo in locale
 						Ti.API.info("Segnalazione scaricata con successo: " + JSON.stringify(data));
