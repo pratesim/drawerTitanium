@@ -1,9 +1,10 @@
 <Alloy>
 	<Window id="winreporting" fullscreen="false">
 		<ProgressIndicator ns="Ti.UI.Android" platform="android" id="progressIndicatorIndeterminant"
-         message="Loading..."
+         message="Invio segnalazione..."
          location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
          type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
+         
          <AlertDialog id="dialog" onClick="alertconfsend" title="Stato segnalazione"
             message="Invio segnalazione riuscito!">
 

@@ -1,7 +1,7 @@
 <Alloy>
 	<Window id="winrepodetail" fullscreen="false">
-		<ProgressIndicator ns="Ti.UI.Android" platform="android" id="progressIndicatorIndeterminant"
-         message="Loading..."
+		<ProgressIndicator ns="Ti.UI.Android" platform="android" id="repodetailpb"
+         message="Caricamento segnalazione..."
          location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
          type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
          

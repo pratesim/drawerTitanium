@@ -58,4 +58,5 @@
 },
 "#repoimage":{
 	top: "5dp",	
+	width: Ti.UI.FILL
 }
