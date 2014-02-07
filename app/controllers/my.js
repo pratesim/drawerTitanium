@@ -4,64 +4,64 @@ var listSection = $.my.getSections()[0];
 var MYLISTKEY = "mylistrepo";
 
 
-	if (Ti.Network.getNetworkType() == Ti.Network.NETWORK_NONE){
-		// se non c'è connessione provo a caricare la lista locale'
-		var items = Ti.App.Properties.getString(MYLISTKEY, "null");
-			if (items  == "null"){
-				//se non ho dati locali avverto l'utente della necessità di una connessione di rete
-				alert("Necessaria connessione alla rete...");
+if (Ti.Network.getNetworkType() == Ti.Network.NETWORK_NONE){
+	// se non c'è connessione provo a caricare la lista locale'
+	var items = Ti.App.Properties.getString(MYLISTKEY, "null");
+		if (items  == "null"){
+			//se non ho dati locali avverto l'utente della necessità di una connessione di rete
+			alert("Necessaria connessione alla rete...");
+		}
+		else{
+			listSection.setItems(JSON.parse(items));
+		}
+}
+else{
+	try{
+		Ti.API.info("Avviata animazione indeterminata!");
+		$.progressIndicatorIndeterminant.show();
+		service.getUserDocs(service.getUserId(), function (err, data){
+			Ti.API.info("funzione di callback getUserDocs chiamata");
+			if (!err){ // ricevuta risposta corretta
+				
+				$.progressIndicatorIndeterminant.hide();
+				Ti.API.info("getUserDocs eseguita con successo");
+				Ti.API.debug(JSON.stringify(data.rows));
+				/*listSection.setItems(createItems(data.rows));*/
+				
+				Ti.API.info("Scaricate " + data.rows.length + " segnalazioni");
+				$.progressIndicatorDeterminant.setMax(data.rows.length);
+				$.progressIndicatorDeterminant.show();
+				Ti.API.info("Partita seconda animazione");
+				
+				for (var tmp in data.rows){
+					var item = createOneItem(data.rows[tmp]);
+					Ti.API.debug(JSON.stringify(item));
+					listSection.appendItems([item]);
+					$.progressIndicatorDeterminant.value = tmp;
+				}
+				
+				/* salvo la lista in locale, per poterla caricare in caso di assenza di connessione di rete */
+				Ti.App.Properties.setString(MYLISTKEY, JSON.stringify(listSection.getItems()));
+				Ti.API.debug("Lista locale : " + Ti.App.Properties.getString(MYLISTKEY));
+				$.progressIndicatorDeterminant.hide();
+				Ti.API.info("Items aggiunti alla lista");
 			}
 			else{
-				listSection.setItems(JSON.parse(items));
-			}
-	}
-	else{
-		try{
-			Ti.API.info("Avviata animazione indeterminata!");
-			$.progressIndicatorIndeterminant.show();
-			service.getUserDocs(service.getUserId(), function (err, data){
-				Ti.API.info("funzione di callback getUserDocs chiamata");
-				if (!err){ // ricevuta risposta corretta
-					
-					$.progressIndicatorIndeterminant.hide();
-					Ti.API.info("getUserDocs eseguita con successo");
-					Ti.API.debug(JSON.stringify(data.rows));
-					/*listSection.setItems(createItems(data.rows));*/
-					
-					Ti.API.info("Scaricate " + data.rows.length + " segnalazioni");
-					$.progressIndicatorDeterminant.setMax(data.rows.length);
-					$.progressIndicatorDeterminant.show();
-					Ti.API.info("Partita seconda animazione");
-					
-					for (var tmp in data.rows){
-						var item = createOneItem(data.rows[tmp]);
-						Ti.API.debug(JSON.stringify(item));
-						listSection.appendItems([item]);
-						$.progressIndicatorDeterminant.value = tmp;
-					}
-					
-					/* salvo la lista in locale, per poterla caricare in caso di assenza di connessione di rete */
-					Ti.App.Properties.setString(MYLISTKEY, JSON.stringify(listSection.getItems()));
-					Ti.API.debug("Lista locale : " + Ti.App.Properties.getString(MYLISTKEY));
-					$.progressIndicatorDeterminant.hide();
-					Ti.API.info("Items aggiunti alla lista");
+				// errore server (carico la lista locale)
+				$.progressIndicatorIndeterminant.hide();
+				var items = Ti.App.Properties.getString(MYLISTKEY, "null");
+				if (items  == "null"){
+					alert("Errore server...");
 				}
 				else{
-					// errore server (carico la lista locale)
-					$.progressIndicatorIndeterminant.hide();
-					var items = Ti.App.Properties.getString(MYLISTKEY, "null");
-					if (items  == "null"){
-						alert("Errore server...");
-					}
-					else{
-						listSection.setItems(JSON.parse(items));
-					}
-					
-					Ti.API.info("getUserDocs fallita");
-					Ti.API.debug(JSON.stringify(err));
+					listSection.setItems(JSON.parse(items));
 				}
-			});
-		}catch(e){Ti.API.debug(JSON.stringify(e));};
+				
+				Ti.API.info("getUserDocs fallita");
+				Ti.API.debug(JSON.stringify(err));
+			}
+		});
+	}catch(e){Ti.API.debug(JSON.stringify(e));};
 }
 /***********Funzioni***************/
 function dataClick(e){
