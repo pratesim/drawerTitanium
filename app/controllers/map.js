@@ -1,63 +1,64 @@
 /**
- * Id dell'annotazione da mantenere quando si sposta la mappa.
- * @type {string}
+ * Dato un vettore di annotazioni, aggiorna la mappa togliendo quelle ormai superflue
+ * e aggiunge solo quelle nuove.
+ * NOTA: se nella mappa è presente l'annotazione per la posizzione locale, questa viene rimossa.
+ * @param {Modules.Map.Annotation[]} annotations vettore con le annotazioni da mostrare sulla mappa.
  */
-var annotationToKeep = undefined;
+function updateMapAnnotations(annotations) {
+    var mal = ($.map.annotations != undefined) ? $.map.annotations.length : 0;
+    Ti.API.debug("$.map.annotations ("+ mal + "): " + JSON.stringify($.map.annotations));
+    Ti.API.debug("annotations: " + JSON.stringify(annotations));
 
-var nQueryHit = 0;
-var nQuery = 0;
-var annotations = [];
-$.map.addEventListener('queryHit',function(evt){
-    nQueryHit++;
-    annotations = annotations.concat(evt.annotations);
-    Ti.API.info('MapView: arrivato evento \'queryHit\'');
-    Ti.API.debug('MapView:   queryHit ' + nQueryHit + '/' + nQuery);
-    Ti.API.debug('MapView:   annotations.length ' + annotations.length);
-
-    if (nQueryHit == nQuery){
-        Ti.API.info('MapView:   tutti le query hanno fatto ritorno.');
-        if ($.map.annotations != undefined){
-            Ti.API.debug('MapView:   $.map.annotations ' + JSON.stringify($.map.annotations));
-            // rimuovo dalla mappa tutte le annotazioni che non sarebbero più visibili.
-            Ti.API.debug('MapView: Pulizia mappa');
-            Ti.API.debug('MapView:   $.map.annotations.length' + $.map.annotations.length);
-            for(var i= 0, maxi = $.map.annotations.length; i<maxi; i++){
-                var trovata = false;
-                for(var j= 0, maxj = annotations.length; j<maxj; j++){
-                    trovata = trovata || ($.map.annotations[i].annotation_id == annotations[j].annotation_id);
-                }
-                if(!trovata){
-                    $.map.annotations.splice(0,1);
-                    i--;
-                }
+    if ($.map.annotations != undefined) {
+        Ti.API.debug('\nPulizia mappa...');
+        // rimuovo dalla mappa tutte le annotazioni che non sarebbero più visibili.
+        for (var i = 0; i < $.map.annotations.length; i++) {
+            var trovata = false;
+            for (var j = 0; j < annotations.length; j++) {
+                trovata = trovata || ($.map.annotations[i].annotation_id == annotations[j].annotation_id);
             }
-            Ti.API.debug('MapView:   $.map.annotations (ripulito)' + JSON.stringify($.map.annotations));
-            Ti.API.debug('\nMapView: Scelta');
-            Ti.API.debug('MapView:   annotations.length' + annotations.length);
-            // tra le nuove annotazioni tolgo quelle già mostrate
-            for(var j= 0, maxj = annotations.length; j<maxj; j++){
-                var trovata = false;
-                for(var i= 0, maxi = $.map.annotations.length; i<maxi; i++){
-                    trovata = trovata || (annotations[j].annotation_id == $.map.annotations[i].annotation_id);
-                }
-                if(trovata){
-                    annotations.splice(0,1);
-                    j--;
-                }
+            if (!trovata) {
+                //$.map.annotations.splice(i, 1);
+                $.map.removeAnnotation($.map.annotations[i]);
+                i--;
             }
-            Ti.API.debug('MapView: annotations (scelta) ' + JSON.stringify(annotations));
         }
-        // aggiungo le nuove annotazioni alla mappa.
-        $.map.addAnnotations(annotations);
+        mal = $.map.annotations.length;
+        Ti.API.debug("$.map.annotations ("+ mal + "): " + JSON.stringify($.map.annotations));
+        Ti.API.debug("annotations: " + JSON.stringify(annotations));
 
-        Ti.API.debug('\nMapView:   $.map.annotations (aggiunto)' + JSON.stringify($.map.annotations));
-        nQueryHit = 0;
-        nQuery = 0;
-        annotations = [];
+        Ti.API.debug('\npulizia nuove annotazioni...');
+        // tra le nuove annotazioni tolgo quelle già mostrate
+        for (var j = 0; j < annotations.length; j++) {
+            var trovata = false;
+            for (var i = 0; i < $.map.annotations.length; i++) {
+                trovata = trovata || (annotations[j].annotation_id == $.map.annotations[i].annotation_id);
+            }
+            if (trovata) {
+                annotations.splice(j, 1);
+                j--;
+            }
+        }
+        mal = $.map.annotations.length;
+        Ti.API.debug("$.map.annotations ("+ mal + "): " + JSON.stringify($.map.annotations));
+        Ti.API.debug("annotations: " + JSON.stringify(annotations));
+
+        // aggiungo le nuove annotazioni alla mappa.
+        Ti.API.debug('\naggiorno mappa...');
+        $.map.addAnnotations(annotations);
+        mal = $.map.annotations.length;
+        Ti.API.debug("$.map.annotations ("+ mal + "): " + JSON.stringify($.map.annotations));
+        Ti.API.debug("annotations: " + JSON.stringify(annotations));
     }else{
-        Ti.API.info('MapView:   in attesa del ritorno di ' + (nQuery - nQueryHit) + ' query.');
+
+        // aggiungo le nuove annotazioni alla mappa.
+        Ti.API.debug('\naggiorno mappa...');
+        $.map.addAnnotations(annotations);
+        mal = $.map.annotations.length;
+        Ti.API.debug("$.map.annotations ("+ mal + "): " + JSON.stringify($.map.annotations));
+        Ti.API.debug("annotations: " + JSON.stringify(annotations));
     }
-})
+}
 
 /**
  * Operatore modulo
@@ -172,17 +173,6 @@ function getBoxes(region){
     return boxes;
 }
 
-function chechGpsService(){
-    if (Ti.Geolocation.locationServicesEnabled) {
-        // perform other operations with Ti.Geolocation
-        Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_LOW);
-        return true;
-    } else {
-        alert('Please enable location services');
-        return false;
-    }
-}
-
 /**
  * Handler del click su un segnaposto della mappa.
  * @param {ModulesMapViewEvent} evt evento passato allo handler al momento della chiamata.
@@ -292,8 +282,9 @@ function clearMap(annotationId){
  * La mappa viene così aggiornata con i segnaposti per le segnalazioni
  * scaricate e per la posizione dell'utente aggiornata.
  *
- * Durante l'aggiornamento i segnaposti già presenti vengono rimossi tranne
- * quello memorizzato in 'annotationToKeep'. (vedi 'clearMap()')
+ * Durante l'aggiornamento vengono rimossi dalla mappa le annotazioni che non
+ * sono più visibili e vengono aggiunte solo quelle che adesso diventano
+ * visibili. (vedi updateMapAnnotations(...)).
  *
  * @param {{latitude: {number},longitude: {number},latitudeDelta: {number},longitudeDelta: {number},}} region nuova
  * regione da visualizzare nella mappa.
@@ -309,6 +300,29 @@ function updateMap(region) {
         Ti.API.debug("            lat: " + box.BLCorner.lat);
     };
 
+    var getNewAnnotations = function(data){
+        var segnalazioni = data.rows;
+        var localUserId = Alloy.Globals.Georep.getUserId();
+
+        // costruisco un vettore di annotazioni
+        var annotazioni = [];
+        for (var i in segnalazioni) {
+            var utenteSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.userId appena modificata la view sul server
+            var titoloSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.title  appena modificata la view sul server
+            var idSegnalazione = segnalazioni[i].id;
+
+            var newAnnotationOpts = {
+                annotation_id: idSegnalazione,
+                latitude: segnalazioni[i].geometry.coordinates[1],
+                longitude: segnalazioni[i].geometry.coordinates[0],
+                title: titoloSegnalazione,
+                image: (utenteSegnalazione == localUserId) ? Alloy.Globals.PlacemarkImgs.MY_REPORT : Alloy.Globals.PlacemarkImgs.REPORT
+            };
+            annotazioni.push(Alloy.Globals.Map.createAnnotation(newAnnotationOpts));
+        }
+        return annotazioni;
+    };
+
     Ti.API.info("Mappa spostata! (onRegionchanged event fired)");
     Ti.API.debug("    NEW REGION");
     Ti.API.debug("        newLat:      " + region.latitude);
@@ -320,39 +334,85 @@ function updateMap(region) {
         debugBox(boxes[b]);
     }
 
-    nQuery = boxes.length;
-    for (var i in boxes) {
-        Alloy.Globals.Georep.getDocsInBox(boxes[i].BLCorner, boxes[i].TRCorner, function (err, data) {
-            if (err) {
-                Ti.API.info("getDocxInBox(): FAIL");
-                Ti.API.debug("  err: " + JSON.stringify(err));
-            } else {
-                Ti.API.info("getDocxInBox(): SUCCESS");
-
-                var segnalazioni = data.rows;
-                var localUserId = Alloy.Globals.Georep.getUserId();
-
-                // costruisco un vettore di annotazioni
-                var annotazioni = [];
-                for (var i in segnalazioni) {
-                    var utenteSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.userId appena modificata la view sul server
-                    var titoloSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.title  appena modificata la view sul server
-                    var idSegnalazione = segnalazioni[i].id;
-
-                    var newAnnotationOpts = {
-                        annotation_id: idSegnalazione,
-                        latitude: segnalazioni[i].geometry.coordinates[1],
-                        longitude: segnalazioni[i].geometry.coordinates[0],
-                        title: titoloSegnalazione,
-                        image: (utenteSegnalazione == localUserId) ? Alloy.Globals.PlacemarkImgs.MY_REPORT : Alloy.Globals.PlacemarkImgs.REPORT
-                    };
-                    annotazioni.push(Alloy.Globals.Map.createAnnotation(newAnnotationOpts));
+    Alloy.Globals.Georep.getDocsInBox(boxes[0].BLCorner, boxes[0].TRCorner, function (err, data) {
+        if (err) {
+            Ti.API.info("getDocxInBox(): FAIL");
+            Ti.API.debug("  err: " + JSON.stringify(err));
+        } else {
+            Ti.API.info("getDocxInBox(): SUCCESS");
+            // aggiorno la mappa con le annotazioni che ho preso dalla risposta.
+            updateMapAnnotations(getNewAnnotations(data));
+            if (boxes.length == 2){
+                Alloy.Globals.Georep.getDocsInBox(boxes[1].BLCorner, boxes[1].TRCorner, function (err, data) {
+                    if (err) {
+                        Ti.API.info("getDocxInBox(): FAIL");
+                        Ti.API.debug("  err: " + JSON.stringify(err));
+                    } else {
+                        Ti.API.info("getDocxInBox(): SUCCESS");
+                        // aggiorno la mappa con le annotazioni che ho preso dalla risposta.
+                        updateMapAnnotations(getNewAnnotations(data));
+                        if (Ti.Geolocation.locationServicesEnabled){
+                            Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_LOW);
+                            Ti.Geolocation.getCurrentPosition(function(result){
+                                if(result.success){
+                                    Ti.API.info('updateMap(): posizione locale recuperata.');
+                                    Ti.API.debug('updateMap():   lat = ' + result.coords.latitude);
+                                    Ti.API.debug('updateMap():   lng  = ' + result.coords.longitude);
+                                    $.map.addAnnotation(Alloy.Globals.Map.createAnnotation({
+                                        annotation_id: 'myloc',
+                                        latitude: result.coords.latitude,
+                                        longitude: result.coords.longitude,
+                                        image: Alloy.Globals.PlacemarkImgs.MY_LOCATION,
+                                        showInfoWindow: false
+                                    }));
+                                }else{
+                                    Ti.API.info('updateMap(): impossibile ottenere la posizione locale.');
+                                    Ti.API.debug('updateMap():   error = ' + result.error);
+                                    Ti.API.debug('updateMap():   code  = ' + result.code);
+                                }
+                            });
+                        }else{
+                            Ti.API.info('updateMap(): Location Error - Servizio di localizzazione disabilitato.');
+                            Ti.UI.createAlertDialog({
+                                title: 'Location Error',
+                                message: 'Servizio di localizzazione disabilitato.',
+                                ok: 'OK'
+                            }).show();
+                        }
+                    }
+                });
+            }else{
+                if (Ti.Geolocation.locationServicesEnabled){
+                    Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_LOW);
+                    Ti.Geolocation.getCurrentPosition(function(result){
+                        if(result.success){
+                            Ti.API.info('updateMap(): posizione locale recuperata.');
+                            Ti.API.debug('updateMap():   lat = ' + result.coords.latitude);
+                            Ti.API.debug('updateMap():   lng  = ' + result.coords.longitude);
+                            $.map.addAnnotation(Alloy.Globals.Map.createAnnotation({
+                                annotation_id: 'myloc',
+                                latitude: result.coords.latitude,
+                                longitude: result.coords.longitude,
+                                image: Alloy.Globals.PlacemarkImgs.MY_LOCATION,
+                                showInfoWindow: false
+                            }));
+                        }else{
+                            Ti.API.info('updateMap(): impossibile ottenere la posizione locale.');
+                            Ti.API.debug('updateMap():   error = ' + result.error);
+                            Ti.API.debug('updateMap():   code  = ' + result.code);
+                        }
+                    });
+                }else{
+                    Ti.API.info('updateMap(): Location Error - Servizio di localizzazione disabilitato.');
+                    Ti.UI.createAlertDialog({
+                        title: 'Location Error',
+                        message: 'Servizio di localizzazione disabilitato.',
+                        ok: 'OK'
+                    }).show();
                 }
-
-                $.map.fireEvent('queryHit',{annotations: annotazioni});
             }
-        });
-    }
+        }
+    });
 }
 /**
  * handler dell'evento associato allo spostamento e ridimensionamento della mappa.
@@ -382,19 +442,9 @@ function initMap(getCurrPosResult){
         latitudeDelta:  0.01,
         longitudeDelta: 0.01
     };
-    /* relativo segnaposto di default
-    var myLocOptions = {
-        latitude:      region.latitude,
-        longitude:     region.longitude,
-        title:         "Sei qui!",
-        annotation_id: "myloc",
-        image:         Alloy.Globals.PlacemarkImgs.MY_LOCATION
-    };
-    */
 
     if(!getCurrPosResult.success){
         Ti.API.info("Impostata regione DEFAULT per la mappa.");
-        //Ti.API.info("Impostato segnaposto DEFAULT per la mappa.");
 
         Ti.API.debug("Ti.Geolocation.getCurrentPosition()");
         Ti.API.debug("  code:  " + getCurrPosResult.code);
@@ -411,26 +461,11 @@ function initMap(getCurrPosResult){
         region.latitudeDelta  = 0.06;
         region.longitudeDelta = 0.06;
 
-        /*
-        myLocOptions.latitude      = getCurrPosResult.coords.latitude;
-        myLocOptions.longitude     = getCurrPosResult.coords.longitude;
-        myLocOptions.title         = "Sei qui!";
-        myLocOptions.annotation_id = "myloc";
-        myLocOptions.image         = Alloy.Globals.PlacemarkImgs.MY_LOCATION;
-        */
-
         Ti.API.info("Impostata regione ATTUALE per la mappa.");
-        //Ti.API.info("Impostato segnaposto ATTUALE per la mappa.");
     }
 
     $.map.setRegion(region);
     updateMap(region);
-    /*
-    var myLoc = Alloy.Globals.Map.createAnnotation(myLocOptions);
-
-
-    $.map.addAnnotation(myLoc);
-    */
 }
 
 /**
