@@ -1,15 +1,20 @@
 "#title" : {
-    color: 'black',
+    color: '#58585B',
     font: { fontFamily:'Roboto-Bold', fontSize: '20dp'},
 },
 
 "#date" : {
-	color: 'black',
+	color: '#777777',
 	font: { fontFamily: 'Roboto-Thin', fontSize: '15dp'},
 	top: '15dp'
 },
 
 ".template" : {
 	layout: "vertical",
-	height: '72dp'
+	height: '72dp',
+	backgroundColor: '#EEEEEE'
+},
+'#last' : {
+	separatorColor: '#DADADA',
+	backgroundColor: 'white'
 }

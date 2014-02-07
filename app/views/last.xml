@@ -7,6 +7,8 @@
          message="Loading..."
          location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
          type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
+    
+    <Notification id="toast" platform="android" message="Nessuna Segnalazione" duration="Ti.UI.NOTIFICATION_DURATION_LONG" />
          
     <ListView id="last" defaultItemTemplate="template" allowsSelection="true" onItemclick="dataClick">
 

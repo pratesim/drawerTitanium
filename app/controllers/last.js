@@ -12,6 +12,9 @@ var ndoc = 10; // numero delle segnalazioni scaricate  (in ordine di tempo)
 				alert("Necessaria connessione alla rete...");
 			}
 			else{
+				if (JSON.parse(items).length == 0){
+					$.toast.show();
+				}
 				listSection.setItems(JSON.parse(items));
 			}
 	}
@@ -31,6 +34,9 @@ var ndoc = 10; // numero delle segnalazioni scaricate  (in ordine di tempo)
 					$.progressIndicatorDeterminant.show();
 					Ti.API.info("Partita seconda animazione");
 					
+					if (data.rows.length == 0){
+						$.toast.show();
+					}
 					for (var tmp in data.rows){
 						var item = createOneItem(data.rows[tmp]);
 						Ti.API.debug(JSON.stringify(item));
@@ -52,6 +58,9 @@ var ndoc = 10; // numero delle segnalazioni scaricate  (in ordine di tempo)
 						alert("Errore server...");
 					}
 					else{
+						if (JSON.parse(items).length == 0){
+							$.toast.show();
+						}
 						listSection.setItems(JSON.parse(items));
 					}
 					

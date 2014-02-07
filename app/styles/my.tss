@@ -1,8 +1,13 @@
 "#title" : {
-    color: 'black',
+    color: '#58585B',
     font: { fontFamily:'Roboto-Bold', fontSize: '20dp'},
+    textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
 },
-
 ".template" : {
-	height: '72dp'
+	height: '72dp', 
+	backgroundColor: '#EEEEEE'
+},
+"#my" : {
+	separatorColor: '#DADADA',
+	backgroundColor: 'white'
 }

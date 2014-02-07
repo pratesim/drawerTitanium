@@ -12,6 +12,9 @@ if (Ti.Network.getNetworkType() == Ti.Network.NETWORK_NONE){
 			alert("Necessaria connessione alla rete...");
 		}
 		else{
+			if (JSON.parse(items).length == 0){
+				$.toast.show();
+			}
 			listSection.setItems(JSON.parse(items));
 		}
 }
@@ -32,7 +35,9 @@ else{
 				$.progressIndicatorDeterminant.setMax(data.rows.length);
 				$.progressIndicatorDeterminant.show();
 				Ti.API.info("Partita seconda animazione");
-				
+				if (data.rows.length == 0){
+					$.toast.show();
+				}
 				for (var tmp in data.rows){
 					var item = createOneItem(data.rows[tmp]);
 					Ti.API.debug(JSON.stringify(item));
@@ -54,6 +59,7 @@ else{
 					alert("Errore server...");
 				}
 				else{
+					$.toast.show();
 					listSection.setItems(JSON.parse(items));
 				}
 				
