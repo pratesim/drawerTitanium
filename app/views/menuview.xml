@@ -20,7 +20,7 @@
 			</TableViewRow>
             <TableViewRow class="tableRow" id="rowReporting">
 				<View id="rowContainer">
-					<View id="rowPicFrame" class="rowIcon"/><Label id="rowLabel" class="rowLabel">Segnala</Label>
+					<View id="segnalaIcon" class="rowIcon"/><Label id="rowLabel" class="rowLabel">Segnala</Label>
 				</View>
 			</TableViewRow>
             <TableViewRow class="tableRow" id="row4">

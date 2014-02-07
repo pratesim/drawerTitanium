@@ -48,7 +48,10 @@
 },
 "#rowNewUser":{
     backgroundImage: '/images/ic_action_settings.png'
-}
+},
+"#segnalaIcon":{
+    backgroundImage: '/images/ic_action_edit.png'
+},
 ".rowLabel":{
 	top: 0,
 	left: 10,
