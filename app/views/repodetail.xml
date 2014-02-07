@@ -14,6 +14,8 @@
             </ButtonNames>
         </AlertDialog>
         
+        <Notification id="toast" platform="android" message="Immagine non scaricata" duration="Ti.UI.NOTIFICATION_DURATION_LONG" />
+        
 		<ScrollView id="scrollView">
             <View class="scrollContainer">
                 <Label class="sectionLabel" >NICKNAME</Label>

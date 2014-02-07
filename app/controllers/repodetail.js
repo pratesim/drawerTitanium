@@ -51,40 +51,35 @@ win.addEventListener("open", function() {
 	}
 	});
 
-
-	// provo a scaricare dati del segnalatore
-	service.getUserById(Alloy.Globals.query.userId, function (err, data){
-		if (err){
-			Ti.API.info("Impossibile scaricare dati segnalatore dal server");
-			Ti.API.debug(JSON.stringify(err));
-			// se non li scarico provo a caricarli da locale
-			var localReporter = Ti.App.Properties.getString(Alloy.Globals.query.userId, "null");
-			if (localReporter == "null"){
-				//  se non ci sono in locale errore
-				$.nicklabel.setText("Non disponibile");
-				$.maillabel.setText("Non disponibile");
-				win.fireEvent("repoDownloaded", {downloaded: "reporter"});
+	
+	if(Titanium.Network.getOnline() == true){
+		// se sono online provo a scaricare dati del segnalatore, in modo da avere la mail più aggiornata possibile
+		service.getUserById(Alloy.Globals.query.userId, function (err, data){
+			if (err){
+				Ti.API.info("Impossibile scaricare dati segnalatore dal server");
+				Ti.API.debug(JSON.stringify(err));
+				// se non li scarico provo a caricarli da locale
+				
+				loadLocalReporter(Alloy.Globals.query.userId);
 			}
 			else{
-				// se ci sono in locale li mostro
-				$.nicklabel.setText(JSON.parse(localReporter).nick);
-				$.maillabel.setText(JSON.parse(localReporter).mail);
+				// se li scarico li salvo in locale
+				Ti.API.info("Dati segnalatore scaricati correttamente");
+				Ti.API.debug(JSON.stringify(data));
+				segnalatoreLocale.nick = data.nick;
+				segnalatoreLocale.mail = data.mail;
+				$.nicklabel.setText(data.nick);
+				$.maillabel.setText(data.mail);
+				Ti.App.Properties.setString(Alloy.Globals.query.userId, JSON.stringify(segnalatoreLocale));
+				Ti.API.info("Dati segnalatore salvati localmente");
 				win.fireEvent("repoDownloaded", {downloaded: "reporter"});
-			}	
-		}
-		else{
-			// se li scarico li salvo in locale
-			Ti.API.info("Dati segnalatore scaricati correttamente");
-			Ti.API.debug(JSON.stringify(data));
-			segnalatoreLocale.nick = data.nick;
-			segnalatoreLocale.mail = data.mail;
-			$.nicklabel.setText(data.nick);
-			$.maillabel.setText(data.mail);
-			Ti.App.Properties.setString(Alloy.Globals.query.userId, JSON.stringify(segnalatoreLocale));
-			Ti.API.info("Dati segnalatore salvati localmente");
-			win.fireEvent("repoDownloaded", {downloaded: "reporter"});
-		}
-	});
+			}
+		});
+	}
+	else {
+		// se sono offline provo direttamente a caricare i dati del segnalatore da locale
+		loadLocalReporter(Alloy.Globals.query.userId);
+	}
 	
 	// cerco segnalazione in locale
 	var localRepo = Ti.App.Properties.getString(Alloy.Globals.query.repoId, "null");
@@ -119,42 +114,14 @@ win.addEventListener("open", function() {
 						Ti.API.info("Immagine scaricata");
 						// tutta la segnalazione è stata scaricata correttamente allora la salvo in locale
 						Ti.API.info("Segnalazione scaricata con successo: " + JSON.stringify(data));
-						$.repoimage.image = f.nativePath;
-						/*$.repoimage.image = imgBlob;*/
 						
-						$.descriptionlabel.setText(data.msg);
-						$.coordlatlabel.setText(Alloy.Globals.decToSes(data.loc.latitude) + " °N");
-						$.coordlonlabel.setText(Alloy.Globals.decToSes(data.loc.longitude) + " °E");
-						$.titlelabel.setText(data.title);
-						$.datalabel.setText(Alloy.Globals.dataToString(data.date));
-						
-						Ti.Geolocation.reverseGeocoder(data.loc.latitude, data.loc.longitude, function (address){
-							Ti.API.debug("traduzione coordinate: " + JSON.stringify(address));
-							var indirizzo = address.success == true ? address.places[0].displayAddress : "Non disponibile";
-							$.addresslabel.setText(indirizzo);
-							
-							// salvo in locale la segnalazione
-							segnalazioneLocale._id = data._id;
-							segnalazioneLocale.indirizzo = indirizzo;
-							segnalazioneLocale.title = data.title;
-							segnalazioneLocale.msg = data.msg;
-							segnalazioneLocale.data = data.date;
-							segnalazioneLocale.loc.latitude = data.loc.latitude;
-							segnalazioneLocale.loc.longitude = data.loc.longitude;
-							segnalazioneLocale.img = f.nativePath;
-							Ti.App.Properties.setString(data._id, JSON.stringify(segnalazioneLocale));
-							
-							var localeOk = Ti.App.Properties.getString(data._id, "null");
-							localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
-							
-							win.fireEvent("repoDownloaded", {downloaded: "repo"});
-						});	
+						loadRepo(data, f.nativePath);
 					},
 					onerror: function(e){
 						Ti.API.info("impossibile scaricare l'immagine dal server");
 						Ti.API.debug(JSON.stringify(e));
-						$.repodetailpb.hide();
-						alert("Immagine segnalazione non disponibile");
+						loadRepo(data, "null");
+						$.toast.show();
 					}
 				});
 				
@@ -188,4 +155,60 @@ win.addEventListener("open", function() {
 /* funzione eseguita quando viene premuto il tasto ok sulla alert che conferma l'invio della segnalazione */
 function alertconfsend (ev) {
   win.close();
+}
+
+/* carica la segnalazione data nella scrollView e la salva localmente
+ * @data: oggetto contenente i dati della segnalazione da caricare
+ * @fileImg: URL del file dove è stata salvata l'immagine della segnalazione.
+ *           se fileImg == "null" la segnalazione verrà caricata con l'immagine di default /placeholder.png
+ */ 
+function loadRepo(data, fileImg){
+	$.repoimage.image = fileImg == "null" ? "/placeholder.png" : fileImg;
+	$.descriptionlabel.setText(data.msg);
+	$.coordlatlabel.setText(Alloy.Globals.decToSes(data.loc.latitude) + " °N");
+	$.coordlonlabel.setText(Alloy.Globals.decToSes(data.loc.longitude) + " °E");
+	$.titlelabel.setText(data.title);
+	$.datalabel.setText(Alloy.Globals.dataToString(data.date));
+	
+	Ti.Geolocation.reverseGeocoder(data.loc.latitude, data.loc.longitude, function (address){
+		Ti.API.debug("traduzione coordinate: " + JSON.stringify(address));
+		var indirizzo = address.success == true ? address.places[0].displayAddress : "Non disponibile";
+		$.addresslabel.setText(indirizzo);
+		
+		// salvo in locale la segnalazione
+		segnalazioneLocale._id = data._id;
+		segnalazioneLocale.indirizzo = indirizzo;
+		segnalazioneLocale.title = data.title;
+		segnalazioneLocale.msg = data.msg;
+		segnalazioneLocale.data = data.date;
+		segnalazioneLocale.loc.latitude = data.loc.latitude;
+		segnalazioneLocale.loc.longitude = data.loc.longitude;
+		segnalazioneLocale.img = fileImg == "null" ? "/placeholder.png" : fileImg;
+		Ti.App.Properties.setString(data._id, JSON.stringify(segnalazioneLocale));
+		
+		var localeOk = Ti.App.Properties.getString(data._id, "null");
+		localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
+		
+		win.fireEvent("repoDownloaded", {downloaded: "repo"});
+	});	
+}
+
+/* carica nella scrollview nick e mail del segnalatore salvati in locale se ci sono;
+ * altrimenti setta nick e mail alla stringa "non disponibile"
+ * @reporterId: identificatore del segnalatore di cui si vogliono caricare nick e mail
+ */
+function loadLocalReporter(reporterId){
+	var localReporter = Ti.App.Properties.getString(reporterId, "null");
+	if (localReporter == "null"){
+		//  se non ci sono in locale errore
+		$.nicklabel.setText("Non disponibile");
+		$.maillabel.setText("Non disponibile");
+		win.fireEvent("repoDownloaded", {downloaded: "reporter"});
+	}
+	else{
+		// se ci sono in locale li mostro
+		$.nicklabel.setText(JSON.parse(localReporter).nick);
+		$.maillabel.setText(JSON.parse(localReporter).mail);
+		win.fireEvent("repoDownloaded", {downloaded: "reporter"});
+	}	
 }
