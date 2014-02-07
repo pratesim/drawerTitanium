@@ -150,6 +150,36 @@ function updateGeorepUser(){
     Ti.API.debug("  Georep.getUser(): " + JSON.stringify(Alloy.Globals.Georep.getUser()));
 }
 
+// controllo la presenza di Google Play Service necessario per la mappa.
+var rc = Alloy.Globals.Map.isGooglePlayServicesAvailable();
+var dialog = Ti.UI.createAlertDialog({
+    title: 'Google Play Service',
+    ok: 'OK'
+});
+dialog.addEventListener('click', function(evt){
+    Ti.Android.currentActivity.finish();
+});
+switch (rc) {
+    case Alloy.Globals.Map.SUCCESS:
+        Ti.API.info('Google Play services is installed.');
+        break;
+    case Alloy.Globals.Map.SERVICE_MISSING:
+        dialog.setMessage('Google Play services non trovato.\nInstallare Google Play services da Google Play store.');
+        break;
+    case Alloy.Globals.Map.SERVICE_VERSION_UPDATE_REQUIRED:
+        dialog.setMessage('Google Play services non aggiornato.\nAggiornare Google Play services.');
+        break;
+    case Alloy.Globals.Map.SERVICE_DISABLED:
+        dialog.setMessage('Google Play services non abilitato.\nAbilitare Google Play services.');
+        break;
+    case Alloy.Globals.Map.SERVICE_INVALID:
+        dialog.setMessage('Google Play services non può essere autenticato.\nReinstallare Google Play services.');
+        break;
+    default:
+        dialog.setMessage('Errore sonosciuto.');
+        break;
+}
+
 // inizializzo il sistema di switching.
 
 // vettore con gli ID delle view che verrano gestite dal sistema di switching
