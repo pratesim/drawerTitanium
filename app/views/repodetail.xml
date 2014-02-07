@@ -5,6 +5,17 @@
          location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"
          type="Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT" />
          
+        <AlertDialog id="dialog" onClick="alertconfsend" title="Stato segnalazione"
+            message="Errore Server... Prova più tardi!">
+
+            <!-- The ButtonNames tag sets the buttonNames property. -->
+            <ButtonNames>
+                <ButtonName>OK</ButtonName>
+            </ButtonNames>
+        </AlertDialog>
+        
+        <Notification id="toast" platform="android" message="Immagine non scaricata" duration="Ti.UI.NOTIFICATION_DURATION_LONG" />
+        
 		<ScrollView id="scrollView">
             <View class="scrollContainer">
                 <Label class="sectionLabel" >NICKNAME</Label>
