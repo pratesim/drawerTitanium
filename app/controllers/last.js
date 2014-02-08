@@ -101,7 +101,21 @@ function createItems(v){
 	var dataItem = [];
 	var item = {};
 	for(var tmp in v){
-	  item = {titolo: {text: v[tmp].value.title}, data: {text: Alloy.Globals.dataToString(v[tmp].key)}, properties: {itemId: v[tmp].id}, userId: v[tmp].value.userId};	
+	  item = {
+          icona: {
+              image: (v[tmp].value.userId == Alloy.Globals.Georep.getUserId()) ? Alloy.Globals.PlacemarkImgs.MY_REPORT : Alloy.Globals.PlacemarkImgs.REPORT
+          },
+          titolo: {
+              text: v[tmp].value.title
+          },
+          data: {
+              text: Alloy.Globals.dataToString(v[tmp].key)
+          },
+          properties: {
+              itemId: v[tmp].id
+          },
+          userId: v[tmp].value.userId
+      };
 	  dataItem.push(item);
 	  Ti.API.debug("Aggiunto al vettore oggetto: ");
 	  Ti.API.debug(JSON.stringify(item));
@@ -114,6 +128,20 @@ function createOneItem(obj){
 	Ti.API.info("CreateOneItem chiamata");
 	Ti.API.debug("Data in millisecondi: " + obj.key);
 	Ti.API.debug("Data: " + Alloy.Globals.dataToString(obj.key));
-	return {titolo: {text: obj.value.title}, data: {text: Alloy.Globals.dataToString(obj.key)}, properties: {itemId: obj.id}, userId: obj.value.userId};	
+	return {
+        icona: {
+            image: (obj.value.userId == Alloy.Globals.Georep.getUserId()) ? Alloy.Globals.PlacemarkImgs.MY_REPORT : Alloy.Globals.PlacemarkImgs.REPORT
+        },
+        titolo: {
+            text: obj.value.title
+        },
+        data: {
+            text: Alloy.Globals.dataToString(obj.key)
+        },
+        properties: {
+            itemId: obj.id
+        },
+        userId: obj.value.userId
+    };
 };
 

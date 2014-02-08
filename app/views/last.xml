@@ -20,6 +20,7 @@
                      Require tag to include a view that only contains an ItemTemplate -->
 
                 <ItemTemplate name="template" class="template">
+                    <ImageView bindId="icona" class="templateIcon"/>
                     <Label bindId="titolo" id="title" />
                     <Label bindId="data" id="date" />
                 </ItemTemplate>

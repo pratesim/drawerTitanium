@@ -1,20 +1,36 @@
 "#title" : {
     color: '#58585B',
     font: { fontFamily:'Roboto-Bold', fontSize: '20dp'},
+    top: '12dp'
 },
 
 "#date" : {
 	color: '#777777',
 	font: { fontFamily: 'Roboto-Thin', fontSize: '15dp'},
-	top: '15dp'
+	bottom: '12dp'
 },
 
 ".template" : {
-	layout: "vertical",
+	layout: "absolute",
 	height: '72dp',
-	backgroundColor: '#EEEEEE'
+	backgroundColor: '#EEEEEE',
+	width: Ti.UI.FILL
 },
 '#last' : {
 	separatorColor: '#DADADA',
 	backgroundColor: 'white'
+},
+"Label":{
+    height: '24dp',
+    left: '80dp',
+    right: '16dp',
+    textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
+    width: Ti.UI.FILL,
+    backgroundColor: 'transparent'
+},
+".templateIcon":{
+    height: '48dp',
+    width: '48dp',
+    top: '12dp',
+    left: '16dp',
 }
