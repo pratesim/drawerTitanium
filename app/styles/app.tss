@@ -1,0 +1,3 @@
+"Window":{
+    orientationModes: [Ti.UI.PORTRAIT,Ti.UI.UPSIDE_PORTRAIT]
+}
