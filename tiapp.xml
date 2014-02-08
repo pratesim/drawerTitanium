@@ -78,6 +78,7 @@
 
     <modules>
         <module platform="android">ti.map</module>
+        <module platform="android">ti.imagefactory</module>
     </modules>
 
     <plugins>

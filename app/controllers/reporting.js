@@ -3,6 +3,7 @@ var actionBar;
 var service = Alloy.Globals.Georep;
 var pictureBlob;
 var pictureBase64 = "";
+var ImageFactory = require('ti.imagefactory');
 
 win.addEventListener("open", function() {
 	Ti.API.info('Window "dettagli segnalazione" aperta');
@@ -31,7 +32,10 @@ function getPhoto(){
 			// called when media returned from the camera
 			Ti.API.debug('Foto scattata con successo');
 			// pictureBlob verrà usata dentro sendRepo per salvare localmente la foto in caso di invio con successo della segnalazione
-			pictureBlob = Alloy.Globals.resizePhoto(event.media);
+            // ridimensione la foto scattata se supera le dimensioni di 2048x2048.
+            var resizedMedia = Alloy.Globals.resizePhoto(event.media);
+            // comprimo la foto ad un JPEG di qualità media (50%).
+            pictureBlob = ImageFactory.compress(resizedMedia, 0.5);
 			// pictureBase64 verrà usata come attachments della segnalazione da inviare al server couchdb
 			pictureBase64 = Ti.Utils.base64encode(pictureBlob);
 			$.repoimage.setImage(pictureBlob);
