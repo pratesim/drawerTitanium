@@ -1,6 +1,8 @@
 "#menuView":{
 	layout: 'vertical',
-	backgroundColor: '#3D3D3D'
+	backgroundColor: '#3D3D3D',
+	width: '300dp',
+	left: '0dp'
 },
 "#menuTopBar":{
 	width: Ti.UI.FILL,

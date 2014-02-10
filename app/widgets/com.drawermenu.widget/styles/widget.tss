@@ -1,10 +1,10 @@
 "#menuview":{
-	backgroundColor:"#cacaca",
+	backgroundColor:"black",
 	height: Ti.UI.FILL,
 	width: Ti.UI.FILL
 },
 "#mainview":{
-	backgroundColor:"red",
+	backgroundColor:"black",
 	height: Ti.UI.FILL,
 	width: Ti.UI.FILL
 },

@@ -218,6 +218,11 @@ menuView.menuTable.addEventListener('click',function(e){
     }
 });
 
+// anche il click sulla barra in alto al menù chiude il drawer
+menuView.menuTopBar.addEventListener('click',function(e){
+    $.drawermenu.showhidemenu();
+});
+
 // add menu view to container exposed by widget
 $.drawermenu.drawermenuview.add(menuView.getView()); // get view is an Alloy Method
 

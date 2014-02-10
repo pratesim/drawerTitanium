@@ -3,17 +3,20 @@ var menuOpen = false;
 var showhidemenu=function(){
 	if (menuOpen){
 		moveTo="0";
+        opacityTo='1';
 		menuOpen=false;
 	}else{
 		moveTo="300dp";
+        opacityTo='0.40';
 		menuOpen=true;
 	}
 
 	$.drawermainview.width=Ti.Platform.displayCaps.platformWidth;
 	$.drawermainview.animate({
 		left:moveTo,
+        opacity: opacityTo,
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration:100
+		duration:150
 	});
 };
 
