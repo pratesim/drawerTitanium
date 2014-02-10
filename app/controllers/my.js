@@ -99,7 +99,7 @@ function createItems(v){
 	var dataItem = [];
 	var item = {};
 	for(var tmp in v){
-	  item = {titolo: {text: v[tmp].value}, properties: {itemId: v[tmp].id}, userId: v[tmp].key};	
+	  item = {titolo: {text: v[tmp].value}, properties: {itemId: v[tmp].id, searchableText: v[tmp].value}, userId: v[tmp].key};	
 	  dataItem.push(item);
 	  Ti.API.debug("Aggiunto al vettore oggetto: ");
 	  Ti.API.debug(JSON.stringify(item));
@@ -111,6 +111,6 @@ function createItems(v){
 function createOneItem(obj){
 	Ti.API.info("CreateOneItem chiamata");
 	
-	return {titolo: {text: obj.value}, properties: {itemId: obj.id}, userId: obj.key};	
+	return {titolo: {text: obj.value}, properties: {itemId: obj.id, searchableText: obj.value}, userId: obj.key};	
 };
 

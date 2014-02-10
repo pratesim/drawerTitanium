@@ -11,7 +11,11 @@
     <Notification id="toast" platform="android" message="Nessuna Segnalazione" duration="Ti.UI.NOTIFICATION_DURATION_LONG" />
       
     <ListView id="my" defaultItemTemplate="template" allowsSelection="true" onItemclick="dataClick">
-			
+			<!-- Sets ListView's searchView property.
+                 For Android, you can also do <SearchView platform="android" />
+                 to use a Ti.UI.Android.SearchView instead of a search bar. -->
+             <SearchView id="searchView" ns="Ti.UI.Android" platform="android" hintText="Cerca" />
+             <SearchBar platform="ios" id="searchBar"/>
             <!-- The Templates tag sets the ListView's templates property -->
 
             <Templates>

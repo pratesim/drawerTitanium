@@ -18,7 +18,7 @@
 },
 '#last' : {
 	separatorColor: '#DADADA',
-	backgroundColor: 'white'
+	backgroundColor: 'white',
 },
 "Label":{
     height: '24dp',
@@ -34,3 +34,4 @@
     top: '12dp',
     left: '16dp',
 }
+
