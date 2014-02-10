@@ -117,7 +117,7 @@ var switchTo = function(id){
         Ti.API.info("    switches." + id + " = " + switches[id]);
 
         // coloro il bottone della view selezionata.
-        buttons[id].setBackgroundColor("#33B5E5");
+        buttons[id].setBackgroundColor("#35AC19");
         // cambio il colore del testo del label relativo
         buttons[id].getChildren()[0].getChildren()[1].setColor("white");
         // cambio l'icona mettendo quella chiara
