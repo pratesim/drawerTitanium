@@ -1,5 +1,5 @@
 <Alloy>
-	<Window id="winreporting" fullscreen="false">
+	<Window id="winreporting" fullscreen="false" windowSoftInputMode="Ti.UI.Android.SOFT_INPUT_STATE_ALWAYS_HIDDEN">
 		<ProgressIndicator ns="Ti.UI.Android" platform="android" id="progressIndicatorIndeterminant"
          message="Invio segnalazione..."
          location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"

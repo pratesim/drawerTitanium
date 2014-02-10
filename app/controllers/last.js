@@ -112,7 +112,8 @@ function createItems(v){
               text: Alloy.Globals.dataToString(v[tmp].key)
           },
           properties: {
-              itemId: v[tmp].id
+              itemId: v[tmp].id,
+              searchableText: v[tmp].value.title
           },
           userId: v[tmp].value.userId
       };
@@ -139,7 +140,8 @@ function createOneItem(obj){
             text: Alloy.Globals.dataToString(obj.key)
         },
         properties: {
-            itemId: obj.id
+            itemId: obj.id,
+            searchableText: obj.value.title
         },
         userId: obj.value.userId
     };

@@ -1,5 +1,5 @@
 <Alloy>
-    <Window id="newUserWin" class="container" fullscreen="false">
+    <Window id="newUserWin" class="container" fullscreen="false" windowSoftInputMode="Ti.UI.Android.SOFT_INPUT_STATE_ALWAYS_HIDDEN">
 <!--
         <View id="mainTopBar">
             <View id="appIcon"/>

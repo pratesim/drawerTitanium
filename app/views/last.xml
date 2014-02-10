@@ -11,7 +11,6 @@
     <Notification id="toast" platform="android" message="Nessuna Segnalazione" duration="Ti.UI.NOTIFICATION_DURATION_LONG" />
          
     <ListView id="last" defaultItemTemplate="template" allowsSelection="true" onItemclick="dataClick">
-
             <!-- The Templates tag sets the ListView's templates property -->
 
             <Templates>

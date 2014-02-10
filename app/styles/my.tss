@@ -10,4 +10,8 @@
 "#my" : {
 	separatorColor: '#DADADA',
 	backgroundColor: 'white'
+},
+"#searchView" : {
+	iconified: true,
+	top: '5dp',
 }
