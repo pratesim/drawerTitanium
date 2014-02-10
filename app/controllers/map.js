@@ -184,10 +184,13 @@ function markerClick(evt) {
 
     // se si clicca sul titolo del segnaposto apriamo la segnalazione
     // sempre che il segnaposto non sia la posizione corrente.
-    if (evt.clicksource == "title"){
+    if (evt.clicksource == "infoWindow"){
         if (evt.annotation.annotation_id != "myloc"){
             // aprire la view del dettaglio di questa segnalazione:
             // evt.annotation.annotation_id
+            Alloy.Globals.query.userId = evt.annotation.userId;
+            Alloy.Globals.query.repoId = evt.annotation.annotation_id;
+            Alloy.createController('repodetail').winrepodetail.open();
         }
     }else if (evt.clicksource == "pin"){
         if (evt.annotation_id != "myloc"){
@@ -307,15 +310,16 @@ function updateMap(region) {
         // costruisco un vettore di annotazioni
         var annotazioni = [];
         for (var i in segnalazioni) {
-            var utenteSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.userId appena modificata la view sul server
-            var titoloSegnalazione = segnalazioni[i].value; // da sostituire con segnalazioni[i].value.title  appena modificata la view sul server
+            var utenteSegnalazione = segnalazioni[i].value.userId; // da sostituire con segnalazioni[i].value.userId appena modificata la view sul server
+            var titoloSegnalazione = segnalazioni[i].value.title; // da sostituire con segnalazioni[i].value.title  appena modificata la view sul server
             var idSegnalazione = segnalazioni[i].id;
-
+			
             var newAnnotationOpts = {
                 annotation_id: idSegnalazione,
                 latitude: segnalazioni[i].geometry.coordinates[1],
                 longitude: segnalazioni[i].geometry.coordinates[0],
                 title: titoloSegnalazione,
+                userId: utenteSegnalazione,
                 image: (utenteSegnalazione == localUserId) ? Alloy.Globals.PlacemarkImgs.MY_REPORT : Alloy.Globals.PlacemarkImgs.REPORT
             };
             annotazioni.push(Alloy.Globals.Map.createAnnotation(newAnnotationOpts));
