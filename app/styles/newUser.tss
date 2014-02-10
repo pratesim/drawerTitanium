@@ -39,13 +39,7 @@
 	layout: "vertical",
 	width: Ti.UI.FILL,
 	height: Ti.UI.FILL,
-	//backgroundColor:'white'
-	backgroundGradient: {
-        type: 'linear',
-        startPoint: { x: '0%', y: '0%' },
-        endPoint: { x: '0%', y: '100%' },
-        colors: [ { color: '#050607', offset: 0.0}, { color: '#272D33', offset: 1.0 } ],
-    }
+	backgroundColor:'#EEEEEE'
 },
 ".scrollContainer":{
     top: "20dp",
@@ -62,7 +56,7 @@
         fontWeight: "bold"
     },
     textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
-    color: "#BEBEBE",
+    color: "#58585B",
     left: "0dp",
     width: Ti.UI.FILL,
     height: Ti.UI.SIZE
@@ -79,7 +73,7 @@
     height: Ti.UI.SIZE
 },
 ".separationLine":{
-	backgroundColor: "#494C4F",
+	backgroundColor: "#BEBEBE",
 	height: "3dp",
 	width: Ti.UI.FILL,
 	top: "0dp"
@@ -87,7 +81,7 @@
 "TextField":{
     top: "5dp",
     left: "0dp",
-    color: "white",
+    color: "black",
     textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
     width: Ti.UI.FILL
 },
