@@ -62,7 +62,7 @@
                 <activity
                     android:configChanges="keyboardHidden|orientation"
                     android:name="org.appcelerator.titanium.TiActivity"
-                    android:screenOrientation="portrait" android:theme="@android:style/Theme.Holo"/>
+                    android:screenOrientation="portrait"  android:theme="@android:style/Theme.Holo.Light"/>
             </application>
         </manifest>
     </android>
