@@ -2,6 +2,6 @@
 	backgroundColor:"white",
 	//orientationModes: [Ti.UI.PORTRAIT,Ti.UI.LANDSCAPE_LEFT,Ti.UI.LANDSCAPE_RIGHT,Ti.UI.UPSIDE_PORTRAIT],
 	navBarHidden: true,
-	exitOnClose: true,
+	exitOnClose: false,
 	windowSoftInputMode: "Ti.UI.Android.SOFT_INPUT_STATE_ALWAYS_HIDDEN"
 }

@@ -25,3 +25,10 @@ Ti.Gesture.addEventListener('orientationchange', function(e) {
 });
 
 exports.showhidemenu=showhidemenu;
+
+exports.DRAWERMENU_STATUS_OPEN = true;
+exports.DRAWERMENU_STATUS_CLOSE = false;
+
+exports.getMenuStatus = function(){
+    return menuOpen;
+}

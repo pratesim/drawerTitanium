@@ -218,6 +218,26 @@ menuView.menuTable.addEventListener('click',function(e){
     }
 });
 
+$.index.addEventListener('androidback',function(evt){
+    if($.drawermenu.getMenuStatus() == $.drawermenu.DRAWERMENU_STATUS_OPEN){
+        $.drawermenu.showhidemenu();
+    }else{
+        var exitAlert = Ti.UI.createAlertDialog({
+            title: 'Degrado Ambientale',
+            message: 'L\'applicazione Degrado Ambientale verrà chiusa.\nContinuare?',
+            buttonNames: ['OK', 'ANNULLA'],
+            cancel: 1
+        });
+        exitAlert.addEventListener('click',function(evt){
+            if (evt.index != evt.source.cancel){
+                if(Ti.Platform.osname === 'android')
+                        Titanium.Android.currentActivity.finish();
+            }
+        });
+        exitAlert.show();
+    }
+});
+
 // anche il click sulla barra in alto al menù chiude il drawer
 menuView.menuTopBar.addEventListener('click',function(e){
     $.drawermenu.showhidemenu();
