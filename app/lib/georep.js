@@ -555,9 +555,16 @@ Georep.prototype.getDoc = function(docId, attachments, callback){
 					callback(undefined,JSON.parse(this.responseText));
 			},
 			onerror: function(e){
-				if(callback)
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
 					callback(JSON.parse(this.responseText),undefined);
-			}
+			},
+            timeout: constants.defaultTimeout
 		});
 		
 		client.open("GET", url);
@@ -617,16 +624,23 @@ Georep.prototype.getDocsInBox = function(bl_corner, tr_corner, callback){
 		                tr_corner.lng + ',' + tr_corner.lat;
 		                
 		var url = this.getDb().getURLDB() + '/_design/' + viewPath + queryOpts;
-		
+
 		var client = Ti.Network.createHTTPClient({
 			onload: function(data){
 				if(callback)
 					callback(undefined, JSON.parse(this.responseText));
 			},
-			onerror: function(e){
-				if(callback)
-					callback(JSON.parse(this.responseText),undefined);
-			}
+            onerror: function(e){
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
+                    callback(JSON.parse(this.responseText),undefined);
+            },
+            timeout: constants.defaultTimeout
 		});
 		client.open("GET", url);
 		client.setRequestHeader("Authorization", 'Basic ' + this.getUser().getBase64());
@@ -673,15 +687,24 @@ Georep.prototype.getLastDocs = function(nDocs, callback){
 
     else {
         var url = this.getDb().getURLDB() + '/_design/' + viewPath + queryOpts;
+
         var client = Ti.Network.createHTTPClient({
             onload: function(data){
                 if(callback)
                     callback(undefined, JSON.parse(this.responseText));
             },
             onerror: function(e){
-                if(callback)
+                Ti.API.error('georep getLastDocs(): ' + JSON.stringify(e));
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
-            }
+            },
+            timeout: constants.defaultTimeout
         });
         client.open("GET", url);
         client.setRequestHeader("Authorization", 'Basic ' + this.getUser().getBase64());
@@ -721,15 +744,23 @@ Georep.prototype.getUserDocs = function(userId, callback){
 		};
 	else {
 		var url = this.getDb().getURLDB() + '/_design/' + viewPath + queryOpts;
+
 		var client = Ti.Network.createHTTPClient({
 			onload: function(data){
 				if(callback)
 					callback(undefined, JSON.parse(this.responseText));
 			},
-			onerror: function(e){
-				if(callback)
-					callback(JSON.parse(this.responseText),undefined);
-			}
+            onerror: function(e){
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
+                    callback(JSON.parse(this.responseText),undefined);
+            },
+            timeout: constants.defaultTimeout
 		});
 		client.open("GET", url);
 		client.setRequestHeader("Authorization", 'Basic ' + this.getUser().getBase64());
@@ -792,15 +823,23 @@ Georep.prototype.postDoc = function(doc, attach, callback){
         }
 
         var url = this.getDb().getURLDB();
+
         var client = Ti.Network.createHTTPClient({
             onload: function(data){
                 if(callback)
                     callback(undefined,JSON.parse(this.responseText));
             },
-            error: function(e){
-                if(callback)
+            onerror: function(e){
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
-            }
+            },
+            timeout: constants.defaultTimeout
         });
         client.open("POST", url);
 
@@ -827,17 +866,23 @@ Georep.prototype.checkRemoteUser = function(callback){
 		// richiedo info sul db, usando come credenziali di accesso quelle dell'utente locale, 
 		// se l'accesso al db viene negato, significa che l'utente non è registrato
 		var url = this.getDb().getURLServer();
+
 		var client = Ti.Network.createHTTPClient({
 			onload: function(data){
 				callback(undefined, {isRegistered: true});
 			},
 			onerror: function(e){
-				if (e.error == "Unauthorized") {
+                if (e.error == "Unauthorized") {
 					callback(undefined, {isRegistered: false});
-				} else {
-					callback(JSON.parse(this.responseText), undefined);
-				}
-			}
+				} else if (isDnsErr(e.error)){
+                    callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else {
+                    callback(JSON.parse(this.responseText),undefined);
+                }
+			},
+            timeout: constants.defaultTimeout
 		});
 		client.open("GET", url);
 		client.setRequestHeader("Authorization", 'Basic ' + this.getUser().getBase64());
@@ -858,7 +903,8 @@ Georep.prototype.signupRemoteUser = function(callback){
 					};
 	} else {
 	
-		var url = makeSignupUrlRequest(this);
+		var url = makeSignupUrlRequest(this);;
+
 		var client = Ti.Network.createHTTPClient({
 			onload: function(data){
 				// console.log("Utente registrato con successo! " +data);
@@ -866,12 +912,17 @@ Georep.prototype.signupRemoteUser = function(callback){
 					callback(undefined, JSON.parse(this.responseText));
 				}
 			},
-			onerror: function(e){
-				// console.log("Utente NON registrato! " + e.err);
-				if (callback){
-					callback(JSON.parse(this.responseText), undefined);
-				}
-			}
+            onerror: function(e){
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
+                    callback(JSON.parse(this.responseText),undefined);
+            },
+            timeout: constants.defaultTimeout
 		});
 		
 		client.open('POST', url);
@@ -949,11 +1000,17 @@ Georep.prototype.updateRemoteUser = function(userConf, callback){
 							callback(undefined, JSON.parse(this.responseText));
 						}
 					},
-					onerror: function(e){
-						if (callback){
-							callback(JSON.parse(this.responseText), undefined);
-						}
-					}
+                    onerror: function(e){
+                        if (isDnsErr(e.error)){
+                            if (callback)
+                                callback({error: 'DNS Error', message: e.error});
+                        } else if (isTimeoutErr(e.error)){
+                            if (callback)
+                                callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                        } else if(callback)
+                            callback(JSON.parse(this.responseText),undefined);
+                    },
+                    timeout: constants.defaultTimeout
 				});
 				client.open("PUT", url);
 		
@@ -988,13 +1045,22 @@ Georep.prototype.getRemoteUser = function(callback){
 		};
 	} else {
 		var url = this.getDb().getURLServer() + '/_users/' + this.getUserId();
+
 		var client = Ti.Network.createHTTPClient({
 			onload: function(data){
 				callback(undefined, JSON.parse(this.responseText));
 			},
-			onerror: function(e){
-				callback(JSON.parse(this.responseText), undefined);
-			}
+            onerror: function(e){
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
+                    callback(JSON.parse(this.responseText),undefined);
+            },
+            timeout: constants.defaultTimeout
 		});
 		client.open("GET", url);
 		
@@ -1029,13 +1095,22 @@ Georep.prototype.getUserById = function(id, callback){
 		};
 	} else {
 		var url = this.getDb().getURLServer() + '/_users/' + id;
+
 		var client = Ti.Network.createHTTPClient({
 			onload: function(data){
 				callback(undefined, JSON.parse(this.responseText));
 			},
-			onerror: function(e){
-				callback(JSON.parse(this.responseText), undefined);
-			}
+            onerror: function(e){
+                if (isDnsErr(e.error)){
+                    if (callback)
+                        callback({error: 'DNS Error', message: e.error});
+                } else if (isTimeoutErr(e.error)){
+                    if (callback)
+                        callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if(callback)
+                    callback(JSON.parse(this.responseText),undefined);
+            },
+            timeout: constants.defaultTimeout
 		});
 		client.open("GET", url);
 		
@@ -1103,9 +1178,18 @@ var makeSignupUrlRequest = function (georepObj) {
 		   constants.nodeJsServer.port + '/_users';
 };
 
+var isDnsErr = function(err){
+    return (err.search('Unable to resolve host') != -1);
+};
+var isTimeoutErr = function(err){
+    return (err == 'java.net.SocketTimeoutException');
+};
+
 // -- COSTANTI utilizzate nel resto del codice ---------------------------------
 
 var constants = {
+    // timeout per le richieste http in millisecondi
+    defaultTimeout: 5000,
 	// vettore contenente l'elenco dei designDoc usati
 	designDocs: [
 		{
