@@ -1,12 +1,12 @@
 "#title" : {
     color: '#58585B',
-    font: { fontFamily:'Roboto-Bold', fontSize: '20dp'},
+    font: { fontFamily:'Roboto-Bold', fontSize: '18dp'},
     top: '12dp'
 },
 
 "#date" : {
 	color: '#777777',
-	font: { fontFamily: 'Roboto-Thin', fontSize: '15dp'},
+	font: { fontFamily: 'Roboto-Thin', fontSize: '14dp'},
 	bottom: '12dp'
 },
 
