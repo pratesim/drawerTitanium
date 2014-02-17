@@ -78,19 +78,6 @@ function sendRepo(){
 			longitude: ""
 		}
 	};
-	// segnalazione da salvare in locale
-	var segnalazioneLocale = {
-		_id: "",
-		title: "",
-		msg: "",
-		data: "",
-		img: "", // filepath di dove è salvata l'immagine della segnalazione
-		indirizzo: "", // coordinate tradotte in indirizzo
-		loc: {
-			latitude: "",
-			longitude: ""
-		}
-	};
 	
 	Ti.API.info("Titolo: " + title + "\nDescrizione: " + descr);
 	Ti.API.debug("Foto Base64: " + pictureBase64);
@@ -100,13 +87,11 @@ function sendRepo(){
 		alert("Completare tutti i campi e scattare una foto prima di inviare la segnalazione!");
 	}
 	else{
-		$.progressIndicatorIndeterminant.show();
 		// se sono completi provo a leggere la posizione
 		Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_HIGH); // imposto la precisione della posizione
 		Ti.Geolocation.getCurrentPosition(function (location){
 			if (location.success == false){
 				// se non è possibile ottenere la posizione avviso con un messaggio di errore
-				$.progressIndicatorIndeterminant.hide();
 				alert("Impossibile ottenere la posizione: " + location.error);
 				Ti.API.debug("Impossibile ottenere la posizione. error code: " + location.code);
 			}
@@ -120,57 +105,37 @@ function sendRepo(){
 				segnalazione.img.data = pictureBase64.text;
 				segnalazione.loc.latitude = location.coords.latitude;
 				segnalazione.loc.longitude = location.coords.longitude;
-				
-				try{
-					service.postDoc(segnalazione, true, function(err, data){
-						if (err){
-							// se la segnalazione non è stata inviata avviso con un messaggio di errore
-							$.progressIndicatorIndeterminant.hide();
-							Ti.API.debug("postDoc fallita: " + JSON.stringify(err));
-							alert("Invio segnalazione fallito!...Prova di nuovo");
-						}
-						else{
-							// se la segnalazione è stata inviata avviso l'avvenuto successo, salvo la segnalazione in locale e chiudo la window
-							Ti.API.info("Segnalazione Inviata correttamente: " + JSON.stringify(data));
-							
-							var n = new Date().getTime();
-				            var newFileName = n + ".jpeg";   //new file name
-							var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,newFileName);
-							var writeOk = f.write(pictureBlob); // write to the file
-							
-							writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
-							
-							Ti.Geolocation.reverseGeocoder(location.coords.latitude, location.coords.longitude, function (address){
-								Ti.API.debug("traduzione coordinate: " + JSON.stringify(address));
-								var indirizzo = address.success == true ? address.places[0].displayAddress : "Non disponibile";
-								
-								segnalazioneLocale._id = data.id; //id assegnato dal server couchdb alla segnalazione (disponibile nella risposta inviata dal server)
-								segnalazioneLocale.title = title;
-								segnalazioneLocale.msg = descr;
-								segnalazioneLocale.data = new Date().getTime();
-								segnalazioneLocale.img = f.nativePath;
-								segnalazioneLocale.indirizzo = indirizzo;
-								segnalazioneLocale.loc.latitude = location.coords.latitude;
-								segnalazioneLocale.loc.longitude = location.coords.longitude;
-								
-								Ti.App.Properties.setString(data.id, JSON.stringify(segnalazioneLocale));
-								Ti.API.debug("data._id = " + data._id + "\ndata.id = " + data.id);
 
-								var localeOk = Ti.App.Properties.getString(data.id, "null");
-								localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
-								$.progressIndicatorIndeterminant.hide();
-								$.dialog.show();
-							});	
-						}
-						
-					});
-				}catch(e){Ti.API.debug(JSON.stringify(e));}
+                var intent = Titanium.Android.createServiceIntent({
+                    url: 'reporterService.js',
+                    startMode: Ti.Android.START_NOT_STICKY
+                });
+                intent.putExtra('docToPost', JSON.stringify(segnalazione));
+                intent.putExtra('photo', JSON.stringify(pictureBlob));
+                intent.putExtra('interval', 900000);
+
+                var reporterService = Titanium.Android.createService(intent);
+                reporterService.addEventListener('start', function(e) {
+                    Titanium.API.info('Reporter Service avviato (start), iteration ' + e.iteration);
+                    Ti.UI.createNotification({
+                        message: 'Invio segnalazione \'' + segnalazione.title + '\' in corso.',
+                        duration: Ti.UI.NOTIFICATION_DURATION_LONG
+                    }).show();
+                });
+                reporterService.addEventListener('stop', function(e) {
+                    Titanium.API.info('Reporter Service terminato (stop), iteration ' + e.iteration);
+                });
+                reporterService.addEventListener('resume', function(e) {
+                    Titanium.API.info('Reporter Service riavviato (resume), iteration ' + e.iteration);
+                });
+
+                reporterService.start();
+                win.close();
 			}
 		});
 	}	
 };
 
-/* funzione eseguita quando viene premuto il tasto ok sulla alert che conferma l'invio della segnalazione */
-function alertconfsend (ev) {
-  win.close();
-}
+function alertconfsend(){
+    win.close();
+};

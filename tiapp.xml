@@ -65,6 +65,9 @@
                     android:screenOrientation="portrait"  android:theme="@android:style/Theme.Holo.Light"/>
             </application>
         </manifest>
+        <services>
+            <service url="reporterService.js" type="interval"/>
+        </services>
     </android>
 
     <mobileweb>
