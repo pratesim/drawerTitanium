@@ -65,6 +65,11 @@ Alloy.Globals.query = {};
 Alloy.Globals.query.userId = "";
 Alloy.Globals.query.repoId = "";
 
+/* ogni volta che viene scattata la foto, viene salvato qui il riferimento
+ * all'oggetto binario che la rappresenta
+ */
+Alloy.Globals.photoBlob = undefined;
+
 /* funzioni globali */
 Alloy.Globals.dataToString = function(milsToEPOC){
 	var d = new Date(milsToEPOC);

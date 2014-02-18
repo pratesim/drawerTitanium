@@ -35,14 +35,16 @@ function getPhoto(){
             // ridimensione la foto scattata se supera le dimensioni di 2048x2048.
             var resizedMedia = Alloy.Globals.resizePhoto(event.media);
             // comprimo la foto ad un JPEG di qualità media (50%).
-            pictureBlob = ImageFactory.compress(resizedMedia, 0.5);
+            Alloy.Globals.photoBlob = ImageFactory.compress(resizedMedia, 0.5);
+            resizedMedia = undefined;
 			// pictureBase64 verrà usata come attachments della segnalazione da inviare al server couchdb
-			pictureBase64 = Ti.Utils.base64encode(pictureBlob);
-			$.repoimage.setImage(pictureBlob);
+			pictureBase64 = Ti.Utils.base64encode(Alloy.Globals.photoBlob);
+			$.repoimage.setImage(Alloy.Globals.photoBlob);
 		},
 		cancel:function() {
 			// called when user cancels taking a picture
 			Ti.API.info("Foto scartata: premuto il tasto cancel");
+            Alloy.Globals.photoBlob = undefined;
 		},
 		error:function(error) {
 			// called when there's an error
@@ -53,6 +55,7 @@ function getPhoto(){
 				a.setMessage('Errore inatteso: ' + error.code);
 			}
 			a.show();
+            Alloy.Globals.photoBlob = undefined;
 		},
 		autohide: true,
 		saveToPhotoGallery:false,
@@ -98,23 +101,37 @@ function sendRepo(){
 			else{
 				// se è stata ottenuta la posizione provo ad inviare la segnalazione
 				Ti.API.info("Posizione letta correttamente: " + JSON.stringify(location));
-				
-				segnalazione.title = title;
+
+                // completo i campi della segnalazione
+                segnalazione.title = title;
 				segnalazione.msg = descr;
 				segnalazione.img.content_type = "image/jpeg";
 				segnalazione.img.data = pictureBase64.text;
 				segnalazione.loc.latitude = location.coords.latitude;
 				segnalazione.loc.longitude = location.coords.longitude;
 
+                // creo l'intento del servizio
                 var intent = Titanium.Android.createServiceIntent({
                     url: 'reporterService.js',
                     startMode: Ti.Android.START_NOT_STICKY
                 });
+
+                // passo la segnalazione al servizio tramite il suo intento
                 intent.putExtra('docToPost', JSON.stringify(segnalazione));
-                intent.putExtra('photo', JSON.stringify(pictureBlob));
+
+                // passo la foto in binario al servizio tramite il suo intento
+                //intent.putExtra('photo', JSON.stringify(pictureBase64));
+
+                // setto l'intervallo di ripetizione del servizio a 15 min così
+                // sono abbastanza sicuro di riuscire a completare l'invio e fermare
+                // il servizio prima che possa ripartire.
                 intent.putExtra('interval', 900000);
 
+                // creo un istanza del servizio di uploading
                 var reporterService = Titanium.Android.createService(intent);
+
+                // stampa informazioni una volta che il servizio viene attivato
+                // viene mostrato anche un toast che avverte dell'inizio dell'uploading.
                 reporterService.addEventListener('start', function(e) {
                     Titanium.API.info('Reporter Service avviato (start), iteration ' + e.iteration);
                     Ti.UI.createNotification({
@@ -122,14 +139,22 @@ function sendRepo(){
                         duration: Ti.UI.NOTIFICATION_DURATION_LONG
                     }).show();
                 });
+
+                // stampa informazioni una volta che il servizio viene arrestato
                 reporterService.addEventListener('stop', function(e) {
                     Titanium.API.info('Reporter Service terminato (stop), iteration ' + e.iteration);
                 });
+
+                // stampa informazioni una volta che il servizio viene riavviato
                 reporterService.addEventListener('resume', function(e) {
                     Titanium.API.info('Reporter Service riavviato (resume), iteration ' + e.iteration);
                 });
 
+                // avvio il servizio che si occupa di inviare la segnalazione e di salvarla
+                // in locale.
                 reporterService.start();
+
+                // il servizio gira in backgroud quindi posso chiudere questa finestra.
                 win.close();
 			}
 		});

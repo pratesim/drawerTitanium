@@ -1,36 +1,62 @@
 var service = Alloy.Globals.Georep;
-var reporter = Titanium.Android.currentService;
-var intent = reporter.intent;
-var doc = JSON.parse(intent.getStringExtra("docToPost"));
-//var pictureBlob = intent.getBlobExtra('photo');
-//var pictureBlob = Ti.Utils.base64decode(doc.img.data);
-var pictureBlob = JSON.parse(intent.getStringExtra('photo'));
 
+// questo servizio
+var reporter = Titanium.Android.currentService;
+
+// intent associato a questo servizio
+var intent = reporter.intent;
+
+// documento segnalazione da inviare
+var doc = JSON.parse(intent.getStringExtra("docToPost"));
+
+// foto in binario da salvare in locale la prendiamo da
+// Alloy.Globals.photoBlob
+
+// notifica per l'inizio dell'upload
 var uploadingNotif = Ti.Android.createNotification({
     contentTitle: 'Invio segnalazione...',
     contentText: 'Invio della segnalazione \'' + doc.title + '\' in corso.',
     flag: Titanium.Android.FLAG_NO_CLEAR
 });
+
+// notifica per il termine dell'upload
 var completeNotif = Ti.Android.createNotification({
     contentTitle: 'Segnalazione inviata',
     contentText: 'La segnalazione \'' + doc.title + '\' è stata inviata.',
     flag: Titanium.Android.FLAG_AUTO_CANCEL
 });
+
+// notifica per segnalare un errore nell'upload
 var errorNotif = Ti.Android.createNotification({
     contentTitle: 'Errore invio',
     contentText: 'Errore durante l\'invio della segnalazione \'' + doc.title + '\'.',
     flag: Titanium.Android.FLAG_AUTO_CANCEL
 });
 
+// ID associato alle notifiche
 var notifID = (new Date()).getTime();
 
+/**
+ * Aggiunge la notifica che segnala l'inizio dell'upload nella
+ * barra delle notifiche
+ */
 var notifUploading = function(){
     Titanium.Android.NotificationManager.notify(notifID, uploadingNotif);
 };
+
+/**
+ * Rimuove la notifica precedente e inserisce quella di upload completato
+ * nella barra delle notifiche.
+ */
 var notifCompleting = function(){
     Titanium.Android.NotificationManager.cancel(notifID);
     Titanium.Android.NotificationManager.notify(notifID, completeNotif);
 };
+
+/**
+ * Rimuove la notifica precedente e inserisce quella di errore upload
+ * nella barra delle notifiche.
+ */
 var notifError = function(){
     Titanium.Android.NotificationManager.cancel(notifID);
     Titanium.Android.NotificationManager.notify(notifID, errorNotif);
@@ -52,13 +78,17 @@ var segnalazioneLocale = {
 
 Titanium.API.info("Reporter Service.  docToPost: " + JSON.stringify(doc));
 
-
+// inizio upload
 notifUploading();
 service.postDoc(doc, true, function(err, data){
     if (err){
         // se la segnalazione non è stata inviata avviso con un messaggio di errore
         // e notifico l'evento.
         Ti.API.debug("Reporter Service - postDoc fallita: " + JSON.stringify(err));
+
+        Alloy.Globals.photoBlob = undefined;
+
+        // termino upload con errore
         notifError();
         reporter.stop();
     }
@@ -69,7 +99,7 @@ service.postDoc(doc, true, function(err, data){
         var n = new Date().getTime();
         var newFileName = n + ".jpeg";   //new file name
         var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,newFileName);
-        var writeOk = f.write(pictureBlob); // write to the file
+        var writeOk = f.write(Alloy.Globals.photoBlob); // write to the file
 
         writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
 
@@ -91,6 +121,10 @@ service.postDoc(doc, true, function(err, data){
 
             var localeOk = Ti.App.Properties.getString(data.id, "null");
             localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
+
+            Alloy.Globals.photoBlob = undefined;
+
+            // termino upload con successo
             notifCompleting();
             reporter.stop();
         });
