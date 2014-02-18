@@ -838,8 +838,7 @@ Georep.prototype.postDoc = function(doc, attach, callback){
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
-            },
-            timeout: constants.defaultTimeout
+            }
         });
         client.open("POST", url);
 

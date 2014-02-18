@@ -32,6 +32,13 @@ Alloy.Globals.Constants = {
     FAKE_MAIL: "ZmFrZU1haWw="
 };
 
+// Definisce un dizionionario per le icone di notifica
+Alloy.Globals.NotificationIcon = {
+    UPLOAD_START:    '/images/notification_uploading.png',
+    UPLOAD_COMPLETE: '/images/notification_complete.png',
+    UPLOAD_ERROR:    '/images/notification_error.png'
+}
+
 var Georep = require('georep');
 
 Ti.API.info("Creazione utente...");

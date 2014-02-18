@@ -16,21 +16,24 @@ var doc = JSON.parse(intent.getStringExtra("docToPost"));
 var uploadingNotif = Ti.Android.createNotification({
     contentTitle: 'Invio segnalazione...',
     contentText: 'Invio della segnalazione \'' + doc.title + '\' in corso.',
-    flag: Titanium.Android.FLAG_NO_CLEAR
+    flag: Titanium.Android.FLAG_NO_CLEAR,
+    icon: Alloy.Globals.NotificationIcon.UPLOAD_START
 });
 
 // notifica per il termine dell'upload
 var completeNotif = Ti.Android.createNotification({
     contentTitle: 'Segnalazione inviata',
     contentText: 'La segnalazione \'' + doc.title + '\' è stata inviata.',
-    flag: Titanium.Android.FLAG_AUTO_CANCEL
+    flag: Titanium.Android.FLAG_AUTO_CANCEL,
+    icon: Alloy.Globals.NotificationIcon.UPLOAD_COMPLETE
 });
 
 // notifica per segnalare un errore nell'upload
 var errorNotif = Ti.Android.createNotification({
     contentTitle: 'Errore invio',
     contentText: 'Errore durante l\'invio della segnalazione \'' + doc.title + '\'.',
-    flag: Titanium.Android.FLAG_AUTO_CANCEL
+    flag: Titanium.Android.FLAG_AUTO_CANCEL,
+    icon: Alloy.Globals.NotificationIcon.UPLOAD_ERROR
 });
 
 // ID associato alle notifiche
