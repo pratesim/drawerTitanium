@@ -25,7 +25,8 @@ var completeNotif = Ti.Android.createNotification({
     contentTitle: 'Segnalazione inviata',
     contentText: 'La segnalazione \'' + doc.title + '\' è stata inviata.',
     flag: Titanium.Android.FLAG_AUTO_CANCEL,
-    icon: Alloy.Globals.NotificationIcon.UPLOAD_COMPLETE
+    icon: Alloy.Globals.NotificationIcon.UPLOAD_COMPLETE,
+    defaults: Titanium.Android.DEFAULT_SOUND | Titanium.Android.DEFAULT_VIBRATE | Titanium.Android.DEFAULT_LIGHTS
 });
 
 // notifica per segnalare un errore nell'upload
@@ -33,7 +34,8 @@ var errorNotif = Ti.Android.createNotification({
     contentTitle: 'Errore invio',
     contentText: 'Errore durante l\'invio della segnalazione \'' + doc.title + '\'.',
     flag: Titanium.Android.FLAG_AUTO_CANCEL,
-    icon: Alloy.Globals.NotificationIcon.UPLOAD_ERROR
+    icon: Alloy.Globals.NotificationIcon.UPLOAD_ERROR,
+    defaults: Titanium.Android.DEFAULT_SOUND | Titanium.Android.DEFAULT_VIBRATE | Titanium.Android.DEFAULT_LIGHTS
 });
 
 // ID associato alle notifiche

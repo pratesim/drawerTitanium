@@ -115,9 +115,11 @@ function sendRepo(){
                     url: 'reporterService.js',
                     startMode: Ti.Android.START_NOT_STICKY
                 });
+                Ti.API.debug('Intent per il servizio creato');
 
                 // passo la segnalazione al servizio tramite il suo intento
                 intent.putExtra('docToPost', JSON.stringify(segnalazione));
+                Ti.API.debug('Segnalazione passata all\'intent');
 
                 // passo la foto in binario al servizio tramite il suo intento
                 //intent.putExtra('photo', JSON.stringify(pictureBase64));
@@ -126,9 +128,11 @@ function sendRepo(){
                 // sono abbastanza sicuro di riuscire a completare l'invio e fermare
                 // il servizio prima che possa ripartire.
                 intent.putExtra('interval', 900000);
+                Ti.API.debug('Settato intervallo di tempo per lo intent');
 
                 // creo un istanza del servizio di uploading
                 var reporterService = Titanium.Android.createService(intent);
+                Ti.API.debug('Istanziato un nuovo servizio');
 
                 // stampa informazioni una volta che il servizio viene attivato
                 // viene mostrato anche un toast che avverte dell'inizio dell'uploading.
@@ -139,20 +143,24 @@ function sendRepo(){
                         duration: Ti.UI.NOTIFICATION_DURATION_LONG
                     }).show();
                 });
+                Ti.API.debug('settato gestore dell\'evento \'start\' del servizio');
 
                 // stampa informazioni una volta che il servizio viene arrestato
                 reporterService.addEventListener('stop', function(e) {
                     Titanium.API.info('Reporter Service terminato (stop), iteration ' + e.iteration);
                 });
+                Ti.API.debug('settato gestore dell\'evento \'stop\' del servizio');
 
                 // stampa informazioni una volta che il servizio viene riavviato
                 reporterService.addEventListener('resume', function(e) {
                     Titanium.API.info('Reporter Service riavviato (resume), iteration ' + e.iteration);
                 });
+                Ti.API.debug('settato gestore dell\'evento \'resume\' del servizio');
 
                 // avvio il servizio che si occupa di inviare la segnalazione e di salvarla
                 // in locale.
                 reporterService.start();
+                Ti.API.debug('Servizio avviato');
 
                 // il servizio gira in backgroud quindi posso chiudere questa finestra.
                 win.close();
