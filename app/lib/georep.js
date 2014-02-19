@@ -1188,7 +1188,7 @@ var isTimeoutErr = function(err){
 
 var constants = {
     // timeout per le richieste http in millisecondi
-    defaultTimeout: 5000,
+    defaultTimeout: 15000,
 	// vettore contenente l'elenco dei designDoc usati
 	designDocs: [
 		{

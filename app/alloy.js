@@ -55,7 +55,7 @@ Ti.API.debug("  user: " + JSON.stringify(user));
 Ti.API.info("Creazione database...");
 var db = new Georep.DB({
 	proto: "http",
-	host: "pram.homepc.it",
+	host: "pram.no-ip.org",
 	port: 5984,
 	name: "testdb"
 });

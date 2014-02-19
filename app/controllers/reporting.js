@@ -127,7 +127,7 @@ function sendRepo(){
                 // setto l'intervallo di ripetizione del servizio a 15 min così
                 // sono abbastanza sicuro di riuscire a completare l'invio e fermare
                 // il servizio prima che possa ripartire.
-                intent.putExtra('interval', 900000);
+                intent.putExtra('interval', 300000);
                 Ti.API.debug('Settato intervallo di tempo per lo intent');
 
                 // creo un istanza del servizio di uploading
