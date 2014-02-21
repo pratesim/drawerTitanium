@@ -184,7 +184,7 @@ function markerClick(evt) {
 
     // se si clicca sul titolo del segnaposto apriamo la segnalazione
     // sempre che il segnaposto non sia la posizione corrente.
-    if (evt.clicksource == "infoWindow"){
+    if (evt.clicksource == "infoWindow" || evt.clicksource == "title"){
         if (evt.annotation.annotation_id != "myloc"){
             // aprire la view del dettaglio di questa segnalazione:
             // evt.annotation.annotation_id
