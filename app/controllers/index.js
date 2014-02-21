@@ -262,8 +262,8 @@ menuView.menuTable.addEventListener('click',function(e){
     var rowId = e.rowData.id;
 
     if(rowId == 'row1'){
-        switchTo('map');
         refreshBtn.hide();
+        switchTo('map');
     }else if(rowId == 'row2'){
         switchTo('last');
         refreshBtn.set('last');
