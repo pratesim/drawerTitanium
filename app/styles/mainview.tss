@@ -7,28 +7,41 @@
 	height: "48dp",
 	backgroundColor: '#DDDDDD',
 	opacity: "1",
-	layout: 'horizontal'
+	layout: 'absolute'
 },
 "#appIcon":{
-	width: "34dp",
-	height: "34dp",
-	left: "-24dp",
+    top: '8dp',
+	width:  "32dp",
+	height: "32dp",
+	left:   "16dp",
 	backgroundImage: "/images/icon.png",
 },
 "#menuButton":{
+    top: '0dp',
 	left: "0dp",
 	width: "48dp",
 	height: "48dp",
 	backgroundColor: 'transparent',
-}
+},
 "#titleApp":{
-	left: "10dp",
+    top: '0dp',
+	left: "56dp",
+	height: '48dp',
+	width: Ti.UI.SIZE,
 	color: "black",
-	font: {fontSize: "22dp"},
-	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
-}
+	font: {fontSize: "18dp"},
+	verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER
+},
 "#littleBar":{
 	backgroundColor: "#35AC19",
 	height: "2dp",
 	width: Ti.UI.FILL
+},
+"#updateButton":{
+    height: '32dp',
+    width: '32dp',
+    top: '8dp',
+    right: '8dp',
+    backgroundImage: '/images/ic_action_refresh.png',
+    visible: 'true'
 }

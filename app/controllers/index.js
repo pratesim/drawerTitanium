@@ -129,6 +129,62 @@ var switchTo = function(id){
     }
 };
 
+// modella il bottone di refresh
+var refreshBtn = {
+    btn: mainView.updateButton, // riferimento alla view che rappresenta il bottone
+    target: '', // id della view che deve essere aggiornata al click sul bottone
+    show: function(){ // metodo per mostrare il bottone se è nascosto
+        if (!this.btn.getVisible()){
+            this.btn.setVisible(true);
+            Ti.API.info('RefreshButton è ora visibile.');
+        }else{
+            Ti.API.info('RefreshButton è già visibile.');
+        }
+    },
+    hide: function(){ // metodo per nascondere il bottone se è visibile
+        if (this.btn.getVisible()){
+            this.btn.setVisible(false);
+            this.target = ''
+            Ti.API.info('RefreshButton è stato nascosto.');
+        }else{
+            Ti.API.info('RefreshButton è già nascosto.');
+        }
+    },
+    set: function(id){ // metodo per impostare l'id della view che deve essere aggiornata
+        this.target = id;
+    },
+    onclick: function(e){ // handler eseguito al click sul bottone
+        // si cerca la view attualmente mostrata, la si rimuove e la si ricarica.
+
+        var childViews = mainView.mainView.getChildren();
+        var viewToRemove;
+
+        for( var i in childViews){
+            if (childViews[i].id == refreshBtn.target)
+                viewToRemove = childViews[i];
+        }
+
+        Ti.API.debug('View da aggiornare: ' + JSON.stringify(viewToRemove));
+        mainView.mainView.remove(viewToRemove);
+        mainView.mainView.add(Alloy.createController(refreshBtn.target)[refreshBtn.target]);
+    },
+    onTouchStart: function(e){ // handler eseguito all'inizio del tocco sul tasto
+        // imposta lo sfondo del bottone ad 'azzurro android'
+        refreshBtn.btn.setBackgroundColor('#5FCAD6');
+    },
+    onTouchEnd: function(e){ // handler eseguito alla fine del tocco sul tasto
+        refreshBtn.btn.setBackgroundColor('transparent');
+    },
+    init: function(){ // vunzione da eseguire prima di usare i metodi di questo oggetto
+        Ti.API.info('RefreshButton: INIZIALIZZATO');
+        this.btn.addEventListener('click', refreshBtn.onclick);
+        this.btn.addEventListener('touchstart', refreshBtn.onTouchStart);
+        this.btn.addEventListener('touchend', refreshBtn.onTouchEnd);
+    }
+};
+// inizializzo il bottone per il refresh.
+refreshBtn.init();
+
 /**
  * Aggiorna la configurazine dell'utene di Georep
  * usando le info locali permanenti.
@@ -207,10 +263,15 @@ menuView.menuTable.addEventListener('click',function(e){
 
     if(rowId == 'row1'){
         switchTo('map');
+        refreshBtn.hide();
     }else if(rowId == 'row2'){
         switchTo('last');
+        refreshBtn.set('last');
+        refreshBtn.show();
     }else if(rowId == 'row3'){
         switchTo('my');
+        refreshBtn.set('my');
+        refreshBtn.show();
     }else if(rowId == 'row4'){
         Alloy.createController('newUser').newUserWin.open();
     }else if(rowId == 'rowReporting'){
@@ -272,6 +333,8 @@ Ti.App.addEventListener(Alloy.Globals.CustomEvents.USER_REGISTERED, function(evt
     $.index.open();
     // dopo l'avvio entra automaticamente nella view delle ultime segnalazioni.
     switchTo('last');
+    refreshBtn.set('last');
+    refreshBtn.show();
 });
 
 // inizializzo una animazione di caricamento
