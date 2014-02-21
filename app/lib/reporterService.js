@@ -39,8 +39,8 @@ var errorNotif = Ti.Android.createNotification({
 });
 
 // ID associato alle notifiche
-var notifID = (new Date()).getTime();
-
+//var notifID = (new Date()).getTime();
+var notifID = Math.random() * (1000);
 /**
  * Aggiunge la notifica che segnala l'inizio dell'upload nella
  * barra delle notifiche
