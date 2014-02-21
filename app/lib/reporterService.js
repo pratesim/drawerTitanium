@@ -47,6 +47,7 @@ var notifID = (new Date()).getTime();
  */
 var notifUploading = function(){
     Titanium.Android.NotificationManager.notify(notifID, uploadingNotif);
+    Ti.API.debug('Inviata notifica {\n  tipo: \'upload\',\n  id: ' + notifID + ',\n  title: ' + uploadingNotif.title + '\n}');
 };
 
 /**
@@ -56,6 +57,7 @@ var notifUploading = function(){
 var notifCompleting = function(){
     Titanium.Android.NotificationManager.cancel(notifID);
     Titanium.Android.NotificationManager.notify(notifID, completeNotif);
+    Ti.API.debug('Inviata notifica {\n  tipo: \'complete\',\n  id: ' + notifID + ',\n  title: ' + completeNotif.title + '\n}');
 };
 
 /**
@@ -65,6 +67,7 @@ var notifCompleting = function(){
 var notifError = function(){
     Titanium.Android.NotificationManager.cancel(notifID);
     Titanium.Android.NotificationManager.notify(notifID, errorNotif);
+    Ti.API.debug('Inviata notifica {\n  tipo: \'error\',\n  id: ' + notifID + ',\n  title: ' + errorNotif.title + '\n}');
 };
 
 /*
