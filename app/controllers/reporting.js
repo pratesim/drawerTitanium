@@ -1,12 +1,12 @@
 var win = $.winreporting;
 var actionBar; 
 var service = Alloy.Globals.Georep;
-var pictureBlob;
-var pictureBase64 = "";
+var pictureBlob = undefined;
+var f; // file object usato per salvare l'immagine
 var ImageFactory = require('ti.imagefactory');
 
 win.addEventListener("open", function() {
-	Ti.API.info('Window "dettagli segnalazione" aperta');
+	Ti.API.info('Window "segnala" aperta');
     if (Ti.Platform.osname === "android") {
         if (! win.activity) {
             Ti.API.error("Can't access action bar on a lightweight window.");
@@ -35,16 +35,24 @@ function getPhoto(){
             // ridimensione la foto scattata se supera le dimensioni di 2048x2048.
             var resizedMedia = Alloy.Globals.resizePhoto(event.media);
             // comprimo la foto ad un JPEG di qualità media (50%).
-            Alloy.Globals.photoBlob = ImageFactory.compress(resizedMedia, 0.5);
+            pictureBlob = ImageFactory.compress(resizedMedia, 0.5);
             resizedMedia = undefined;
-			// pictureBase64 verrà usata come attachments della segnalazione da inviare al server couchdb
-			pictureBase64 = Ti.Utils.base64encode(Alloy.Globals.photoBlob);
-			$.repoimage.setImage(Alloy.Globals.photoBlob);
+
+            // salvo l'immagine in un file locale. nota che se il servizio non riesce ad inviare la segnalazione
+            // allora tale file deve essere rimosso
+            var n = new Date().getTime();
+            var newFileName = n + ".jpeg";   //new file name
+            f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,newFileName);
+            var writeOk = f.write(pictureBlob); // write to the file
+
+            writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
+
+            $.repoimage.setImage(pictureBlob);
 		},
 		cancel:function() {
 			// called when user cancels taking a picture
 			Ti.API.info("Foto scartata: premuto il tasto cancel");
-            Alloy.Globals.photoBlob = undefined;
+            pictureBlob = undefined;
 		},
 		error:function(error) {
 			// called when there's an error
@@ -55,7 +63,7 @@ function getPhoto(){
 				a.setMessage('Errore inatteso: ' + error.code);
 			}
 			a.show();
-            Alloy.Globals.photoBlob = undefined;
+            pictureBlob = undefined;
 		},
 		autohide: true,
 		saveToPhotoGallery:false,
@@ -69,23 +77,23 @@ function sendRepo(){
 	var title = $.titleinput.getValue();
 	var descr = $.descriptioninput.getValue();
 	//segnalazione da inviare
-	var segnalazione = {
-		title: "",
-		msg: "",
-		img: {
-			content_type: "",
-			data: "" //immagine in base64
-		},
-		loc: {
-			latitude: "",
-			longitude: ""
-		}
-	};
+    var segnalazioneLocale = {
+        _id: "",
+        title: "",
+        msg: "",
+        data: "",
+        img: "", // filepath di dove è salvata l'immagine della segnalazione
+        indirizzo: "", // coordinate tradotte in indirizzo
+        loc: {
+            latitude: "",
+            longitude: ""
+        }
+    };
 	
 	Ti.API.info("Titolo: " + title + "\nDescrizione: " + descr);
-	Ti.API.debug("Foto Base64: " + pictureBase64);
+	/*Ti.API.debug("Foto Base64: " + pictureBase64);*/
 	
-	if (title == "" || descr == "" || pictureBase64 == ""){
+	if (title == "" || descr == "" || pictureBlob == undefined){
 		// se non sono completi avviso di completarli prima di inviare la segnalazione
 		alert("Completare tutti i campi e scattare una foto prima di inviare la segnalazione!");
 	}
@@ -102,13 +110,14 @@ function sendRepo(){
 				// se è stata ottenuta la posizione provo ad inviare la segnalazione
 				Ti.API.info("Posizione letta correttamente: " + JSON.stringify(location));
 
-                // completo i campi della segnalazione
-                segnalazione.title = title;
-				segnalazione.msg = descr;
-				segnalazione.img.content_type = "image/jpeg";
-				segnalazione.img.data = pictureBase64.text;
-				segnalazione.loc.latitude = location.coords.latitude;
-				segnalazione.loc.longitude = location.coords.longitude;
+                segnalazioneLocale.title = title;
+                segnalazioneLocale.msg = descr;
+                segnalazioneLocale.data = new Date().getTime();
+                // la conversione dell'indirizzo viene fatta dal servizio per non bloccare l'applicazione
+                segnalazioneLocale.indirizzo = "";
+                segnalazioneLocale.loc.latitude = location.coords.latitude;
+                segnalazioneLocale.loc.longitude = location.coords.longitude;
+                segnalazioneLocale.img = f.nativePath;
 
                 // creo l'intento del servizio
                 var intent = Titanium.Android.createServiceIntent({
@@ -118,7 +127,7 @@ function sendRepo(){
                 Ti.API.debug('Intent per il servizio creato');
 
                 // passo la segnalazione al servizio tramite il suo intento
-                intent.putExtra('docToPost', JSON.stringify(segnalazione));
+                intent.putExtra('localRepo', JSON.stringify(segnalazioneLocale));
                 Ti.API.debug('Segnalazione passata all\'intent');
 
                 // passo la foto in binario al servizio tramite il suo intento
@@ -139,7 +148,7 @@ function sendRepo(){
                 reporterService.addEventListener('start', function(e) {
                     Titanium.API.info('Reporter Service avviato (start), iteration ' + e.iteration);
                     Ti.UI.createNotification({
-                        message: 'Invio segnalazione \'' + segnalazione.title + '\' in corso.',
+                        message: 'Invio segnalazione \'' + segnalazioneLocale.title + '\' in corso.',
                         duration: Ti.UI.NOTIFICATION_DURATION_LONG
                     }).show();
                 });

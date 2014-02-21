@@ -7,7 +7,7 @@ var reporter = Titanium.Android.currentService;
 var intent = reporter.intent;
 
 // documento segnalazione da inviare
-var doc = JSON.parse(intent.getStringExtra("docToPost"));
+var doc = JSON.parse(intent.getStringExtra("localRepo"));
 
 // foto in binario da salvare in locale la prendiamo da
 // Alloy.Globals.photoBlob
@@ -16,7 +16,7 @@ var doc = JSON.parse(intent.getStringExtra("docToPost"));
 var uploadingNotif = Ti.Android.createNotification({
     contentTitle: 'Invio segnalazione...',
     contentText: 'Invio della segnalazione \'' + doc.title + '\' in corso.',
-    flag: Titanium.Android.FLAG_NO_CLEAR,
+    flag: Titanium.Android.FLAG_NO_CLEAR | Titanium.Android.FLAG_ONGOING_EVENT,
     icon: Alloy.Globals.NotificationIcon.UPLOAD_START
 });
 
@@ -67,32 +67,77 @@ var notifError = function(){
     Titanium.Android.NotificationManager.notify(notifID, errorNotif);
 };
 
-// segnalazione da salvare in locale
-var segnalazioneLocale = {
-    _id: "",
+/*
+ * Converte una segnalazione locale in una segnalazione da inviare al server
+ * @param segnalazioneLocale {object} segnalazioneLocale da convertire
+ */
+var convertLclRepo = function (segnalazioneLocale){
+    var segnalazioneConvertita = {
+        title: "",
+        msg: "",
+        img: {
+            content_type: "",
+            data: ""
+        },
+        loc: {
+            latitude: "",
+            longitude: ""
+        }
+    }
+    var f; //file object
+    var pictureBase64;
+    var pictureBlob;
+
+    segnalazioneConvertita.title = segnalazioneLocale.title;
+    segnalazioneConvertita.msg = segnalazioneLocale.msg;
+    segnalazioneConvertita.loc.latitude = segnalazioneLocale.loc.latitude;
+    segnalazioneConvertita.loc.longitude = segnalazioneLocale.loc.longitude;
+
+    f = Ti.Filesystem.getFile(segnalazioneLocale.img);
+    pictureBlob = f.read();
+    pictureBase64 = Ti.Utils.base64encode(pictureBlob);
+
+    segnalazioneConvertita.img.content_type = pictureBlob.getMimeType();
+    segnalazioneConvertita.img.data = pictureBase64.text;
+
+    return segnalazioneConvertita;
+};
+// segnalazione da inviare al server
+var segnalazione = {
     title: "",
     msg: "",
-    data: "",
-    img: "", // filepath di dove è salvata l'immagine della segnalazione
-    indirizzo: "", // coordinate tradotte in indirizzo
+    img: {
+        content_type: "",
+        data: ""
+    },
     loc: {
         latitude: "",
         longitude: ""
     }
 };
 
-Titanium.API.info("Reporter Service.  docToPost: " + JSON.stringify(doc));
+Titanium.API.info("Reporter Service.  segnalazioneLocale: " + JSON.stringify(doc));
+
+segnalazione = convertLclRepo(doc);
+
+Ti.API.info("Reporter Service. segnalazione da inviare al server: "  + JSON.stringify(segnalazione));
 
 // inizio upload
 notifUploading();
-service.postDoc(doc, true, function(err, data){
+service.postDoc(segnalazione, true, function(err, data){
     if (err){
         // se la segnalazione non è stata inviata avviso con un messaggio di errore
         // e notifico l'evento.
         Ti.API.debug("Reporter Service - postDoc fallita: " + JSON.stringify(err));
 
-        Alloy.Globals.photoBlob = undefined;
+        /*Alloy.Globals.photoBlob = undefined;*/
 
+        // cancello il file contentente l'immagine della segnalazione, dato che la segnalazione
+        // non è stata inviata sul server e quindi non serve mantenere l'immagine in locale.
+        var f = Ti.Filesystem.getFile(doc.img);
+        if (f.isFile()) {
+            f.deleteFile();
+        }
         // termino upload con errore
         notifError();
         reporter.stop();
@@ -101,38 +146,23 @@ service.postDoc(doc, true, function(err, data){
         // se la segnalazione è stata inviata avviso l'avvenuto successo, salvo la segnalazione in locale e chiudo la window
         Ti.API.info("Reporter Service - Segnalazione Inviata correttamente: " + JSON.stringify(data));
 
-        var n = new Date().getTime();
-        var newFileName = n + ".jpeg";   //new file name
-        var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,newFileName);
-        var writeOk = f.write(Alloy.Globals.photoBlob); // write to the file
-
-        writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
-
         Ti.Geolocation.reverseGeocoder(doc.loc.latitude, doc.loc.longitude, function (address){
             Ti.API.debug("Reporter Service - traduzione coordinate: " + JSON.stringify(address));
             var indirizzo = address.success == true ? address.places[0].displayAddress : "Non disponibile";
 
-            segnalazioneLocale._id = data.id; //id assegnato dal server couchdb alla segnalazione (disponibile nella risposta inviata dal server)
-            segnalazioneLocale.title = doc.title;
-            segnalazioneLocale.msg = doc.msg;
-            segnalazioneLocale.data = new Date().getTime();
-            segnalazioneLocale.img = f.nativePath;
-            segnalazioneLocale.indirizzo = indirizzo;
-            segnalazioneLocale.loc.latitude = doc.loc.latitude;
-            segnalazioneLocale.loc.longitude = doc.loc.longitude;
-
-            Ti.App.Properties.setString(data.id, JSON.stringify(segnalazioneLocale));
-            Ti.API.debug("data._id = " + data._id + "\ndata.id = " + data.id);
+            doc.indirizzo = indirizzo;
+            doc._id = data.id;
+            Ti.App.Properties.setString(data.id, JSON.stringify(doc));
+            Ti.API.debug("data.id = " + data.id);
 
             var localeOk = Ti.App.Properties.getString(data.id, "null");
             localeOk != "null" ? Ti.API.info("Segnalazione salvata in locale: " + localeOk) : Ti.API.info("Segnalazione locale NON riuscita");
 
-            Alloy.Globals.photoBlob = undefined;
+            /*Alloy.Globals.photoBlob = undefined;*/
 
             // termino upload con successo
             notifCompleting();
             reporter.stop();
         });
     }
-
 });
