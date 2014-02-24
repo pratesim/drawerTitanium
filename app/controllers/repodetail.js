@@ -48,7 +48,7 @@ win.addEventListener("open", function() {
 			Ti.API.info("Scaricati sia dati segnalatore sia segnalazione. Terminare animazione caricamento");
 			$.repodetailpb.hide();
 			downloaded = [];
-	}
+	    }
 	});
 
 	
