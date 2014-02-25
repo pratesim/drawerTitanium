@@ -59,7 +59,10 @@ else{
 					alert("Errore server...");
 				}
 				else{
-					$.toast.show();
+                    var nItem = JSON.parse(items).length;
+                    if (nItem == 0){
+                        $.toast.show();
+                    }
 					listSection.setItems(JSON.parse(items));
 				}
 				

@@ -561,6 +561,9 @@ Georep.prototype.getDoc = function(docId, attachments, callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
 					callback(JSON.parse(this.responseText),undefined);
 			},
@@ -637,6 +640,9 @@ Georep.prototype.getDocsInBox = function(bl_corner, tr_corner, callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
             },
@@ -701,6 +707,12 @@ Georep.prototype.getLastDocs = function(nDocs, callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
             },
@@ -715,7 +727,7 @@ Georep.prototype.getLastDocs = function(nDocs, callback){
 
 /**
  * Chiede al database tutti i documenti creati da un determinato utente indicando
- * il suo identificatore unico.
+ * il suo identificatore unico. La risposta è in ordine decrescente rispetto all'identificatore unico.
  *
  * @method getUserDocs
  * @param {string} userId identificatore unico dell'utente sul server
@@ -725,7 +737,7 @@ Georep.prototype.getUserDocs = function(userId, callback){
 	var viewPath = constants.designDocs[0].name + '/' +
 		           constants.designDocs[0].handlers[0].name + '/' +
 		           constants.designDocs[0].handlers[0].views[0];
-	var queryOpts = '?key="' + userId + '"';
+	var queryOpts = '?key="' + userId + '"' + "&descending=true";
 	
 	if (arguments.length < 1)
 		throw {
@@ -757,6 +769,9 @@ Georep.prototype.getUserDocs = function(userId, callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
             },
@@ -836,6 +851,9 @@ Georep.prototype.postDoc = function(doc, attach, callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
             }
@@ -877,6 +895,8 @@ Georep.prototype.checkRemoteUser = function(callback){
                     callback({error: 'DNS Error', message: e.error});
                 } else if (isTimeoutErr(e.error)){
                     callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    callback(e, undefined);
                 } else {
                     callback(JSON.parse(this.responseText),undefined);
                 }
@@ -918,6 +938,9 @@ Georep.prototype.signupRemoteUser = function(callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
             },
@@ -1006,6 +1029,9 @@ Georep.prototype.updateRemoteUser = function(userConf, callback){
                         } else if (isTimeoutErr(e.error)){
                             if (callback)
                                 callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                        } else if (e.code == -1){
+                            if (callback)
+                                callback(e, undefined);
                         } else if(callback)
                             callback(JSON.parse(this.responseText),undefined);
                     },
@@ -1056,6 +1082,9 @@ Georep.prototype.getRemoteUser = function(callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
             },
@@ -1106,6 +1135,9 @@ Georep.prototype.getUserById = function(id, callback){
                 } else if (isTimeoutErr(e.error)){
                     if (callback)
                         callback({error: 'Timeout Error', message: 'Scattato timeout di ' + constants.defaultTimeout + ' mSec.'});
+                } else if (e.code == -1){
+                    if (callback)
+                        callback(e, undefined);
                 } else if(callback)
                     callback(JSON.parse(this.responseText),undefined);
             },

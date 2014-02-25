@@ -55,10 +55,12 @@ var ndoc = 10; // numero delle segnalazioni scaricate  (in ordine di tempo)
 					$.progressIndicatorIndeterminant.hide();
 					var items = Ti.App.Properties.getString(LASTLISTKEY, "null");
 					if (items  == "null"){
-						alert("Errore server...");
+						alert("Errore server...Prova più tardi");
 					}
 					else{
-						if (JSON.parse(items).length == 0){
+                        var nItem = JSON.parse(items).length;
+
+						if (nItem == 0){
 							$.toast.show();
 						}
 						listSection.setItems(JSON.parse(items));
