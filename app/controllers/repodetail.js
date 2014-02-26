@@ -2,6 +2,7 @@ var win = $.winrepodetail;
 var actionBar; 
 var service = Alloy.Globals.Georep;
 var downloaded = []; //vettore necessario per capire se sono stati scaricati sia i dati del segnalatore sia la segnalazione
+var repoCoords = {};
 
 var segnalatoreLocale = {
 	nick: "",
@@ -34,6 +35,7 @@ win.addEventListener("open", function() {
                 actionBar.displayHomeAsUp = true;
                 actionBar.onHomeIconItemSelected = function() {
                     Ti.API.info("Home icon clicked!");
+                    Alloy.Globals.mapCenter = undefined;
                     $.winrepodetail.close();
                 };
             }
@@ -95,6 +97,8 @@ win.addEventListener("open", function() {
 				$.dialog.show();
 			}
 			else{
+                repoCoords.latitude = data.loc.latitude;
+                repoCoords.longitude = data.loc.longitude;
 				//se la scarico con successo provo a scaricare l'immagine
 				// scarico l'immagine della segnalazione e la salvo in un file
 				var xhr = Titanium.Network.createHTTPClient({
@@ -140,7 +144,10 @@ win.addEventListener("open", function() {
 		Ti.API.debug(localRepo);
 		
 		var jsonRepo = JSON.parse(localRepo);
-		
+
+        repoCoords.latitude = jsonRepo.loc.latitude;
+        repoCoords.longitude = jsonRepo.loc.longitude;
+
 		$.repoimage.image = jsonRepo.img;
 		$.titlelabel.setText(jsonRepo.title);		
 		$.descriptionlabel.setText(jsonRepo.msg);
@@ -211,4 +218,24 @@ function loadLocalReporter(reporterId){
 		$.maillabel.setText(JSON.parse(localReporter).mail);
 		win.fireEvent("repoDownloaded", {downloaded: "reporter"});
 	}	
+}
+
+/*
+ * gestore dell'evento click sul bottone nel menù della actionbar
+ * dovrebbe chiudere questa finestra, settare nella variabile globale
+ * Alloy.Globals.mapCenter le coordinate della segnalazione visualizzata e
+ * far navigare il drawer sulla mappa.
+ */
+function goToMap(e){
+    Ti.API.info("CLICK su \'Vedi sulla mappa\'.");
+    Alloy.Globals.mapCenter = {
+        latitude: repoCoords.latitude,
+        longitude: repoCoords.longitude
+    };
+    Ti.API.debug("Nuovo centro globale: " + JSON.stringify(Alloy.Globals.mapCenter));
+
+    // quando questa finestra viene chiusa, il focus torna a quella che contiene il drawer;
+    // a quel punto viene catturato l'evento "focus" e se Alloy.Globals.mapCenter è settata
+    // si navigherà direttamente alla mappa ricentrata.
+    win.close();
 }

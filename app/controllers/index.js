@@ -457,3 +457,20 @@ if (userLocalData == undefined){
     // segnalo che l'utente è registrato.
     Ti.App.fireEvent(Alloy.Globals.CustomEvents.USER_REGISTERED, userLocalData);
 }
+
+/**
+ * Gestore dell'evento focus che naviga sulla mappa se trova un nuovo centro
+ * configurato per essa.
+ * @param e
+ */
+function getFocus(e){
+    // se è definito un nuovo centro per la mappa, vuol dire che è stato premuto
+    // il bottone di "vedi sulla mappa" nella view dei dettagli e quindi
+    // bisogna navigare sulla mappa.
+    // La mappa si centra da sola alla nuova posizione se Alloy.Globals.mapCenter è definito
+    if (Alloy.Globals.mapCenter != undefined){
+        Ti.API.info('focus CATTURATO');
+        refreshBtn.hide();
+        switchTo('map');
+    }
+}

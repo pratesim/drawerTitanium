@@ -1,5 +1,11 @@
 <Alloy>
 	<Window id="winrepodetail" fullscreen="false">
+        <!-- The Menu tag adds the Android menu. -->
+        <Menu id="menu" platform="android">
+            <!-- Cannot specify node text.  Use attributes only. -->
+            <MenuItem id="menuItem" title="Vedi sulla mappa" icon="images/ic_action_map.png" onClick="goToMap" showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" />
+        </Menu>
+
 		<ProgressIndicator ns="Ti.UI.Android" platform="android" id="repodetailpb"
          message="Caricamento segnalazione..."
          location="Ti.UI.Android.PROGRESS_INDICATOR_DIALOG"

@@ -55,7 +55,8 @@ Ti.API.debug("  user: " + JSON.stringify(user));
 Ti.API.info("Creazione database...");
 var db = new Georep.DB({
 	proto: "http",
-	host: "cai.di.unipi.it",
+	//host: "cai.di.unipi.it",
+    host: "pram.no-ip.org",
 	port: 5984,
 	name: "testdb"
 });
@@ -136,6 +137,14 @@ Alloy.Globals.resizePhoto = function(imgBlob){
     }
     return img;
 };
+
+// oggetto usato per inizializzare la mappa ad un centro specifico
+// questo oggetto deve essere fatto così:
+// {
+//     latitude:  ... (Number),
+//     longitude: ... (Number)
+// }
+Alloy.Globals.mapCenter = undefined;
 
 /* funzioni locali */
 var numberPadding = function(n, width, padder){

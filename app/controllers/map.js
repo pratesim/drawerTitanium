@@ -481,12 +481,30 @@ function initMap(getCurrPosResult){
  * @param {ModulesMapViewEvent} evt
  */
 function mapCompleted(evt){
-    if (Ti.Geolocation.locationServicesEnabled) {
+    Ti.API.info('mapCompleted LANCIATA');
+    if (Alloy.Globals.mapCenter != undefined){
+        Ti.API.debug('nessuno nuovo centro per la mappa');
+        // se è indicato un centro specifico per la mappa allora
+        // creo una risposta finta della getCurrentPosition con
+        // quelle coordinate e uso quest'oggetto per inizializzare la
+        // mappa.
+        var center = {
+            latitude: Alloy.Globals.mapCenter.latitude,
+            longitude: Alloy.Globals.mapCenter.longitude
+        };
+        Alloy.Globals.mapCenter = undefined;
+        initMap({
+            success: true,
+            coords: center
+        });
+    } else if (Ti.Geolocation.locationServicesEnabled) {
+        Ti.API.debug('Servizio GPS attivo');
         // perform other operations with Ti.Geolocation
         Ti.Geolocation.setAccuracy(Ti.Geolocation.ACCURACY_LOW);
         Ti.Geolocation.getCurrentPosition(initMap);
     } else {
         //alert('Abilitare il servizio di localizzazione');
+        Ti.API.debug('Nessun servizio GPS.');
         initMap({success: false, error: "Servizio di localizzazione NON disponibile"});
     }
 }

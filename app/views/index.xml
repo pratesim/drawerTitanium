@@ -1,5 +1,5 @@
 <Alloy>
-	<Window class="container" backgroundColor="black">
+	<Window class="container" backgroundColor="black" onFocus="getFocus">
 		<Require type="widget" src="com.drawermenu.widget" id="drawermenu" backgroundColor="black"/>
 	</Window>
 </Alloy>
