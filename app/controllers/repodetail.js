@@ -14,12 +14,49 @@ var segnalazioneLocale = {
     title: "",
     msg: "",
     img: "",
-    data: "",
+    date: "",
     loc: {
     	latitude: "",
     	longitude: ""
     }
 };
+
+function downloadImg(data) {
+    var xhr = Titanium.Network.createHTTPClient({
+        onload: function () {
+            // first, grab a "handle" to the file where you'll store the downloaded data
+            var d = new Date();
+            var n = d.getTime();
+            //new file name
+            var newFileName = n + ".jpeg";
+
+            Ti.API.info("Tipo blob: " + this.responseData.mimeType);
+
+            var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newFileName);
+            var writeOk = f.write(this.responseData);
+
+            writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
+            Ti.API.info("Immagine scaricata");
+            // tutta la segnalazione è stata scaricata correttamente allora la salvo in locale
+            Ti.API.info("Segnalazione scaricata con successo: " + JSON.stringify(data));
+
+            loadRepo(data, f.nativePath);
+        },
+        onerror: function (e) {
+            Ti.API.info("impossibile scaricare l'immagine dal server");
+            Ti.API.debug(JSON.stringify(e));
+            loadRepo(data, "null");
+            $.toast.show();
+        }
+    });
+
+    var db = service.getDb();
+    var uri = db.getProto() + "://" + db.getHost() + ":" + db.getPort() + "/" + db.getName() + "/" + Alloy.Globals.query.repoId + "/" + "img";
+    Ti.API.debug("URI allegato: " + uri);
+    xhr.setRequestHeader("Authorization", "Basic " + service.getUser().getBase64());
+    xhr.open('GET', uri);
+    xhr.send();
+}
 
 win.addEventListener("open", function() {
 	Ti.API.info('Window "dettagli segnalazione" aperta');
@@ -101,41 +138,8 @@ win.addEventListener("open", function() {
                 repoCoords.longitude = data.loc.longitude;
 				//se la scarico con successo provo a scaricare l'immagine
 				// scarico l'immagine della segnalazione e la salvo in un file
-				var xhr = Titanium.Network.createHTTPClient({
-					onload: function() {
-						// first, grab a "handle" to the file where you'll store the downloaded data
-						var d = new Date();
-			            var n = d.getTime();
-			            //new file name
-			            var newFileName = n + ".jpeg";
-						
-						Ti.API.info("Tipo blob: " + this.responseData.mimeType);
-	                    
-						var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newFileName);
-						var writeOk = f.write(this.responseData);
-						 
-						writeOk == true ? Ti.API.info("file salvato correttamente nel path: " + f.nativePath) : Ti.API.info("file non salvato");
-						Ti.API.info("Immagine scaricata");
-						// tutta la segnalazione è stata scaricata correttamente allora la salvo in locale
-						Ti.API.info("Segnalazione scaricata con successo: " + JSON.stringify(data));
-						
-						loadRepo(data, f.nativePath);
-					},
-					onerror: function(e){
-						Ti.API.info("impossibile scaricare l'immagine dal server");
-						Ti.API.debug(JSON.stringify(e));
-						loadRepo(data, "null");
-						$.toast.show();
-					}
-				});
-				
-				var db = service.getDb();
-				var uri = db.getProto() + "://" + db.getHost() + ":" + db.getPort() + "/" + db.getName() + "/" + Alloy.Globals.query.repoId + "/" + "img";
-				Ti.API.debug("URI allegato: " + uri);
-				xhr.setRequestHeader("Authorization", "Basic " + service.getUser().getBase64());
-				xhr.open('GET', uri);
-				xhr.send();
-			}
+                downloadImg(data);
+            }
 		});
 	}
 	else {
@@ -148,13 +152,23 @@ win.addEventListener("open", function() {
         repoCoords.latitude = jsonRepo.loc.latitude;
         repoCoords.longitude = jsonRepo.loc.longitude;
 
+        $.titlelabel.setText(jsonRepo.title);
+        $.descriptionlabel.setText(jsonRepo.msg);
+        $.coordlatlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.latitude) + " °N");
+        $.coordlonlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.longitude) + " °E");
+        $.datalabel.setText(Alloy.Globals.dataToString(jsonRepo.date));
+        $.addresslabel.setText(jsonRepo.indirizzo);
 		$.repoimage.image = jsonRepo.img;
-		$.titlelabel.setText(jsonRepo.title);		
-		$.descriptionlabel.setText(jsonRepo.msg);
-		$.coordlatlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.latitude) + " °N");
-		$.coordlonlabel.setText(Alloy.Globals.decToSes(jsonRepo.loc.longitude) + " °E");
-		$.datalabel.setText(Alloy.Globals.dataToString(jsonRepo.data));
-		$.addresslabel.setText(jsonRepo.indirizzo);
+
+        if (jsonRepo.img == '/reloadPhoto.png'){
+            $.repoimage.addEventListener("click", function(data){
+                $.repodetailpb.show();
+                win.fireEvent("repoDownloaded", {downloaded: "reporter"});
+                downloadImg(jsonRepo);
+                /*$.repoimage.removeEventListener("click");*/
+            });
+        }
+
 		win.fireEvent("repoDownloaded", {downloaded: "repo"});
 	}
 });
@@ -167,10 +181,21 @@ function alertconfsend (ev) {
 /* carica la segnalazione data nella scrollView e la salva localmente
  * @data: oggetto contenente i dati della segnalazione da caricare
  * @fileImg: URL del file dove è stata salvata l'immagine della segnalazione.
- *           se fileImg == "null" la segnalazione verrà caricata con l'immagine di default /placeholder.png
+ *           se fileImg == "null" la segnalazione verrà caricata con l'immagine di default /reloadPhoto.png
  */ 
 function loadRepo(data, fileImg){
-	$.repoimage.image = fileImg == "null" ? "/placeholder.png" : fileImg;
+    if (fileImg == "null"){
+        $.repoimage.image = '/reloadPhoto.png';
+        $.repoimage.addEventListener("click", function(data){
+            $.repodetailpb.show();
+            win.fireEvent("repoDownloaded", {downloaded: "reporter"});
+            downloadImg(data);
+            /*$.repoimage.removeEventListener("click");*/
+        });
+    }
+    else {
+        $.repoimage.image = fileImg;
+    }
 	$.descriptionlabel.setText(data.msg);
 	$.coordlatlabel.setText(Alloy.Globals.decToSes(data.loc.latitude) + " °N");
 	$.coordlonlabel.setText(Alloy.Globals.decToSes(data.loc.longitude) + " °E");
@@ -187,10 +212,10 @@ function loadRepo(data, fileImg){
 		segnalazioneLocale.indirizzo = indirizzo;
 		segnalazioneLocale.title = data.title;
 		segnalazioneLocale.msg = data.msg;
-		segnalazioneLocale.data = data.date;
+		segnalazioneLocale.date = data.date;
 		segnalazioneLocale.loc.latitude = data.loc.latitude;
 		segnalazioneLocale.loc.longitude = data.loc.longitude;
-		segnalazioneLocale.img = fileImg == "null" ? "/placeholder.png" : fileImg;
+		segnalazioneLocale.img = fileImg == "null" ? "/reloadPhoto.png" : fileImg;
 		Ti.App.Properties.setString(data._id, JSON.stringify(segnalazioneLocale));
 		
 		var localeOk = Ti.App.Properties.getString(data._id, "null");
