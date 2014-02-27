@@ -81,7 +81,7 @@ function sendRepo(){
         _id: "",
         title: "",
         msg: "",
-        data: "",
+        date: "",
         img: "", // filepath di dove è salvata l'immagine della segnalazione
         indirizzo: "", // coordinate tradotte in indirizzo
         loc: {
@@ -112,7 +112,7 @@ function sendRepo(){
 
                 segnalazioneLocale.title = title;
                 segnalazioneLocale.msg = descr;
-                segnalazioneLocale.data = new Date().getTime();
+                segnalazioneLocale.date = new Date().getTime();
                 // la conversione dell'indirizzo viene fatta dal servizio per non bloccare l'applicazione
                 segnalazioneLocale.indirizzo = "";
                 segnalazioneLocale.loc.latitude = location.coords.latitude;

@@ -160,13 +160,16 @@ win.addEventListener("open", function() {
         $.addresslabel.setText(jsonRepo.indirizzo);
 		$.repoimage.image = jsonRepo.img;
 
+        var imgClick = function(e){
+            Ti.API.info('repoimage CLICK');
+            $.repodetailpb.show();
+            win.fireEvent("repoDownloaded", {downloaded: "reporter"});
+            downloadImg(jsonRepo);
+            $.repoimage.removeEventListener("click", imgClick);
+        };
+
         if (jsonRepo.img == '/reloadPhoto.png'){
-            $.repoimage.addEventListener("click", function(data){
-                $.repodetailpb.show();
-                win.fireEvent("repoDownloaded", {downloaded: "reporter"});
-                downloadImg(jsonRepo);
-                /*$.repoimage.removeEventListener("click");*/
-            });
+            $.repoimage.addEventListener("click", imgClick);
         }
 
 		win.fireEvent("repoDownloaded", {downloaded: "repo"});
@@ -185,13 +188,14 @@ function alertconfsend (ev) {
  */ 
 function loadRepo(data, fileImg){
     if (fileImg == "null"){
-        $.repoimage.image = '/reloadPhoto.png';
-        $.repoimage.addEventListener("click", function(data){
+        var imgClick = function (e){
             $.repodetailpb.show();
             win.fireEvent("repoDownloaded", {downloaded: "reporter"});
             downloadImg(data);
-            /*$.repoimage.removeEventListener("click");*/
-        });
+            $.repoimage.removeEventListener("click", imgClick);
+        }
+        $.repoimage.image = '/reloadPhoto.png';
+        $.repoimage.addEventListener("click",imgClick);
     }
     else {
         $.repoimage.image = fileImg;
